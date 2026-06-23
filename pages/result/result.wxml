@@ -1,0 +1,18 @@
+<view class="container">
+  <view class="result-card">
+    <text class="emoji">{{food.emoji}}</text>
+    <text class="name">{{food.name}}</text>
+    <view class="info-row">
+      <text class="category">{{food.categoryName}}</text>
+      <text class="price">￥{{food.priceRange}}</text>
+    </view>
+    <view class="tags" wx:if="{{food.tags.length > 0}}">
+      <text class="tag" wx:for="{{food.tags}}" wx:key="*this">{{tagNames[item]}}</text>
+    </view>
+  </view>
+
+  <view class="actions">
+    <button class="btn-primary" bindtap="onConfirm">就它了！</button>
+    <button class="btn-secondary" bindtap="goBack">再想想</button>
+  </view>
+</view>

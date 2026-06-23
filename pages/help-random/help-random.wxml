@@ -1,0 +1,23 @@
+<view class="container">
+  <view class="header">
+    <text class="from-text">{{fromName}} 选不了了</text>
+    <text class="title">帮TA随机抽一个！</text>
+  </view>
+
+  <!-- 卡片区域 -->
+  <view class="card-area">
+    <food-card food="{{currentFood}}" flipped="{{isFlipped}}" />
+  </view>
+
+  <!-- 操作区 -->
+  <view class="actions">
+    <button class="btn-primary {{shaking ? 'shaking' : ''}}" bindtap="onRandomPick" wx:if="{{!isFlipped}}">
+      帮TA抽一个
+    </button>
+    <view class="result-actions" wx:if="{{isFlipped}}">
+      <text class="result-text">你帮TA抽到了：{{currentFood.name}}</text>
+      <button class="btn-secondary" bindtap="onRandomPick">再抽一个</button>
+      <button class="btn-primary" bindtap="goToIndex">我也来试试</button>
+    </view>
+  </view>
+</view>

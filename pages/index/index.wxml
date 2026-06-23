@@ -1,0 +1,31 @@
+<view class="container">
+  <!-- 顶部标题区 -->
+  <view class="header">
+    <text class="title">今天吃什么？</text>
+    <text class="subtitle">让命运帮你决定</text>
+  </view>
+
+  <!-- 卡片区域 -->
+  <view class="card-area">
+    <food-card food="{{currentFood}}" flipped="{{isFlipped}}" />
+  </view>
+
+  <!-- 操作按钮区 -->
+  <view class="action-area">
+    <button class="btn-primary shake-btn {{shaking ? 'shaking' : ''}}" bindtap="onRandomPick" disabled="{{shaking}}">
+      {{isFlipped ? '换一个' : '随机来一个'}}
+    </button>
+
+    <view class="secondary-actions" wx:if="{{isFlipped}}">
+      <button class="btn-secondary" bindtap="onConfirm">就它了</button>
+      <button class="btn-secondary" bindtap="goToCandidates">多来几个候选</button>
+    </view>
+  </view>
+
+  <!-- 分享入口 -->
+  <view class="share-area" wx:if="{{isFlipped}}">
+    <button class="share-btn" open-type="share" data-mode="random">
+      🎲 帮我随机抽
+    </button>
+  </view>
+</view>

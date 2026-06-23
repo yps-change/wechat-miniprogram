@@ -1,0 +1,32 @@
+<view class="container">
+  <view class="header">
+    <text class="title">候选菜品</text>
+    <text class="subtitle">摇出几个候选，让同事帮你选</text>
+  </view>
+
+  <!-- 候选列表 -->
+  <view class="candidate-list" wx:if="{{candidates.length > 0}}">
+    <view class="candidate-item" wx:for="{{candidates}}" wx:key="id">
+      <view class="item-left">
+        <text class="item-emoji">{{item.emoji}}</text>
+        <view class="item-info">
+          <text class="item-name">{{item.name}}</text>
+          <text class="item-category">{{item.categoryName}} · ￥{{item.priceRange}}</text>
+        </view>
+      </view>
+      <view class="item-right">
+        <text class="replace-btn" bindtap="replaceOne" data-index="{{index}}">换</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作区 -->
+  <view class="actions">
+    <button class="btn-primary" bindtap="generateCandidates">
+      {{candidates.length > 0 ? '重新摇一组' : '摇出候选菜品'}}
+    </button>
+    <button class="share-btn" open-type="share" wx:if="{{candidates.length > 0}}">
+      📤 让同事帮我选
+    </button>
+  </view>
+</view>

@@ -1,0 +1,32 @@
+<view class="container">
+  <view class="header">
+    <text class="from-text">{{fromName}} 纠结不下了</text>
+    <text class="title">帮TA从这几个里选一个！</text>
+  </view>
+
+  <!-- 候选列表 -->
+  <view class="candidate-list">
+    <view class="candidate-item {{chosen === item.id ? 'chosen' : ''}}" 
+          wx:for="{{candidates}}" 
+          wx:key="id"
+          bindtap="onChoose"
+          data-id="{{item.id}}">
+      <text class="item-emoji">{{item.emoji}}</text>
+      <view class="item-info">
+        <text class="item-name">{{item.name}}</text>
+        <text class="item-category">{{item.categoryName}} · ￥{{item.priceRange}}</text>
+      </view>
+      <view class="check-mark" wx:if="{{chosen === item.id}}">✓</view>
+    </view>
+  </view>
+
+  <!-- 选择结果 -->
+  <view class="result" wx:if="{{chosenFood}}">
+    <text class="result-text">你帮TA选了：{{chosenFood.emoji}} {{chosenFood.name}}</text>
+  </view>
+
+  <!-- 底部引导 -->
+  <view class="footer">
+    <button class="btn-primary" bindtap="goToIndex">我也来试试</button>
+  </view>
+</view>

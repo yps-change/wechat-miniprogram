@@ -1,0 +1,75 @@
+/* 全局样式 */
+page {
+  --primary-color: #FF6B35;
+  --primary-light: #FFF0EB;
+  --bg-color: #FFF8F0;
+  --text-color: #333333;
+  --text-secondary: #666666;
+  --text-hint: #999999;
+  --border-color: #EEEEEE;
+  --card-bg: #FFFFFF;
+  --success-color: #52C41A;
+  --warning-color: #FAAD14;
+
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  font-size: 28rpx;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  box-sizing: border-box;
+}
+
+/* 通用工具类 */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.text-primary {
+  color: var(--primary-color);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-hint {
+  color: var(--text-hint);
+}
+
+/* 通用按钮样式 */
+.btn-primary {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  border: none;
+  border-radius: 50rpx;
+  padding: 24rpx 60rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.btn-primary::after {
+  border: none;
+}
+
+.btn-secondary {
+  background-color: var(--primary-light);
+  color: var(--primary-color);
+  border: none;
+  border-radius: 50rpx;
+  padding: 24rpx 60rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.btn-secondary::after {
+  border: none;
+}

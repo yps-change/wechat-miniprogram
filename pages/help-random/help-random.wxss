@@ -1,0 +1,62 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 40rpx 30rpx;
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 50rpx;
+}
+
+.from-text {
+  font-size: 30rpx;
+  color: var(--text-secondary);
+  margin-bottom: 8rpx;
+}
+
+.title {
+  font-size: 42rpx;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.card-area {
+  margin-bottom: 50rpx;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.result-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.result-text {
+  font-size: 30rpx;
+  color: var(--primary-color);
+  font-weight: 600;
+  margin-bottom: 10rpx;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-6rpx); }
+  20%, 40%, 60%, 80% { transform: translateX(6rpx); }
+}
+
+.shaking {
+  animation: shake 0.5s ease-in-out;
+}

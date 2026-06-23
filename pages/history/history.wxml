@@ -1,0 +1,25 @@
+<view class="container">
+  <view class="header" wx:if="{{historyList.length > 0}}">
+    <text class="title">最近吃了什么</text>
+    <text class="clear-btn" bindtap="onClear">清空</text>
+  </view>
+
+  <!-- 历史列表 -->
+  <view class="history-list" wx:if="{{historyList.length > 0}}">
+    <view class="history-group" wx:for="{{groupedHistory}}" wx:key="date">
+      <text class="group-date">{{item.date}}</text>
+      <view class="history-item" wx:for="{{item.records}}" wx:for-item="record" wx:key="timestamp">
+        <text class="item-emoji">{{record.emoji}}</text>
+        <text class="item-name">{{record.foodName}}</text>
+        <text class="item-source">{{sourceNames[record.source]}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{historyList.length === 0}}">
+    <text class="empty-emoji">📝</text>
+    <text class="empty-text">还没有记录</text>
+    <text class="empty-hint">去首页随机选一个吧</text>
+  </view>
+</view>

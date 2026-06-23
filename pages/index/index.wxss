@@ -1,0 +1,87 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 40rpx 30rpx;
+  box-sizing: border-box;
+}
+
+/* 顶部标题 */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 50rpx;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.subtitle {
+  font-size: 26rpx;
+  color: var(--text-hint);
+  margin-top: 10rpx;
+}
+
+/* 卡片区域 */
+.card-area {
+  margin-bottom: 50rpx;
+}
+
+/* 操作按钮区 */
+.action-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24rpx;
+  width: 100%;
+}
+
+.shake-btn {
+  min-width: 400rpx;
+  font-size: 36rpx;
+  padding: 28rpx 80rpx;
+}
+
+.secondary-actions {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 10rpx;
+}
+
+/* 分享区域 */
+.share-area {
+  margin-top: 40rpx;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.share-btn {
+  background-color: transparent;
+  color: var(--primary-color);
+  font-size: 28rpx;
+  border: 2rpx solid var(--primary-color);
+  border-radius: 50rpx;
+  padding: 16rpx 40rpx;
+  line-height: 1.4;
+}
+
+.share-btn::after {
+  border: none;
+}
+
+/* 摇晃动画 */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-6rpx); }
+  20%, 40%, 60%, 80% { transform: translateX(6rpx); }
+}
+
+.shaking {
+  animation: shake 0.5s ease-in-out;
+}
