@@ -1,4 +1,7 @@
-<view class="container">
+<view class="container" bindtouchstart="onPageTouch">
+  <!-- 粒子画布覆盖层 -->
+  <canvas type="2d" id="particleCanvas" class="particle-canvas"></canvas>
+
   <!-- 顶部标题区 -->
   <view class="header">
     <text class="title">今天吃什么？</text>

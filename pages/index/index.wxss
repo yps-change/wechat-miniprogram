@@ -5,6 +5,17 @@
   min-height: 100vh;
   padding: 40rpx 30rpx;
   box-sizing: border-box;
+  position: relative;
+}
+
+/* 粒子画布覆盖层 */
+.particle-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
 }
 
 /* 顶部标题 */
