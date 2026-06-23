@@ -1,5 +1,4 @@
 {
-  "usingComponents": {
-    "food-card": "/components/food-card/food-card"
-  }
+  "usingComponents": {},
+  "navigationBarTitleText": "今天吃什么"
 }
