@@ -201,13 +201,11 @@ Page({
     if (this.data.spinning) return;
     var food = randomUtil.getRandomOne(foodsData.foods);
     var combo = this.data.comboCount + 1;
-    this.setData({
-      currentFood: food,
-      showResult: true,
-      comboCount: combo
+    this.setData({ comboCount: combo });
+    // 跳转到结果页面
+    wx.navigateTo({
+      url: '/pages/result/result?id=' + food.id
     });
-    // 触发爆炸特效
-    this.triggerResultExplosion();
   },
 
   // ========== 转盘旋转 ==========

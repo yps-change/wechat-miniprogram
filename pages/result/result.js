@@ -1,4 +1,5 @@
 var foodsData = require('../../data/foods.js');
+var randomUtil = require('../../utils/random.js');
 
 Page({
   data: {
@@ -25,6 +26,7 @@ Page({
     }
   },
 
+  // 确认选择
   onConfirm: function() {
     var food = this.data.food;
     if (!food || !food.id) return;
@@ -44,7 +46,8 @@ Page({
 
     wx.showToast({
       title: '今天就吃' + food.name + '！',
-      icon: 'none'
+      icon: 'none',
+      duration: 2000
     });
 
     setTimeout(function() {
@@ -52,6 +55,13 @@ Page({
     }, 1500);
   },
 
+  // 换一个（随机新菜品刷新本页）
+  onAgain: function() {
+    var food = randomUtil.getRandomOne(foodsData.foods);
+    this.setData({ food: food });
+  },
+
+  // 返回首页
   goBack: function() {
     wx.navigateBack();
   }

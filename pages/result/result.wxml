@@ -1,18 +1,46 @@
-<view class="container">
-  <view class="result-card">
-    <text class="emoji">{{food.emoji}}</text>
-    <text class="name">{{food.name}}</text>
-    <view class="info-row">
-      <text class="category">{{food.categoryName}}</text>
-      <text class="price">￥{{food.priceRange}}</text>
+<view class="page">
+  <!-- 顶部装饰 -->
+  <view class="top-decor">
+    <view class="circle c1"></view>
+    <view class="circle c2"></view>
+    <view class="circle c3"></view>
+  </view>
+
+  <!-- 食物展示卡片 -->
+  <view class="food-photo-card">
+    <view class="photo-bg">
+      <view class="photo-glow"></view>
+      <text class="food-emoji">{{food.emoji || '🍽️'}}</text>
     </view>
-    <view class="tags" wx:if="{{food.tags.length > 0}}">
-      <text class="tag" wx:for="{{food.tags}}" wx:key="*this">{{tagNames[item]}}</text>
+    <view class="photo-label">
+      <text class="label-text">✨ 今日推荐</text>
     </view>
   </view>
 
+  <!-- 食物信息 -->
+  <view class="food-info">
+    <text class="food-name">{{food.name || '加载中...'}}</text>
+    <view class="info-row">
+      <text class="food-category">{{food.categoryName || ''}}</text>
+      <text class="food-price">￥{{food.priceRange || ''}}</text>
+    </view>
+    <view class="food-tags" wx:if="{{food.tags && food.tags.length > 0}}">
+      <text class="tag" wx:for="{{food.tags}}" wx:key="*this">{{tagNames[item] || item}}</text>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
   <view class="actions">
-    <button class="btn-primary" bindtap="onConfirm">就它了！</button>
-    <button class="btn-secondary" bindtap="goBack">再想想</button>
+    <button class="confirm-btn" bindtap="onConfirm">
+      <text>🔥 就它了！</text>
+    </button>
+    <view class="sub-actions">
+      <button class="again-btn" bindtap="onAgain">
+        <text>🎲 换一个</text>
+      </button>
+      <button class="back-btn" bindtap="goBack">
+        <text>← 回去转转盘</text>
+      </button>
+    </view>
   </view>
 </view>
