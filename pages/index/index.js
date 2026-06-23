@@ -14,10 +14,10 @@ var WHEEL_TEXT_COLORS = [
   '#FFFFFF', '#2D3436', '#FFFFFF', '#FFFFFF'
 ];
 
-// 粒子爆炸颜色
+// 粒子爆炸颜色（蓝色系+彩色）
 var PARTICLE_COLORS = [
-  '#FF6B35', '#FF8F65', '#FFB899',
-  '#FFD700', '#FFA500', '#FF4500',
+  '#4A7BF7', '#6C9BFF', '#A8C4FF',
+  '#FFD700', '#FFA500', '#FF6B6B',
   '#00CED1', '#20B2AA', '#48D1CC',
   '#FF69B4', '#FF1493', '#C71585',
   '#7B68EE', '#9370DB', '#BA55D3',
@@ -175,13 +175,13 @@ Page({
     ctx.arc(0, 0, radius * 0.18, 0, Math.PI * 2);
     ctx.fillStyle = '#FFFFFF';
     ctx.fill();
-    ctx.strokeStyle = '#FF6B35';
+    ctx.strokeStyle = '#4A7BF7';
     ctx.lineWidth = 4;
     ctx.stroke();
 
     // 中心文字
     ctx.font = 'bold 20px "PingFang SC", sans-serif';
-    ctx.fillStyle = '#FF6B35';
+    ctx.fillStyle = '#4A7BF7';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('转', 0, 0);
@@ -191,9 +191,23 @@ Page({
     // 外圈装饰
     ctx.beginPath();
     ctx.arc(cx, cy, radius + 2, 0, Math.PI * 2);
-    ctx.strokeStyle = '#FF6B35';
+    ctx.strokeStyle = '#4A7BF7';
     ctx.lineWidth = 4;
     ctx.stroke();
+  },
+
+  // ========== 一键出结果 ==========
+  onQuickPick: function() {
+    if (this.data.spinning) return;
+    var food = randomUtil.getRandomOne(foodsData.foods);
+    var combo = this.data.comboCount + 1;
+    this.setData({
+      currentFood: food,
+      showResult: true,
+      comboCount: combo
+    });
+    // 触发爆炸特效
+    this.triggerResultExplosion();
   },
 
   // ========== 转盘旋转 ==========

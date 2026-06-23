@@ -1,9 +1,9 @@
 /* 全局样式 */
 page {
-  --primary-color: #FF6B35;
-  --primary-light: #FFF0EB;
-  --primary-gradient: linear-gradient(135deg, #FF6B35, #FF8C42);
-  --bg-color: #FFF8F0;
+  --primary-color: #4A7BF7;
+  --primary-light: #EBF0FF;
+  --primary-gradient: linear-gradient(135deg, #4A7BF7, #6C9BFF);
+  --bg-color: #F0F5FF;
   --text-color: #333333;
   --text-secondary: #666666;
   --text-hint: #999999;
@@ -48,7 +48,7 @@ page {
   font-size: 32rpx;
   font-weight: 600;
   line-height: 1;
-  box-shadow: 0 6rpx 20rpx rgba(255,107,53,0.3);
+  box-shadow: 0 6rpx 20rpx rgba(74,123,247,0.3);
 }
 
 .btn-primary::after { border: none; }

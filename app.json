@@ -8,15 +8,15 @@
     "pages/history/history"
   ],
   "window": {
-    "navigationBarBackgroundColor": "#FF6B35",
+    "navigationBarBackgroundColor": "#4A7BF7",
     "navigationBarTitleText": "今天吃什么",
     "navigationBarTextStyle": "white",
-    "backgroundColor": "#FFF8F0",
+    "backgroundColor": "#F0F5FF",
     "backgroundTextStyle": "light"
   },
   "tabBar": {
     "color": "#999999",
-    "selectedColor": "#FF6B35",
+    "selectedColor": "#4A7BF7",
     "backgroundColor": "#ffffff",
     "borderStyle": "black",
     "list": [

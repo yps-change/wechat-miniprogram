@@ -47,9 +47,16 @@
 
     <!-- 操作按钮区 -->
     <view class="action-area">
-      <button class="spin-btn {{spinning ? 'spinning' : ''}}" bindtap="onSpin" disabled="{{spinning}}">
-        <text class="spin-btn-text">{{spinning ? '转动中...' : (showResult ? '再转一次' : '开始转盘')}}</text>
-      </button>
+      <!-- 双按钮布局 -->
+      <view class="dual-btns">
+        <button class="quick-btn" bindtap="onQuickPick" disabled="{{spinning}}">
+          <text class="quick-btn-icon">⚡</text>
+          <text class="quick-btn-text">一键出结果</text>
+        </button>
+        <button class="spin-btn {{spinning ? 'spinning' : ''}}" bindtap="onSpin" disabled="{{spinning}}">
+          <text class="spin-btn-text">{{spinning ? '转动中...' : (showResult ? '再转一次' : '开始转盘')}}</text>
+        </button>
+      </view>
 
       <view class="secondary-actions" wx:if="{{showResult}}">
         <button class="btn-confirm" bindtap="onConfirm">
