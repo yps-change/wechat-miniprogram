@@ -83,12 +83,15 @@ Page({
         if (!res || !res[0] || !res[0].node) return;
         var canvas = res[0].node;
         var ctx = canvas.getContext('2d');
-        var dpr = wx.getSystemInfoSync().pixelRatio;
+        var sysInfo = wx.getSystemInfoSync();
+        var dpr = sysInfo.pixelRatio || 2;
+        // 使用 2x DPR 确保高清渲染
+        var scale = Math.max(dpr, 2) * 1.5;
         var w = res[0].width;
         var h = res[0].height;
-        canvas.width = w * dpr;
-        canvas.height = h * dpr;
-        ctx.scale(dpr, dpr);
+        canvas.width = w * scale;
+        canvas.height = h * scale;
+        ctx.scale(scale, scale);
         that.wheelCanvas = canvas;
         that.wheelCtx = ctx;
         that.wheelWidth = w;
@@ -145,14 +148,14 @@ Page({
       ctx.rotate(textAngle);
 
       // emoji
-      ctx.font = '22px sans-serif';
+      ctx.font = '36px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       var emoji = this.wheelFoods[i].emoji || '🍽️';
       ctx.fillText(emoji, radius * 0.72, 0);
 
       // 菜名（截断）
-      ctx.font = 'bold 11px sans-serif';
+      ctx.font = 'bold 16px "PingFang SC", "Microsoft YaHei", sans-serif';
       ctx.fillStyle = '#FFFFFF';
       var name = this.wheelFoods[i].name;
       if (name.length > 5) name = name.substring(0, 5) + '..';
@@ -163,7 +166,7 @@ Page({
 
     // 中心圆
     ctx.beginPath();
-    ctx.arc(0, 0, radius * 0.15, 0, Math.PI * 2);
+    ctx.arc(0, 0, radius * 0.16, 0, Math.PI * 2);
     ctx.fillStyle = '#FFF8F0';
     ctx.fill();
     ctx.strokeStyle = '#FF6B35';
@@ -171,7 +174,7 @@ Page({
     ctx.stroke();
 
     // 中心文字
-    ctx.font = 'bold 13px sans-serif';
+    ctx.font = 'bold 18px "PingFang SC", sans-serif';
     ctx.fillStyle = '#FF6B35';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -399,6 +402,11 @@ Page({
     this.particleCanvas.requestAnimationFrame(function() {
       that.animateParticles();
     });
+  },
+
+  // ========== 关闭结果弹窗 ==========
+  dismissResult: function() {
+    this.setData({ showResult: false });
   },
 
   // ========== 确认选择 ==========
