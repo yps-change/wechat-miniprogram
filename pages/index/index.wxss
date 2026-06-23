@@ -1,7 +1,7 @@
 /* ========== 页面背景 ========== */
 .page-bg {
   min-height: 100vh;
-  background: linear-gradient(180deg, #FFF8F0 0%, #FFE8D6 40%, #FFDAB9 100%);
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFF5ED 50%, #FFEBD6 100%);
   position: relative;
   overflow: hidden;
 }
@@ -75,16 +75,14 @@
 }
 
 .title {
-  font-size: 48rpx;
+  font-size: 52rpx;
   font-weight: 800;
-  background: linear-gradient(135deg, #FF6B35, #FF1493);
-  -webkit-background-clip: text;
-  color: transparent;
+  color: #E8501A;
 }
 
 .subtitle {
-  font-size: 26rpx;
-  color: #999;
+  font-size: 28rpx;
+  color: #888;
   margin-top: 8rpx;
   letter-spacing: 2rpx;
 }
@@ -247,9 +245,9 @@
 }
 
 .result-name {
-  font-size: 48rpx;
+  font-size: 52rpx;
   font-weight: 800;
-  color: #333;
+  color: #1A1A1A;
   margin-bottom: 16rpx;
   position: relative;
   z-index: 1;
@@ -265,8 +263,8 @@
 }
 
 .result-category {
-  font-size: 26rpx;
-  color: #666;
+  font-size: 28rpx;
+  color: #555;
   background: #FFF0EB;
   padding: 8rpx 24rpx;
   border-radius: 20rpx;
@@ -286,9 +284,9 @@
 }
 
 .tag {
-  font-size: 24rpx;
-  color: #666;
-  background: #f5f5f5;
+  font-size: 26rpx;
+  color: #555;
+  background: #f0f0f0;
   padding: 6rpx 20rpx;
   border-radius: 16rpx;
 }

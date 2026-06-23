@@ -2,11 +2,16 @@ var foodsData = require('../../data/foods.js');
 var randomUtil = require('../../utils/random.js');
 var shareUtil = require('../../utils/share.js');
 
-// 转盘扇区颜色
+// 转盘扇区颜色（高对比度、明亮清晰）
 var WHEEL_COLORS = [
-  '#FF6B35', '#FF8C42', '#FFD166', '#06D6A0',
-  '#118AB2', '#073B4C', '#EF476F', '#7B68EE',
-  '#20B2AA', '#FF69B4', '#FFA500', '#00CED1'
+  '#FF6B6B', '#4ECDC4', '#FFD93D', '#6C5CE7',
+  '#FF8A5C', '#A8E6CF', '#F38181', '#45B7D1'
+];
+
+// 扇区文字颜色（与背景形成高对比）
+var WHEEL_TEXT_COLORS = [
+  '#FFFFFF', '#2D3436', '#2D3436', '#FFFFFF',
+  '#FFFFFF', '#2D3436', '#FFFFFF', '#FFFFFF'
 ];
 
 // 粒子爆炸颜色
@@ -128,6 +133,7 @@ Page({
       var startAngle = arc * i - Math.PI / 2;
       var endAngle = startAngle + arc;
       var color = WHEEL_COLORS[i % WHEEL_COLORS.length];
+      var textColor = WHEEL_TEXT_COLORS[i % WHEEL_TEXT_COLORS.length];
 
       // 扇区
       ctx.beginPath();
@@ -137,9 +143,9 @@ Page({
       ctx.fillStyle = color;
       ctx.fill();
 
-      // 扇区边线
-      ctx.strokeStyle = 'rgba(255,255,255,0.3)';
-      ctx.lineWidth = 2;
+      // 扇区白色边线
+      ctx.strokeStyle = '#FFFFFF';
+      ctx.lineWidth = 2.5;
       ctx.stroke();
 
       // 文字和emoji
@@ -147,34 +153,34 @@ Page({
       var textAngle = startAngle + arc / 2;
       ctx.rotate(textAngle);
 
-      // emoji
-      ctx.font = '36px sans-serif';
+      // 菜名（靠近内侧，清晰可读）
+      ctx.font = 'bold 15px "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillStyle = textColor;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      var emoji = this.wheelFoods[i].emoji || '🍽️';
-      ctx.fillText(emoji, radius * 0.72, 0);
-
-      // 菜名（截断）
-      ctx.font = 'bold 16px "PingFang SC", "Microsoft YaHei", sans-serif';
-      ctx.fillStyle = '#FFFFFF';
       var name = this.wheelFoods[i].name;
-      if (name.length > 5) name = name.substring(0, 5) + '..';
-      ctx.fillText(name, radius * 0.48, 0);
+      if (name.length > 4) name = name.substring(0, 4) + '..';
+      ctx.fillText(name, radius * 0.45, -6);
+
+      // emoji（外侧，不与文字重叠）
+      ctx.font = '28px sans-serif';
+      var emoji = this.wheelFoods[i].emoji || '🍽️';
+      ctx.fillText(emoji, radius * 0.78, 2);
 
       ctx.restore();
     }
 
-    // 中心圆
+    // 中心圆（加大加清晰）
     ctx.beginPath();
-    ctx.arc(0, 0, radius * 0.16, 0, Math.PI * 2);
-    ctx.fillStyle = '#FFF8F0';
+    ctx.arc(0, 0, radius * 0.18, 0, Math.PI * 2);
+    ctx.fillStyle = '#FFFFFF';
     ctx.fill();
     ctx.strokeStyle = '#FF6B35';
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 4;
     ctx.stroke();
 
     // 中心文字
-    ctx.font = 'bold 18px "PingFang SC", sans-serif';
+    ctx.font = 'bold 20px "PingFang SC", sans-serif';
     ctx.fillStyle = '#FF6B35';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
