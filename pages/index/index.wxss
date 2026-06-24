@@ -291,7 +291,7 @@
   border-radius: 16rpx;
 }
 
-/* ========== 操作按钮 ========== */
+/* ========== 操作按钮（首页） ========== */
 .action-area {
   display: flex;
   flex-direction: column;
@@ -387,64 +387,69 @@
   z-index: 1;
 }
 
-.secondary-actions {
-  display: flex;
-  gap: 20rpx;
-  margin-top: 10rpx;
-  animation: fade-up 0.4s ease;
-}
-
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(20rpx); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.btn-confirm {
-  background: linear-gradient(135deg, #FF1493, #FF69B4);
-  color: #FFFFFF;
-  border: none;
-  border-radius: 50rpx;
-  padding: 22rpx 48rpx;
-  font-size: 30rpx;
-  font-weight: 600;
-  box-shadow: 0 6rpx 20rpx rgba(255,20,147,0.3);
-}
-
-.btn-confirm::after { border: none; }
-
-.btn-candidates {
-  background: linear-gradient(135deg, #7B68EE, #9370DB);
-  color: #FFFFFF;
-  border: none;
-  border-radius: 50rpx;
-  padding: 22rpx 48rpx;
-  font-size: 30rpx;
-  font-weight: 600;
-  box-shadow: 0 6rpx 20rpx rgba(123,104,238,0.3);
-}
-
-.btn-candidates::after { border: none; }
-
-/* 分享按钮 */
-.share-area {
-  margin-top: 30rpx;
+/* ========== 弹窗内操作按钮 ========== */
+.popup-actions {
   width: 100%;
+  margin-top: 36rpx;
   display: flex;
-  justify-content: center;
-  animation: fade-up 0.5s ease 0.2s both;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
+  position: relative;
+  z-index: 1;
 }
 
-.share-btn {
-  background: transparent;
-  color: #4A7BF7;
-  font-size: 28rpx;
-  border: 2rpx solid #4A7BF7;
+.popup-btn-confirm {
+  width: 100%;
+  padding: 26rpx 0;
+  background: linear-gradient(135deg, #4A7BF7, #6C9BFF);
+  color: #FFFFFF;
+  border: none;
   border-radius: 50rpx;
-  padding: 16rpx 40rpx;
-  line-height: 1.4;
+  font-size: 34rpx;
+  font-weight: 700;
+  box-shadow: 0 6rpx 20rpx rgba(74,123,247,0.3);
+}
+.popup-btn-confirm::after { border: none; }
+
+.popup-sub-actions {
+  display: flex;
+  gap: 16rpx;
+  width: 100%;
 }
 
-.share-btn::after { border: none; }
+.popup-btn-again {
+  flex: 1;
+  padding: 20rpx 0;
+  background: #EBF0FF;
+  color: #4A7BF7;
+  border: none;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+.popup-btn-again::after { border: none; }
+
+.popup-btn-candidates {
+  flex: 1;
+  padding: 20rpx 0;
+  background: #F0F0F0;
+  color: #555;
+  border: none;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+.popup-btn-candidates::after { border: none; }
+
+.popup-btn-share {
+  background: transparent;
+  color: #999;
+  font-size: 24rpx;
+  border: none;
+  padding: 12rpx 0;
+}
+.popup-btn-share::after { border: none; }
 
 /* 连击提示 */
 .combo-hint {

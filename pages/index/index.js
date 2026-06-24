@@ -427,6 +427,15 @@ Page({
     this.setData({ showResult: false });
   },
 
+  // ========== 弹窗内再转一次 ==========
+  onSpinAgain: function() {
+    this.setData({ showResult: false });
+    var that = this;
+    setTimeout(function() {
+      that.onSpin();
+    }, 300);
+  },
+
   // ========== 确认选择 ==========
   onConfirm: function() {
     var food = this.data.currentFood;
