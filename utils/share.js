@@ -21,6 +21,22 @@ function buildChooseSharePath(candidateIds, fromName) {
 }
 
 /**
+ * 构建同事推荐菜单的分享路径。
+ */
+function buildMenuSharePath(menuNames, fromName) {
+  return '/pages/help-choose/help-choose?mode=menu&names=' +
+    encodeURIComponent(menuNames.join('|')) + '&from=' + encodeURIComponent(fromName || '好友');
+}
+
+/**
+ * 构建同事推荐结果的回传路径。
+ */
+function buildRecommendationSharePath(foodName, fromName) {
+  return '/pages/help-choose/help-choose?mode=recommend&recommend=' +
+    encodeURIComponent(foodName || '') + '&from=' + encodeURIComponent(fromName || '好友');
+}
+
+/**
  * 解析分享参数中的候选ID列表
  * @param {string} idsStr - 逗号分隔的ID字符串
  */
@@ -51,6 +67,8 @@ function getFoodsByIds(foods, ids) {
 module.exports = {
   buildRandomSharePath: buildRandomSharePath,
   buildChooseSharePath: buildChooseSharePath,
+  buildMenuSharePath: buildMenuSharePath,
+  buildRecommendationSharePath: buildRecommendationSharePath,
   parseIds: parseIds,
   getFoodsByIds: getFoodsByIds
 };

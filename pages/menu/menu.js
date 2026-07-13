@@ -1,3 +1,5 @@
+var shareUtil = require('../../utils/share.js');
+
 Page({
   data: {
     menuInput: '',
@@ -99,5 +101,13 @@ Page({
     this.saveCustomMenu(customMenu);
     this.refreshMenuLabel();
     wx.showToast({ title: '已从历史生成', icon: 'none' });
+  },
+
+  onShareAppMessage: function() {
+    var menuNames = this.data.customMenu.length > 0 ? this.data.customMenu : ['你最喜欢的美食'];
+    return {
+      title: '帮我推荐一道你喜欢吃的！',
+      path: shareUtil.buildMenuSharePath(menuNames, '好友')
+    };
   }
 });

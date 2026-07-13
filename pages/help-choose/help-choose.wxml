@@ -1,11 +1,20 @@
 <view class="container">
   <view class="header">
-    <text class="from-text">{{fromName}} 纠结不下了</text>
-    <text class="title">帮TA从这几个里选一个！</text>
+    <text class="from-text">{{fromName}} 邀请你来帮忙</text>
+    <text class="title" wx:if="{{mode === 'recommend'}}">推荐一道你爱吃的</text>
+    <text class="title" wx:elif="{{mode === 'menu'}}">帮TA推荐一道菜单</text>
+    <text class="title" wx:else>帮TA从这几个里选一个！</text>
+  </view>
+
+  <!-- 直接推荐模式 -->
+  <view class="recommend-panel" wx:if="{{mode === 'recommend'}}">
+    <text class="recommend-hint">告诉TA你最想吃什么</text>
+    <input class="recommend-input" value="{{recommendationInput}}" placeholder="例如：酸菜鱼、牛肉面" bindinput="onRecommendationInput" />
+    <button class="btn-primary recommend-submit" bindtap="submitRecommendation" disabled="{{submitted}}">{{submitted ? '已推荐给TA' : '提交我的推荐'}}</button>
   </view>
 
   <!-- 候选列表 -->
-  <view class="candidate-list">
+  <view class="candidate-list" wx:if="{{mode !== 'recommend'}}">
     <view class="candidate-item {{chosen === item.id ? 'chosen' : ''}}" 
           wx:for="{{candidates}}" 
           wx:key="id"
@@ -22,7 +31,8 @@
 
   <!-- 选择结果 -->
   <view class="result" wx:if="{{chosenFood}}">
-    <text class="result-text">你帮TA选了：{{chosenFood.emoji}} {{chosenFood.name}}</text>
+    <text class="result-text">你推荐TA吃：{{chosenFood.emoji}} {{chosenFood.name}}</text>
+    <button class="share-result-btn" open-type="share">📤 分享推荐给TA</button>
   </view>
 
   <!-- 底部引导 -->
