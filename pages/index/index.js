@@ -58,10 +58,8 @@ Page({
     tagNames: TAG_NAMES,
     absorbingResult: false,
     historyCatching: false,
-    menuInput: '',
     customMenu: [],
-    useCustomMenu: false,
-    currentMenuLabel: '默认美食库'
+    useCustomMenu: false
   },
 
   // 转盘状态
@@ -112,13 +110,6 @@ Page({
     return foodsData.foods;
   },
 
-  refreshMenuLabel: function() {
-    var label = this.data.useCustomMenu && this.data.customMenu.length > 0
-      ? '专属菜单 · ' + this.data.customMenu.length + ' 道'
-      : '默认美食库';
-    this.setData({ currentMenuLabel: label });
-  },
-
   loadCustomMenu: function() {
     var rawMenu = wx.getStorageSync('custom_food_menu') || [];
     var customMenu = rawMenu.map(function(name, index) {
@@ -130,85 +121,9 @@ Page({
       customMenu: customMenu,
       useCustomMenu: useCustomMenu && customMenu.length > 0
     });
-    this.refreshMenuLabel();
     if (this.wheelCtx) {
       this.pickWheelFoods();
     }
-  },
-
-  saveCustomMenu: function(customMenu) {
-    var names = customMenu.map(function(food) { return food.name; });
-    wx.setStorageSync('custom_food_menu', names);
-  },
-
-  onMenuInput: function(e) {
-    this.setData({ menuInput: e.detail.value });
-  },
-
-  addMenuItem: function() {
-    var name = (this.data.menuInput || '').trim();
-    if (!name) return;
-    var exists = this.data.customMenu.some(function(food) {
-      return food.name === name;
-    });
-    if (exists) {
-      wx.showToast({ title: '菜单里已经有它啦', icon: 'none' });
-      return;
-    }
-    var customMenu = this.data.customMenu.concat([normalizeCustomFood(name, this.data.customMenu.length)]);
-    this.setData({
-      customMenu: customMenu,
-      menuInput: '',
-      useCustomMenu: true
-    });
-    wx.setStorageSync('use_custom_food_menu', true);
-    this.saveCustomMenu(customMenu);
-    this.refreshMenuLabel();
-    this.pickWheelFoods();
-  },
-
-  removeMenuItem: function(e) {
-    var index = e.currentTarget.dataset.index;
-    var customMenu = this.data.customMenu.slice();
-    customMenu.splice(index, 1);
-    var useCustomMenu = this.data.useCustomMenu && customMenu.length > 0;
-    this.setData({ customMenu: customMenu, useCustomMenu: useCustomMenu });
-    wx.setStorageSync('use_custom_food_menu', useCustomMenu);
-    this.saveCustomMenu(customMenu);
-    this.refreshMenuLabel();
-    this.pickWheelFoods();
-  },
-
-  toggleCustomMenu: function(e) {
-    var enabled = e.detail.value && this.data.customMenu.length > 0;
-    if (e.detail.value && this.data.customMenu.length === 0) {
-      wx.showToast({ title: '先添加你的专属菜品', icon: 'none' });
-    }
-    this.setData({ useCustomMenu: enabled });
-    wx.setStorageSync('use_custom_food_menu', enabled);
-    this.refreshMenuLabel();
-    this.pickWheelFoods();
-  },
-
-  generateMenuFromHistory: function() {
-    var history = wx.getStorageSync('food_history') || [];
-    if (history.length === 0) {
-      wx.showToast({ title: '暂无历史记录可生成', icon: 'none' });
-      return;
-    }
-    var namesMap = {};
-    history.forEach(function(record) {
-      if (record.foodName) namesMap[record.foodName] = true;
-    });
-    var names = Object.keys(namesMap).slice(0, 12);
-    var customMenu = names.map(function(name, index) {
-      return normalizeCustomFood(name, index);
-    });
-    this.setData({ customMenu: customMenu, useCustomMenu: customMenu.length > 0 });
-    wx.setStorageSync('use_custom_food_menu', customMenu.length > 0);
-    this.saveCustomMenu(customMenu);
-    this.refreshMenuLabel();
-    this.pickWheelFoods();
   },
 
   // ========== 转盘初始化 ==========

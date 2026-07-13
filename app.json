@@ -5,6 +5,7 @@
     "pages/candidates/candidates",
     "pages/help-random/help-random",
     "pages/help-choose/help-choose",
+    "pages/menu/menu",
     "pages/history/history"
   ],
   "window": {
@@ -26,6 +27,12 @@
         "text": "吃什么",
         "iconPath": "images/icon_1_wheel.png",
         "selectedIconPath": "images/icon_1_wheel.png"
+      },
+      {
+        "pagePath": "pages/menu/menu",
+        "text": "专属菜单",
+        "iconPath": "images/icon_2_dice.png",
+        "selectedIconPath": "images/icon_2_dice.png"
       },
       {
         "pagePath": "pages/history/history",

@@ -1,0 +1,47 @@
+<view class="menu-page">
+  <view class="header">
+    <text class="header-emoji">🍱</text>
+    <text class="title">我的专属菜单</text>
+    <text class="subtitle">设置后，转盘会优先从这里抽取</text>
+  </view>
+
+  <view class="menu-card">
+    <view class="menu-title-row">
+      <view class="menu-title-left">
+        <text class="menu-icon">🎯</text>
+        <text class="menu-title">启用专属菜单</text>
+      </view>
+      <switch class="menu-switch" checked="{{useCustomMenu}}" color="#4A7BF7" bindchange="toggleCustomMenu" />
+    </view>
+    <text class="menu-current">当前使用：{{currentMenuLabel}}</text>
+  </view>
+
+  <view class="menu-card">
+    <text class="section-title">添加想吃的</text>
+    <view class="menu-input-row">
+      <input class="menu-input" value="{{menuInput}}" placeholder="输入想吃的，比如牛肉粉" bindinput="onMenuInput" confirm-type="done" bindconfirm="addMenuItem" />
+      <button class="menu-add-btn" bindtap="addMenuItem">添加</button>
+    </view>
+    <button class="history-btn" bindtap="generateMenuFromHistory">从历史生成专属菜单</button>
+  </view>
+
+  <view class="menu-card list-card">
+    <view class="list-title-row">
+      <text class="section-title">菜单内容</text>
+      <text class="count-text">{{customMenu.length}} 道</text>
+    </view>
+
+    <view class="menu-tags" wx:if="{{customMenu.length > 0}}">
+      <view class="menu-tag" wx:for="{{customMenu}}" wx:key="*this">
+        <text>{{item}}</text>
+        <text class="menu-tag-close" bindtap="removeMenuItem" data-index="{{index}}">×</text>
+      </view>
+    </view>
+
+    <view class="empty" wx:else>
+      <text class="empty-emoji">🍽️</text>
+      <text class="empty-text">还没有专属菜品</text>
+      <text class="empty-hint">添加几个常吃的，转盘就会从这里选</text>
+    </view>
+  </view>
+</view>
