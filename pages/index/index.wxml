@@ -3,8 +3,8 @@
   <canvas type="2d" id="particleCanvas" class="particle-canvas" bindtouchstart="onPageTouch"></canvas>
 
   <!-- 结果弹窗（顶层） -->
-  <view class="result-popup {{showResult ? 'show' : ''}}" catchtap="dismissResult">
-    <view class="result-card" catchtap="">
+  <view class="result-popup {{showResult ? 'show' : ''}} {{absorbingResult ? 'absorbing' : ''}}" catchtap="dismissResult">
+    <view class="result-card {{absorbingResult ? 'shoot-to-history' : ''}}" catchtap="">
       <view class="result-glow"></view>
       <text class="result-emoji">{{currentFood.emoji || '🍽️'}}</text>
       <text class="result-name">{{currentFood.name || ''}}</text>
@@ -15,6 +15,8 @@
       <view class="result-tags" wx:if="{{currentFood.tags && currentFood.tags.length > 0}}">
         <text class="tag" wx:for="{{currentFood.tags}}" wx:key="*this">{{tagNames[item] || item}}</text>
       </view>
+
+      <text class="result-draw-tip">抽卡揭晓 · 轻轻震动</text>
 
       <!-- 弹窗内操作按钮 -->
       <view class="popup-actions">
@@ -28,6 +30,11 @@
     </view>
   </view>
 
+  <view class="history-catcher {{historyCatching ? 'catching' : ''}}">
+    <text class="history-catcher-icon">🗂️</text>
+    <text class="history-catcher-text">历史</text>
+  </view>
+
   <view class="container">
     <!-- 顶部标题区 -->
     <view class="header">
@@ -36,6 +43,31 @@
         <text class="title">今天吃什么？</text>
       </view>
       <text class="subtitle">转一转，命运帮你选</text>
+    </view>
+
+    <!-- 专属菜单 -->
+    <view class="menu-panel">
+      <view class="menu-title-row">
+        <view class="menu-title-left">
+          <text class="menu-icon">🍱</text>
+          <text class="menu-title">我的专属菜单</text>
+        </view>
+        <switch class="menu-switch" checked="{{useCustomMenu}}" color="#4A7BF7" bindchange="toggleCustomMenu" />
+      </view>
+      <text class="menu-current">当前使用：{{currentMenuLabel}}</text>
+      <view class="menu-input-row">
+        <input class="menu-input" value="{{menuInput}}" placeholder="输入想吃的，比如牛肉粉" bindinput="onMenuInput" confirm-type="done" bindconfirm="addMenuItem" />
+        <button class="menu-add-btn" bindtap="addMenuItem">添加</button>
+      </view>
+      <view class="menu-tags" wx:if="{{customMenu.length > 0}}">
+        <view class="menu-tag" wx:for="{{customMenu}}" wx:key="id">
+          <text>{{item.name}}</text>
+          <text class="menu-tag-close" bindtap="removeMenuItem" data-index="{{index}}">×</text>
+        </view>
+      </view>
+      <view class="menu-actions">
+        <text class="menu-history-btn" bindtap="generateMenuFromHistory">从历史生成专属菜单</text>
+      </view>
     </view>
 
     <!-- 转盘区域 -->

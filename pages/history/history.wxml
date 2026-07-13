@@ -1,4 +1,9 @@
 <view class="container">
+  <view class="history-receiver {{receiving ? 'receiving' : ''}}" wx:if="{{historyList.length > 0}}">
+    <text class="receiver-icon">🗂️</text>
+    <text class="receiver-text">已接收新结果</text>
+  </view>
+
   <view class="header" wx:if="{{historyList.length > 0}}">
     <text class="title">最近吃了什么</text>
     <text class="clear-btn" bindtap="onClear">清空</text>

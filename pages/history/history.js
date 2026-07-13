@@ -4,9 +4,11 @@ Page({
     groupedHistory: [],
     sourceNames: {
       self: '自己选的',
+      custom: '专属菜单',
       friend_random: '朋友帮抽',
       friend_choose: '朋友帮选'
-    }
+    },
+    receiving: false
   },
 
   onShow: function() {
@@ -18,8 +20,15 @@ Page({
     var grouped = this.groupByDate(history);
     this.setData({
       historyList: history,
-      groupedHistory: grouped
+      groupedHistory: grouped,
+      receiving: history.length > 0
     });
+    if (history.length > 0) {
+      var that = this;
+      setTimeout(function() {
+        that.setData({ receiving: false });
+      }, 900);
+    }
   },
 
   groupByDate: function(list) {

@@ -46,7 +46,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 100;
+  z-index: 1200;
   pointer-events: none;
 }
 
@@ -176,7 +176,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
+  z-index: 1000;
   background: rgba(0,0,0,0.55);
   opacity: 0;
   pointer-events: none;
@@ -198,13 +198,35 @@
   flex-direction: column;
   align-items: center;
   box-shadow: 0 20rpx 60rpx rgba(0,0,0,0.15);
-  transform: scale(0.6);
-  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform: scale(0.4) rotateY(540deg) rotateZ(-12deg);
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.7s ease;
   overflow: hidden;
 }
 
 .result-popup.show .result-card {
-  transform: scale(1);
+  transform: scale(1) rotateY(0deg) rotateZ(0deg);
+  animation: card-reveal 0.85s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+.result-popup.absorbing {
+  background: rgba(0,0,0,0.28);
+}
+
+.result-popup.absorbing .result-card {
+  animation: shoot-to-history 0.78s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes card-reveal {
+  0% { transform: scale(0.36) rotateY(540deg) rotateZ(-18deg); opacity: 0; }
+  65% { transform: scale(1.08) rotateY(-24deg) rotateZ(3deg); opacity: 1; }
+  100% { transform: scale(1) rotateY(0deg) rotateZ(0deg); opacity: 1; }
+}
+
+@keyframes shoot-to-history {
+  0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
+  45% { transform: translate(120rpx, -180rpx) scale(0.72) rotate(18deg); opacity: 0.95; }
+  100% { transform: translate(280rpx, 520rpx) scale(0.14) rotate(42deg); opacity: 0; }
 }
 
 .result-glow {
@@ -283,12 +305,172 @@
   z-index: 1;
 }
 
+.result-draw-tip {
+  margin-top: 18rpx;
+  font-size: 24rpx;
+  color: #8A8A8A;
+  position: relative;
+  z-index: 1;
+}
+
 .tag {
   font-size: 26rpx;
   color: #555;
   background: #f0f0f0;
   padding: 6rpx 20rpx;
   border-radius: 16rpx;
+}
+
+/* ========== 专属菜单 ========== */
+.menu-panel {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 24rpx;
+  margin-bottom: 28rpx;
+  background: rgba(255,255,255,0.92);
+  border: 2rpx solid rgba(74,123,247,0.16);
+  border-radius: 28rpx;
+  box-shadow: 0 8rpx 28rpx rgba(74,123,247,0.1);
+}
+
+.menu-title-row,
+.menu-title-left,
+.menu-input-row,
+.menu-actions {
+  display: flex;
+  align-items: center;
+}
+
+.menu-title-row {
+  justify-content: space-between;
+}
+
+.menu-title-left {
+  gap: 10rpx;
+}
+
+.menu-icon {
+  font-size: 34rpx;
+}
+
+.menu-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #2D5BE3;
+}
+
+.menu-switch {
+  transform: scale(0.78);
+}
+
+.menu-current {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #777;
+}
+
+.menu-input-row {
+  gap: 14rpx;
+  margin-top: 18rpx;
+}
+
+.menu-input {
+  flex: 1;
+  height: 72rpx;
+  padding: 0 24rpx;
+  background: #F6F8FF;
+  border-radius: 36rpx;
+  font-size: 26rpx;
+  color: #333;
+}
+
+.menu-add-btn {
+  width: 132rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  padding: 0;
+  background: linear-gradient(135deg, #4A7BF7, #6C9BFF);
+  color: #FFFFFF;
+  border-radius: 36rpx;
+  font-size: 26rpx;
+}
+
+.menu-add-btn::after { border: none; }
+
+.menu-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-top: 18rpx;
+}
+
+.menu-tag {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 8rpx 16rpx;
+  background: #EBF0FF;
+  color: #2D5BE3;
+  border-radius: 24rpx;
+  font-size: 24rpx;
+}
+
+.menu-tag-close {
+  color: #7A8FDB;
+  font-size: 28rpx;
+  line-height: 1;
+}
+
+.menu-actions {
+  margin-top: 16rpx;
+  justify-content: flex-end;
+}
+
+.menu-history-btn {
+  font-size: 24rpx;
+  color: #4A7BF7;
+}
+
+/* 历史接收图标 */
+.history-catcher {
+  position: fixed;
+  right: 34rpx;
+  bottom: 26rpx;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12rpx 18rpx;
+  background: rgba(255,255,255,0.96);
+  border-radius: 24rpx;
+  box-shadow: 0 8rpx 28rpx rgba(74,123,247,0.18);
+  opacity: 0;
+  transform: translateY(20rpx) scale(0.86);
+  pointer-events: none;
+}
+
+.history-catcher.catching {
+  opacity: 1;
+  animation: catcher-shake 0.82s ease both;
+}
+
+.history-catcher-icon {
+  font-size: 42rpx;
+}
+
+.history-catcher-text {
+  font-size: 20rpx;
+  color: #4A7BF7;
+}
+
+@keyframes catcher-shake {
+  0% { transform: translateY(20rpx) scale(0.86) rotate(0deg); }
+  20% { transform: translateY(0) scale(1.12) rotate(-8deg); }
+  35% { transform: translateY(0) scale(1.12) rotate(8deg); }
+  50% { transform: translateY(0) scale(1.08) rotate(-6deg); }
+  70% { transform: translateY(0) scale(1.04) rotate(5deg); }
+  100% { transform: translateY(0) scale(1) rotate(0deg); }
 }
 
 /* ========== 操作按钮（首页） ========== */
@@ -338,7 +520,9 @@
 .spin-btn {
   flex: 1;
   max-width: 360rpx;
-  padding: 32rpx 80rpx;
+  height: 112rpx;
+  line-height: 112rpx;
+  padding: 0 80rpx;
   background: linear-gradient(135deg, #4A7BF7, #6C9BFF);
   color: #FFFFFF;
   border: none;
@@ -385,6 +569,8 @@
 .spin-btn-text {
   position: relative;
   z-index: 1;
+  display: block;
+  line-height: 112rpx;
 }
 
 /* ========== 弹窗内操作按钮 ========== */

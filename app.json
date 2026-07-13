@@ -23,11 +23,15 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "吃什么"
+        "text": "吃什么",
+        "iconPath": "images/icon_1_wheel.png",
+        "selectedIconPath": "images/icon_1_wheel.png"
       },
       {
         "pagePath": "pages/history/history",
-        "text": "历史"
+        "text": "历史",
+        "iconPath": "images/icon_3_plate.png",
+        "selectedIconPath": "images/icon_3_plate.png"
       }
     ]
   },
