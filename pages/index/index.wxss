@@ -485,22 +485,22 @@
 /* 双按钮布局 */
 .dual-btns {
   display: flex;
-  gap: 24rpx;
+  gap: 20rpx;
   width: 100%;
   justify-content: center;
 }
 
 .quick-btn {
   flex: 1;
-  max-width: 280rpx;
+  max-width: 340rpx;
   height: 112rpx;
   line-height: 112rpx;
-  padding: 0 20rpx;
+  padding: 0 18rpx;
   background: #FFFFFF;
   color: #4A7BF7;
   border: 3rpx solid #4A7BF7;
   border-radius: 60rpx;
-  font-size: 38rpx;
+  font-size: 34rpx;
   font-weight: 700;
   display: flex;
   flex-direction: row;
@@ -513,26 +513,28 @@
 .quick-btn::after { border: none; }
 
 .quick-btn-icon {
-  font-size: 38rpx;
-  line-height: 112rpx;
+  font-size: 34rpx;
+  line-height: 1;
+  flex-shrink: 0;
 }
 
 .quick-btn-text {
-  font-size: 38rpx;
-  line-height: 112rpx;
+  font-size: 34rpx;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .spin-btn {
   flex: 1;
-  max-width: 360rpx;
+  max-width: 340rpx;
   height: 112rpx;
   line-height: 112rpx;
-  padding: 0 80rpx;
+  padding: 0 18rpx;
   background: linear-gradient(135deg, #4A7BF7, #6C9BFF);
   color: #FFFFFF;
   border: none;
   border-radius: 60rpx;
-  font-size: 38rpx;
+  font-size: 34rpx;
   font-weight: 700;
   letter-spacing: 4rpx;
   box-shadow: 0 8rpx 30rpx rgba(74,123,247,0.35);
@@ -576,6 +578,7 @@
   z-index: 1;
   display: block;
   line-height: 112rpx;
+  white-space: nowrap;
 }
 
 /* ========== 弹窗内操作按钮 ========== */
