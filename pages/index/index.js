@@ -219,7 +219,15 @@ Page({
       ctx.restore();
     }
 
-    // 转盘中心保持完整分区，不添加任何圆形或文字覆盖层
+    // 中心保留较小的非交互装饰圆，不产生按钮暗示
+    var centerRadius = radius * 0.11;
+    ctx.beginPath();
+    ctx.arc(0, 0, centerRadius, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(74,123,247,0.48)';
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
 
     ctx.restore();
 
