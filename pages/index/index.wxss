@@ -225,19 +225,28 @@
 }
 
 .result-card::after {
-  content: '✨  ✦  ✨  ✦  ✨';
+  content: '';
   position: absolute;
-  top: -90rpx;
+  top: 50%;
   left: 50%;
-  width: 700rpx;
-  transform: translateX(-50%) scale(0.2);
-  color: #FFD700;
-  font-size: 46rpx;
-  letter-spacing: 30rpx;
-  white-space: nowrap;
-  text-align: center;
+  width: 620rpx;
+  height: 620rpx;
+  transform: translate(-50%, -50%) scale(0.08);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(255,255,255,0.95) 0 3%, transparent 4%),
+    repeating-conic-gradient(
+      from 8deg,
+      #FF4D6D 0deg 2deg,
+      transparent 2deg 14deg,
+      #FFD166 14deg 16deg,
+      transparent 16deg 28deg,
+      #4D96FF 28deg 30deg,
+      transparent 30deg 42deg
+    );
+  filter: drop-shadow(0 0 18rpx rgba(255,193,7,0.9));
   opacity: 0;
-  z-index: 2;
+  z-index: -1;
   pointer-events: none;
 }
 
@@ -247,11 +256,11 @@
 }
 
 .result-popup.show .result-card::before {
-  animation: burst-rays 0.9s cubic-bezier(0.2, 0.85, 0.35, 1) 0.08s both;
+  animation: burst-rays 1.15s cubic-bezier(0.16, 0.9, 0.24, 1) 0.02s both;
 }
 
 .result-popup.show .result-card::after {
-  animation: burst-stars 0.9s cubic-bezier(0.2, 0.85, 0.35, 1) 0.22s both;
+  animation: burst-flash 0.9s cubic-bezier(0.16, 0.9, 0.24, 1) 0.1s both;
 }
 
 .result-popup.absorbing {
@@ -270,15 +279,17 @@
 }
 
 @keyframes burst-rays {
-  0% { transform: translate(-50%, -50%) scale(0.12) rotate(-35deg); opacity: 0; }
-  35% { opacity: 1; }
-  100% { transform: translate(-50%, -50%) scale(1) rotate(18deg); opacity: 0.42; }
+  0% { transform: translate(-50%, -50%) scale(0.05) rotate(-25deg); opacity: 0; }
+  28% { opacity: 1; }
+  62% { transform: translate(-50%, -50%) scale(1.18) rotate(12deg); opacity: 0.85; }
+  100% { transform: translate(-50%, -50%) scale(1.42) rotate(28deg); opacity: 0; }
 }
 
-@keyframes burst-stars {
-  0% { transform: translateX(-50%) scale(0.15) rotate(-15deg); opacity: 0; }
-  45% { transform: translateX(-50%) scale(1.15) rotate(6deg); opacity: 1; }
-  100% { transform: translateX(-50%) scale(1) rotate(0deg); opacity: 0.9; }
+@keyframes burst-flash {
+  0% { transform: translate(-50%, -50%) scale(0.08) rotate(-18deg); opacity: 0; }
+  18% { transform: translate(-50%, -50%) scale(0.35) rotate(0deg); opacity: 1; }
+  42% { transform: translate(-50%, -50%) scale(0.92) rotate(18deg); opacity: 0.95; }
+  100% { transform: translate(-50%, -50%) scale(1.42) rotate(36deg); opacity: 0; }
 }
 
 @keyframes shoot-to-history {
@@ -316,11 +327,13 @@
   margin-bottom: 20rpx;
   position: relative;
   z-index: 1;
-  animation: pop-in 0.72s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s both;
+  animation: pop-in 0.78s cubic-bezier(0.16, 1.2, 0.3, 1) 0.26s both;
 }
 
 @keyframes pop-in {
   0% { transform: scale(0) rotate(-30deg); opacity: 0; }
+  52% { transform: scale(1.28) rotate(10deg); opacity: 1; }
+  72% { transform: scale(0.9) rotate(-5deg); }
   100% { transform: scale(1) rotate(0deg); opacity: 1; }
 }
 
