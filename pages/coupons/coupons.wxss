@@ -53,22 +53,18 @@
 }
 
 .platform-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18rpx;
-  padding: 28rpx 24rpx;
+  padding: 28rpx 24rpx 14rpx;
   margin-bottom: 20rpx;
   background: rgba(255,255,255,0.96);
   border-radius: 28rpx;
   box-shadow: 0 8rpx 26rpx rgba(184,125,68,0.12);
 }
 
-.platform-main {
+.platform-heading {
   display: flex;
   align-items: center;
-  flex: 1;
-  min-width: 0;
+  padding-bottom: 22rpx;
+  border-bottom: 2rpx solid #F4EDE6;
 }
 
 .platform-logo {
@@ -82,34 +78,52 @@
   font-size: 40rpx;
 }
 
-.platform-info {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
 .platform-name {
-  font-size: 32rpx;
+  font-size: 34rpx;
   font-weight: 700;
   color: #333;
 }
 
-.platform-description {
+.coupon-row {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  padding: 22rpx 0;
+  border-bottom: 2rpx dashed #F2E7DE;
+}
+
+.coupon-row:last-child {
+  border-bottom: none;
+}
+
+.coupon-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.coupon-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #444;
+}
+
+.coupon-description {
   margin-top: 8rpx;
-  font-size: 24rpx;
+  font-size: 23rpx;
   color: #999;
-  white-space: nowrap;
 }
 
 .coupon-button {
   flex-shrink: 0;
-  width: 174rpx;
-  height: 70rpx;
-  line-height: 70rpx;
+  width: 148rpx;
+  height: 64rpx;
+  line-height: 64rpx;
   padding: 0;
   background: #FFF4E8;
-  border-radius: 35rpx;
-  font-size: 25rpx;
+  border-radius: 32rpx;
+  font-size: 24rpx;
   font-weight: 700;
 }
 

@@ -7,26 +7,30 @@
 
   <view class="notice-card">
     <text class="notice-icon">💡</text>
-    <text class="notice-text">选择平台领取优惠券。推广链接配置后，点击按钮会复制链接到剪贴板。</text>
+    <text class="notice-text">同一平台建议按顺序领取，部分红包可以叠加使用。点击后会复制链接，请粘贴到微信聊天框打开。</text>
   </view>
 
   <view class="platform-list">
-    <view class="platform-card" wx:for="{{platforms}}" wx:key="id">
-      <view class="platform-main">
-        <view class="platform-logo" style="background-color: {{item.accentColor}};">{{item.emoji}}</view>
-        <view class="platform-info">
-          <text class="platform-name">{{item.name}}</text>
-          <text class="platform-description">{{item.description}}</text>
+    <view class="platform-card" wx:for="{{platforms}}" wx:for-item="platform" wx:for-index="platformIndex" wx:key="id">
+      <view class="platform-heading">
+        <view class="platform-logo" style="background-color: {{platform.accentColor}};">{{platform.emoji}}</view>
+        <text class="platform-name">{{platform.name}}</text>
+      </view>
+
+      <view class="coupon-list">
+        <view class="coupon-row" wx:for="{{platform.coupons}}" wx:for-item="coupon" wx:key="url">
+          <view class="coupon-info">
+            <text class="coupon-title">{{coupon.title}}</text>
+            <text class="coupon-description">{{coupon.description}}</text>
+          </view>
+          <button class="coupon-button" style="color: {{platform.accentColor}};" bindtap="copyCoupon" data-platform-index="{{platformIndex}}" data-coupon-index="{{index}}">复制领取</button>
         </view>
       </view>
-      <button class="coupon-button" style="color: {{item.accentColor}};" bindtap="openCoupon" data-index="{{index}}">
-        {{item.url ? '领取优惠券' : '链接待配置'}}
-      </button>
     </view>
   </view>
 
   <view class="config-tip">
-    <text>配置位置：utils/coupon-config.js</text>
-    <text>请替换对应平台的 url 字段</text>
+    <text>优惠链接已配置在 utils/coupon-config.js</text>
+    <text>小程序链接请复制后粘贴到微信中打开</text>
   </view>
 </view>
