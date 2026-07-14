@@ -16,14 +16,18 @@ Page({
     var coupon = platform && platform.coupons[couponIndex];
     if (!coupon || !coupon.url) return;
 
-    // wx.openUrl 不是所有基础库都提供，优先尝试直达，失败后复制链接兜底。
+    // 先尝试直达；API 不存在、同步抛错或异步失败时都复制链接兜底。
     if (/^https?:\/\//.test(coupon.url) && typeof wx.openUrl === 'function') {
-      wx.openUrl({
-        url: coupon.url,
-        fail: function() {
-          this.copyCouponUrl(coupon.url);
-        }.bind(this)
-      });
+      try {
+        wx.openUrl({
+          url: coupon.url,
+          fail: function() {
+            this.copyCouponUrl(coupon.url);
+          }.bind(this)
+        });
+      } catch (error) {
+        this.copyCouponUrl(coupon.url);
+      }
       return;
     }
 
@@ -36,10 +40,13 @@ Page({
       success: function() {
         wx.showModal({
           title: '链接已复制',
-          content: '请粘贴到微信或浏览器中打开领取。',
+          content: '自动打开失败，请粘贴到微信或浏览器中打开领取。',
           showCancel: false,
           confirmText: '知道了'
         });
+      },
+      fail: function() {
+        wx.showToast({ title: '复制失败，请长按链接复制', icon: 'none' });
       }
     });
   }

@@ -23,7 +23,7 @@
             <text class="coupon-title">{{coupon.title}}</text>
             <text class="coupon-description">{{coupon.description}}</text>
           </view>
-          <button class="coupon-button" style="color: {{platform.accentColor}};" bindtap="copyCoupon" data-platform-index="{{platformIndex}}" data-coupon-index="{{index}}">复制领取</button>
+          <button class="coupon-button" style="color: {{platform.accentColor}};" bindtap="openCoupon" data-platform-index="{{platformIndex}}" data-coupon-index="{{index}}">打开领取</button>
         </view>
       </view>
     </view>
