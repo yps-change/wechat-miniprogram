@@ -528,6 +528,24 @@
   white-space: nowrap;
 }
 
+.coupon-entry-btn {
+  width: 360rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  padding: 0;
+  background: #FFF3E0;
+  color: #E67E22;
+  border: 2rpx solid rgba(230,126,34,0.2);
+  border-radius: 36rpx;
+  font-size: 27rpx;
+  font-weight: 700;
+  box-shadow: 0 6rpx 18rpx rgba(230,126,34,0.14);
+}
+
+.coupon-entry-btn::after {
+  border: none;
+}
+
 /* ========== 弹窗内操作按钮 ========== */
 .popup-actions {
   width: 100%;

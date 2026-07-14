@@ -73,6 +73,7 @@
           <text class="spin-btn-text">{{spinning ? '转动中...' : '开始转盘'}}</text>
         </button>
       </view>
+      <button class="coupon-entry-btn" bindtap="goToCoupons">🎟️ 领外卖券</button>
     </view>
 
     <!-- 连击提示 -->

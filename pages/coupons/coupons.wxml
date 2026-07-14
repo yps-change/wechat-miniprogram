@@ -1,0 +1,32 @@
+<view class="coupon-page">
+  <view class="coupon-header">
+    <text class="header-emoji">🎟️</text>
+    <text class="title">外卖券</text>
+    <text class="subtitle">先领券，再点喜欢的美食，更省一点</text>
+  </view>
+
+  <view class="notice-card">
+    <text class="notice-icon">💡</text>
+    <text class="notice-text">选择平台领取优惠券。推广链接配置后，点击按钮会复制链接到剪贴板。</text>
+  </view>
+
+  <view class="platform-list">
+    <view class="platform-card" wx:for="{{platforms}}" wx:key="id">
+      <view class="platform-main">
+        <view class="platform-logo" style="background-color: {{item.accentColor}};">{{item.emoji}}</view>
+        <view class="platform-info">
+          <text class="platform-name">{{item.name}}</text>
+          <text class="platform-description">{{item.description}}</text>
+        </view>
+      </view>
+      <button class="coupon-button" style="color: {{item.accentColor}};" bindtap="openCoupon" data-index="{{index}}">
+        {{item.url ? '领取优惠券' : '链接待配置'}}
+      </button>
+    </view>
+  </view>
+
+  <view class="config-tip">
+    <text>配置位置：utils/coupon-config.js</text>
+    <text>请替换对应平台的 url 字段</text>
+  </view>
+</view>

@@ -545,5 +545,9 @@ Page({
       title: '我选不了了，帮我随机抽一个今天吃什么！',
       path: shareUtil.buildRandomSharePath('好友')
     };
+  },
+
+  goToCoupons: function() {
+    wx.navigateTo({ url: '/pages/coupons/coupons' });
   }
 });
