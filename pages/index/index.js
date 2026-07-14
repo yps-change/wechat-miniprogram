@@ -219,21 +219,45 @@ Page({
       ctx.restore();
     }
 
-    // 中心圆（加大加清晰）
+    // 中心按钮：多层圆环、阴影和高光，模拟可点击按钮
+    var buttonRadius = radius * 0.18;
+    ctx.save();
+    ctx.shadowColor = 'rgba(45,91,227,0.38)';
+    ctx.shadowBlur = 12;
+    ctx.shadowOffsetY = 5;
     ctx.beginPath();
-    ctx.arc(0, 0, radius * 0.18, 0, Math.PI * 2);
-    ctx.fillStyle = '#FFFFFF';
+    ctx.arc(0, 0, buttonRadius + 5, 0, Math.PI * 2);
+    ctx.fillStyle = '#2D5BE3';
     ctx.fill();
-    ctx.strokeStyle = '#4A7BF7';
-    ctx.lineWidth = 4;
+    ctx.restore();
+
+    ctx.beginPath();
+    ctx.arc(0, 0, buttonRadius, 0, Math.PI * 2);
+    var buttonGradient = ctx.createLinearGradient(0, -buttonRadius, 0, buttonRadius);
+    buttonGradient.addColorStop(0, '#6C9BFF');
+    buttonGradient.addColorStop(0.48, '#4A7BF7');
+    buttonGradient.addColorStop(1, '#315DDB');
+    ctx.fillStyle = buttonGradient;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(0, 0, buttonRadius - 4, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+    ctx.lineWidth = 2;
     ctx.stroke();
 
-    // 中心文字
+    // 顶部高光，增强按钮质感
+    ctx.beginPath();
+    ctx.arc(0, -buttonRadius * 0.28, buttonRadius * 0.58, Math.PI, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(255,255,255,0.48)';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
     ctx.font = 'bold 20px "PingFang SC", sans-serif';
-    ctx.fillStyle = '#4A7BF7';
+    ctx.fillStyle = '#FFFFFF';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('转', 0, 0);
+    ctx.fillText('转', 0, 1);
 
     ctx.restore();
 
