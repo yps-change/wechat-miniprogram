@@ -271,16 +271,16 @@
 
 /* 单段平滑落向右下角原生历史 Tab，末端轻微回弹 */
 .result-popup.absorbing .result-card {
-  animation: drop-to-history 0.72s cubic-bezier(0.22, 0.72, 0.35, 1) forwards;
+  animation: drop-to-history 0.78s cubic-bezier(0.22, 0.72, 0.35, 1) forwards;
 }
 
 @keyframes drop-to-history {
-  0% { transform: translate(0px, 0px) scale(1) rotate(0deg); opacity: 1; }
-  72% { transform: translate(148px, 245px) scale(0.2) rotate(8deg); opacity: 0.82; }
-  84% { transform: translate(148px, 245px) scale(0.16) rotate(8deg); opacity: 0.2; }
-  91% { transform: translate(148px, 245px) scale(0.2) rotate(8deg); opacity: 0.52; }
-  96% { transform: translate(148px, 245px) scale(0.17) rotate(8deg); opacity: 0.2; }
-  100% { transform: translate(148px, 245px) scale(0.18) rotate(8deg); opacity: 0; }
+  0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
+  72% { transform: translate(33vw, 42vh) scale(0.2) rotate(8deg); opacity: 0.82; }
+  84% { transform: translate(33vw, 42vh) scale(0.16) rotate(8deg); opacity: 0.2; }
+  91% { transform: translate(33vw, 42vh) scale(0.2) rotate(8deg); opacity: 0.52; }
+  96% { transform: translate(33vw, 42vh) scale(0.17) rotate(8deg); opacity: 0.2; }
+  100% { transform: translate(33vw, 42vh) scale(0.18) rotate(8deg); opacity: 0; }
 }
 
 @keyframes card-reveal {

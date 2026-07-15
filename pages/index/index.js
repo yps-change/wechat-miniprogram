@@ -512,10 +512,10 @@ Page({
     this.setData({ absorbingResult: true });
 
     var that = this;
-    // 终点回弹时触发一次轻震，和视觉落点同步
+    // 卡片抵达底部历史 Tab 的落点时触发一次轻震
     setTimeout(function() {
       wx.vibrateShort({ type: 'light' });
-    }, 650);
+    }, 700);
 
     setTimeout(function() {
       that.setData({
