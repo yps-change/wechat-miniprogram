@@ -7,6 +7,7 @@
     "pages/help-choose/help-choose",
     "pages/menu/menu",
     "pages/coupons/coupons",
+    "pages/coupons/coupon-detail/coupon-detail",
     "pages/history/history"
   ],
   "window": {
