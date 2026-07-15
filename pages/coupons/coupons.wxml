@@ -7,7 +7,7 @@
 
   <view class="notice-card">
     <text class="notice-icon">💡</text>
-    <text class="notice-text">同一平台建议按顺序领取，部分红包可以叠加使用。点击后会复制链接，请粘贴到微信聊天框打开。</text>
+    <text class="notice-text">同一平台建议按顺序领取，部分红包可以叠加使用。点击复制后，请打开对应 App，粘贴到搜索框或红包入口，等待 App 自动识别。</text>
   </view>
 
   <view class="platform-list">
@@ -23,14 +23,10 @@
             <text class="coupon-title">{{coupon.title}}</text>
             <text class="coupon-description">{{coupon.description}}</text>
           </view>
-          <button class="coupon-button" style="color: {{platform.accentColor}};" bindtap="openCoupon" data-platform-index="{{platformIndex}}" data-coupon-index="{{index}}">打开领取</button>
+          <button class="coupon-button" style="color: {{platform.accentColor}};" bindtap="copyCoupon" data-platform-index="{{platformIndex}}" data-coupon-index="{{index}}">{{coupon.actionLabel || '一键复制'}}</button>
         </view>
       </view>
     </view>
   </view>
 
-  <view class="config-tip">
-    <text>优惠链接已配置在 utils/coupon-config.js</text>
-    <text>小程序链接请复制后粘贴到微信中打开</text>
-  </view>
 </view>

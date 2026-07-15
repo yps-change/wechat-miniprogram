@@ -9,44 +9,29 @@ Page({
     this.setData({ platforms: couponConfig.platforms });
   },
 
-  openCoupon: function(e) {
+  copyCoupon: function(e) {
     var platformIndex = e.currentTarget.dataset.platformIndex;
     var couponIndex = e.currentTarget.dataset.couponIndex;
     var platform = this.data.platforms[platformIndex];
     var coupon = platform && platform.coupons[couponIndex];
-    if (!coupon || !coupon.url) return;
+    if (!coupon) return;
 
-    // 先尝试直达；API 不存在、同步抛错或异步失败时都复制链接兜底。
-    if (/^https?:\/\//.test(coupon.url) && typeof wx.openUrl === 'function') {
-      try {
-        wx.openUrl({
-          url: coupon.url,
-          fail: function() {
-            this.copyCouponUrl(coupon.url);
-          }.bind(this)
-        });
-      } catch (error) {
-        this.copyCouponUrl(coupon.url);
-      }
-      return;
-    }
+    var copyText = coupon.copyText || coupon.url;
+    if (!copyText) return;
 
-    this.copyCouponUrl(coupon.url);
-  },
-
-  copyCouponUrl: function(url) {
     wx.setClipboardData({
-      data: url,
+      data: copyText,
       success: function() {
         wx.showModal({
-          title: '链接已复制',
-          content: '自动打开失败，请粘贴到微信或浏览器中打开领取。',
+          title: '内容已复制',
+          content: '请打开' + (coupon.appName || (platform && platform.name) || '对应 App') +
+            '，粘贴到搜索框或红包入口中，等待 App 自动识别后领取。',
           showCancel: false,
           confirmText: '知道了'
         });
       },
       fail: function() {
-        wx.showToast({ title: '复制失败，请长按链接复制', icon: 'none' });
+        wx.showToast({ title: '复制失败，请重试', icon: 'none' });
       }
     });
   }
