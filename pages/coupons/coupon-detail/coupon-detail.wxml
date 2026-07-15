@@ -21,21 +21,4 @@
     </button>
   </view>
 
-  <view class="steps-card">
-    <text class="steps-title">领取步骤</text>
-    <view class="step-row">
-      <text class="step-number">1</text>
-      <text class="step-text">点击“复制口令”</text>
-    </view>
-    <view class="step-row">
-      <text class="step-number">2</text>
-      <text class="step-text">打开{{coupon.appName || platform.name}}</text>
-    </view>
-    <view class="step-row">
-      <text class="step-number">3</text>
-      <text class="step-text">粘贴到搜索框，等待红包弹窗</text>
-    </view>
-  </view>
-
-  <text class="safe-tip">提示：能否自动弹出红包取决于平台口令/链接类型及 App 当前版本。</text>
 </view>
