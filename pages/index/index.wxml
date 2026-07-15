@@ -30,6 +30,11 @@
     </view>
   </view>
 
+  <!-- 对齐原生历史 Tab 的落点反馈，不触发页面切换 -->
+  <view class="history-pulse" wx:if="{{historyPulse}}" aria-hidden="true">
+    <view class="history-pulse-icon">🗂️</view>
+  </view>
+
   <view class="container">
     <!-- 顶部标题区 -->
     <view class="header">

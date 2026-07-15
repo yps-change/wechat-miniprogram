@@ -57,6 +57,7 @@ Page({
     comboCount: 0,
     tagNames: TAG_NAMES,
     absorbingResult: false,
+    historyPulse: false,
     customMenu: [],
     useCustomMenu: false
   },
@@ -508,28 +509,26 @@ Page({
     if (history.length > 50) history = history.slice(0, 50);
     wx.setStorageSync('food_history', history);
 
-    // 卡片直接落向右下角原生“历史”Tab，不生成额外的 Tab
+    // 卡片落向右下角历史 Tab 的位置，但不切换页面
     this.setData({ absorbingResult: true });
 
     var that = this;
-    // 卡片抵达底部历史 Tab 的落点时触发一次轻震
+    // 卡片抵达底部历史 Tab 的落点时触发一次轻震，并显示按钮脉冲
     setTimeout(function() {
       wx.vibrateShort({ type: 'light' });
+      that.setData({ historyPulse: true });
     }, 700);
 
-    // 先清理首页结果，再短暂切换原生历史 Tab，触发微信自带的选中放大/变深效果
     setTimeout(function() {
       that.setData({
         showResult: false,
         absorbingResult: false
       });
-      wx.switchTab({ url: '/pages/history/history' });
     }, 820);
 
-    // 历史 Tab 保持短暂高亮后自动回到首页
     setTimeout(function() {
-      wx.switchTab({ url: '/pages/index/index' });
-    }, 1280);
+      that.setData({ historyPulse: false });
+    }, 1080);
   },
 
   goToCandidates: function() {
