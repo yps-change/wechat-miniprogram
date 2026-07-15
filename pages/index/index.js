@@ -510,15 +510,20 @@ Page({
 
     this.setData({ absorbingResult: true });
     wx.vibrateShort({ type: 'light' });
+    // 先给卡片落点反馈，随后再轻触一次，强化“历史”Tab 接收感。
+    setTimeout(function() {
+      wx.vibrateShort({ type: 'light' });
+    }, 820);
 
     var that = this;
+    // 与 1.05s 的投篮动画末端同步，让原生历史 Tab 位置获得落点震动反馈。
     setTimeout(function() {
       that.setData({
         showResult: false,
         absorbingResult: false
       });
       wx.vibrateShort({ type: 'light' });
-    }, 780);
+    }, 1050);
   },
 
   goToCandidates: function() {
