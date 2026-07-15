@@ -1,7 +1,6 @@
 <view class="detail-page">
   <view class="hero hero-poster" wx:if="{{coupon.image}}">
     <image class="hero-image" src="{{coupon.image}}" mode="widthFix" />
-    <text class="hero-subtitle hero-poster-subtitle">打开 {{coupon.appName || platform.name}}，点击下方按钮复制口令</text>
   </view>
   <view class="hero" wx:else style="background: linear-gradient(135deg, {{platform.accentColor}}, #FFB347);">
     <text class="hero-emoji">{{platform.emoji}}</text>
@@ -14,7 +13,7 @@
     <text class="ticket-title">{{coupon.title}}</text>
     <text class="ticket-description">{{coupon.description}}</text>
     <view class="ticket-divider"></view>
-    <text class="ticket-hint">复制下面内容，再打开 App 自动识别</text>
+    <text class="ticket-hint">点击下方按钮复制口令，再打开{{coupon.appName || platform.name}}自动识别</text>
     <view class="copy-preview">{{copyText}}</view>
     <button class="copy-button" style="background: {{platform.accentColor}};" bindtap="copyCode">
       📋 {{coupon.actionLabel || '复制口令'}}
