@@ -510,20 +510,25 @@ Page({
 
     this.setData({ absorbingResult: true });
     wx.vibrateShort({ type: 'light' });
-    // 先给卡片落点反馈，随后再轻触一次，强化“历史”Tab 接收感。
+
+    // 飞行中途轻触——强化抛物线行进感
     setTimeout(function() {
       wx.vibrateShort({ type: 'light' });
     }, 820);
 
     var that = this;
-    // 与 1.05s 的投篮动画末端同步，让原生历史 Tab 位置获得落点震动反馈。
+    // 落点震动：在卡片视觉消失前触发，让用户感受到"落入历史 Tab"的触感
+    setTimeout(function() {
+      wx.vibrateShort({ type: 'light' });
+    }, 940);
+
+    // 动画完全结束后再清理状态（1.1s > 动画时长 1.05s）
     setTimeout(function() {
       that.setData({
         showResult: false,
         absorbingResult: false
       });
-      wx.vibrateShort({ type: 'light' });
-    }, 1050);
+    }, 1100);
   },
 
   goToCandidates: function() {

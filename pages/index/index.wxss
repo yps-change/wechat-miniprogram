@@ -297,12 +297,13 @@
 
 @keyframes shoot-to-history {
   /* 先向上抛，再沿弧线落到底部原生历史 Tab 的方向 */
-  0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
-  22% { transform: translate(38rpx, -125rpx) scale(0.88) rotate(10deg); opacity: 1; }
-  45% { transform: translate(92rpx, -190rpx) scale(0.69) rotate(22deg); opacity: 0.98; }
-  68% { transform: translate(156rpx, 10rpx) scale(0.48) rotate(38deg); opacity: 0.9; }
-  86% { transform: translate(218rpx, 350rpx) scale(0.27) rotate(58deg); opacity: 0.68; }
-  100% { transform: translate(255rpx, 610rpx) scale(0.08) rotate(76deg); opacity: 0; }
+  /* rpx 在 transform: translate() 中无效，全部换成 px（1rpx = 0.5px） */
+  0%   { transform: translate(0px,    0px)    scale(1)    rotate(0deg);  opacity: 1; }
+  22%  { transform: translate(19px,  -63px)   scale(0.88) rotate(10deg); opacity: 1; }
+  45%  { transform: translate(46px,  -95px)   scale(0.69) rotate(22deg); opacity: 0.98; }
+  68%  { transform: translate(78px,   5px)    scale(0.48) rotate(38deg); opacity: 0.9; }
+  86%  { transform: translate(109px, 175px)   scale(0.27) rotate(58deg); opacity: 0.68; }
+  100% { transform: translate(128px, 305px)   scale(0.08) rotate(76deg); opacity: 0; }
 }
 
 .result-glow {
