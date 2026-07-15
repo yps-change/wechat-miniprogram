@@ -57,6 +57,8 @@ Page({
     comboCount: 0,
     tagNames: TAG_NAMES,
     absorbingResult: false,
+    historyCatching: false,
+    historyReceived: false,
     customMenu: [],
     useCustomMenu: false
   },
@@ -508,16 +510,25 @@ Page({
     if (history.length > 50) history = history.slice(0, 50);
     wx.setStorageSync('food_history', history);
 
-    this.setData({ absorbingResult: true });
+    this.setData({
+      absorbingResult: true,
+      historyCatching: true,
+      historyReceived: false
+    });
     wx.vibrateShort({ type: 'light' });
 
     var that = this;
     setTimeout(function() {
       that.setData({
         showResult: false,
-        absorbingResult: false
+        absorbingResult: false,
+        historyCatching: false,
+        historyReceived: true
       });
       wx.vibrateShort({ type: 'light' });
+      setTimeout(function() {
+        that.setData({ historyReceived: false });
+      }, 700);
     }, 780);
   },
 
