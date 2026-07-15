@@ -269,9 +269,45 @@
   background: rgba(0,0,0,0.28);
 }
 
-.result-popup.absorbing .result-card {
-  /* 使用平滑减速，避免弹性曲线在中途回弹造成卡顿 */
-  animation: shoot-to-history 1.05s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+/* 确认后保持卡片静止，只显示已写入历史的即时反馈 */
+.history-saved {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 32rpx;
+  background: rgba(255,255,255,0.96);
+}
+
+.history-saved-icon {
+  width: 92rpx;
+  height: 92rpx;
+  margin-bottom: 20rpx;
+  border-radius: 50%;
+  background: #22c55e;
+  color: #fff;
+  font-size: 62rpx;
+  line-height: 88rpx;
+  text-align: center;
+  font-weight: 700;
+}
+
+.history-saved-title {
+  color: #172033;
+  font-size: 38rpx;
+  font-weight: 700;
+}
+
+.history-saved-desc {
+  margin-top: 14rpx;
+  color: #7b8494;
+  font-size: 26rpx;
 }
 
 @keyframes card-reveal {
@@ -295,16 +331,6 @@
   100% { transform: translate(-50%, -50%) scale(1.42) rotate(36deg); opacity: 0; }
 }
 
-@keyframes shoot-to-history {
-  /* 先向上抛，再沿弧线落到底部原生历史 Tab 的方向 */
-  /* rpx 在 transform: translate() 中无效，全部换成 px（1rpx = 0.5px） */
-  0%   { transform: translate(0px,    0px)    scale(1)    rotate(0deg);  opacity: 1; }
-  22%  { transform: translate(19px,  -63px)   scale(0.88) rotate(10deg); opacity: 1; }
-  45%  { transform: translate(46px,  -95px)   scale(0.69) rotate(22deg); opacity: 0.98; }
-  68%  { transform: translate(78px,   5px)    scale(0.48) rotate(38deg); opacity: 0.9; }
-  86%  { transform: translate(109px, 175px)   scale(0.27) rotate(58deg); opacity: 0.68; }
-  100% { transform: translate(128px, 305px)   scale(0.08) rotate(76deg); opacity: 0; }
-}
 
 .result-glow {
   position: absolute;

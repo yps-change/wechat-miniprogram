@@ -508,21 +508,11 @@ Page({
     if (history.length > 50) history = history.slice(0, 50);
     wx.setStorageSync('food_history', history);
 
+    // 不再执行飞行路径，直接展示“已放入历史”的结果反馈
     this.setData({ absorbingResult: true });
     wx.vibrateShort({ type: 'light' });
 
-    // 飞行中途轻触——强化抛物线行进感
-    setTimeout(function() {
-      wx.vibrateShort({ type: 'light' });
-    }, 820);
-
     var that = this;
-    // 落点震动：在卡片视觉消失前触发，让用户感受到"落入历史 Tab"的触感
-    setTimeout(function() {
-      wx.vibrateShort({ type: 'light' });
-    }, 940);
-
-    // 动画完全结束后再清理状态（1.1s > 动画时长 1.05s）
     setTimeout(function() {
       that.setData({
         showResult: false,
