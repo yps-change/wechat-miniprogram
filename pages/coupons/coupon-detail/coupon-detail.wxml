@@ -13,7 +13,7 @@
     <text class="ticket-hint">复制下面内容，再打开 App 自动识别</text>
     <view class="copy-preview">{{copyText}}</view>
     <button class="copy-button" style="background: {{platform.accentColor}};" bindtap="copyCode">
-      📋 复制口令去{{coupon.appName || platform.name}}
+      📋 {{coupon.actionLabel || '复制口令'}}
     </button>
   </view>
 

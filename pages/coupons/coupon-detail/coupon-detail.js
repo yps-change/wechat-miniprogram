@@ -36,7 +36,7 @@ Page({
       success: function() {
         wx.showModal({
           title: '口令已复制',
-          content: '现在打开' + (coupon.appName || platform.name) + '，粘贴到搜索框，App 会自动识别并弹出红包。',
+          content: coupon.copySuccessMessage || ('现在打开' + (coupon.appName || platform.name) + '，粘贴到搜索框，App 会自动识别并弹出红包。'),
           showCancel: false,
           confirmText: '知道了'
         });

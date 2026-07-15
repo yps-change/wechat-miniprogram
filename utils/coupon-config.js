@@ -34,6 +34,15 @@ module.exports = {
       accentColor: '#F5A623',
       coupons: [
         {
+          title: '大牌饮品商品券会场',
+          description: '天天好品味蕾不重样，大牌外卖省到爆！',
+          actionLabel: '复制口令领红包',
+          appName: '美团 App',
+          url: 'http://dpurl.cn/ix1k4Gjz',
+          copyText: '大牌饮品商品券会场\n天天好品味蕾不重样\n\n大牌外卖省到爆！\n【下单链接】http://dpurl.cn/ix1k4Gjz\n【团口令】1来美团，吃得更好，生活更好❤️复制整条信息，打开👉美团👈 http:/💰rhNzE2MzkzOGM💰',
+          copySuccessMessage: '复制成功！请打开【美团App】，系统将自动识别并弹出活动页面。'
+        },
+        {
           title: '美团通用大红包',
           description: '日常外卖通用红包',
           actionLabel: '复制链接',
