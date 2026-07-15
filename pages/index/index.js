@@ -508,17 +508,21 @@ Page({
     if (history.length > 50) history = history.slice(0, 50);
     wx.setStorageSync('food_history', history);
 
-    // 不再执行飞行路径，直接展示“已放入历史”的结果反馈
+    // 卡片直接落向右下角原生“历史”Tab，不生成额外的 Tab
     this.setData({ absorbingResult: true });
-    wx.vibrateShort({ type: 'light' });
 
     var that = this;
+    // 终点回弹时触发一次轻震，和视觉落点同步
+    setTimeout(function() {
+      wx.vibrateShort({ type: 'light' });
+    }, 650);
+
     setTimeout(function() {
       that.setData({
         showResult: false,
         absorbingResult: false
       });
-    }, 1100);
+    }, 760);
   },
 
   goToCandidates: function() {

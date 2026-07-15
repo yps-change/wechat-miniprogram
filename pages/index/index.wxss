@@ -266,48 +266,21 @@
 }
 
 .result-popup.absorbing {
-  background: rgba(0,0,0,0.28);
+  background: rgba(0,0,0,0.18);
 }
 
-/* 确认后保持卡片静止，只显示已写入历史的即时反馈 */
-.history-saved {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 32rpx;
-  background: rgba(255,255,255,0.96);
+/* 单段平滑落向右下角原生历史 Tab，末端轻微回弹 */
+.result-popup.absorbing .result-card {
+  animation: drop-to-history 0.72s cubic-bezier(0.22, 0.72, 0.35, 1) forwards;
 }
 
-.history-saved-icon {
-  width: 92rpx;
-  height: 92rpx;
-  margin-bottom: 20rpx;
-  border-radius: 50%;
-  background: #22c55e;
-  color: #fff;
-  font-size: 62rpx;
-  line-height: 88rpx;
-  text-align: center;
-  font-weight: 700;
-}
-
-.history-saved-title {
-  color: #172033;
-  font-size: 38rpx;
-  font-weight: 700;
-}
-
-.history-saved-desc {
-  margin-top: 14rpx;
-  color: #7b8494;
-  font-size: 26rpx;
+@keyframes drop-to-history {
+  0% { transform: translate(0px, 0px) scale(1) rotate(0deg); opacity: 1; }
+  72% { transform: translate(148px, 245px) scale(0.2) rotate(8deg); opacity: 0.82; }
+  84% { transform: translate(148px, 245px) scale(0.16) rotate(8deg); opacity: 0.2; }
+  91% { transform: translate(148px, 245px) scale(0.2) rotate(8deg); opacity: 0.52; }
+  96% { transform: translate(148px, 245px) scale(0.17) rotate(8deg); opacity: 0.2; }
+  100% { transform: translate(148px, 245px) scale(0.18) rotate(8deg); opacity: 0; }
 }
 
 @keyframes card-reveal {
