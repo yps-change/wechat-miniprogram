@@ -30,12 +30,6 @@
     </view>
   </view>
 
-  <!-- 与底部原生历史 Tab 对齐的投篮接收目标，仅在结果飞入时显示 -->
-  <view class="history-target {{historyCatching ? 'catching' : ''}} {{historyReceived ? 'received' : ''}}" aria-hidden="true">
-    <text class="history-target-icon">🗂️</text>
-    <text class="history-target-text">历史</text>
-  </view>
-
   <view class="container">
     <!-- 顶部标题区 -->
     <view class="header">
