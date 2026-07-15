@@ -296,8 +296,9 @@
 
 @keyframes shoot-to-history {
   0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
-  45% { transform: translate(120rpx, -180rpx) scale(0.72) rotate(18deg); opacity: 0.95; }
-  100% { transform: translate(280rpx, 520rpx) scale(0.14) rotate(42deg); opacity: 0; }
+  42% { transform: translate(90rpx, -170rpx) scale(0.72) rotate(18deg); opacity: 0.95; }
+  72% { transform: translate(210rpx, 180rpx) scale(0.42) rotate(30deg); opacity: 0.8; }
+  100% { transform: translate(290rpx, 620rpx) scale(0.08) rotate(52deg); opacity: 0; }
 }
 
 .result-glow {
@@ -392,47 +393,6 @@
   background: #f0f0f0;
   padding: 6rpx 20rpx;
   border-radius: 16rpx;
-}
-
-/* 历史接收图标 */
-.history-catcher {
-  position: fixed;
-  right: 34rpx;
-  bottom: 26rpx;
-  z-index: 1100;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 12rpx 18rpx;
-  background: rgba(255,255,255,0.96);
-  border-radius: 24rpx;
-  box-shadow: 0 8rpx 28rpx rgba(74,123,247,0.18);
-  opacity: 0;
-  transform: translateY(20rpx) scale(0.86);
-  pointer-events: none;
-}
-
-.history-catcher.catching {
-  opacity: 1;
-  animation: catcher-shake 0.82s ease both;
-}
-
-.history-catcher-icon {
-  font-size: 42rpx;
-}
-
-.history-catcher-text {
-  font-size: 20rpx;
-  color: #4A7BF7;
-}
-
-@keyframes catcher-shake {
-  0% { transform: translateY(20rpx) scale(0.86) rotate(0deg); }
-  20% { transform: translateY(0) scale(1.12) rotate(-8deg); }
-  35% { transform: translateY(0) scale(1.12) rotate(8deg); }
-  50% { transform: translateY(0) scale(1.08) rotate(-6deg); }
-  70% { transform: translateY(0) scale(1.04) rotate(5deg); }
-  100% { transform: translateY(0) scale(1) rotate(0deg); }
 }
 
 /* ========== 操作按钮（首页） ========== */

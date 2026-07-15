@@ -57,7 +57,6 @@ Page({
     comboCount: 0,
     tagNames: TAG_NAMES,
     absorbingResult: false,
-    historyCatching: false,
     customMenu: [],
     useCustomMenu: false
   },
@@ -516,17 +515,9 @@ Page({
     setTimeout(function() {
       that.setData({
         showResult: false,
-        absorbingResult: false,
-        historyCatching: true
+        absorbingResult: false
       });
-      wx.showToast({
-        title: '已收进历史：' + food.name,
-        icon: 'none',
-        duration: 1600
-      });
-      setTimeout(function() {
-        that.setData({ historyCatching: false });
-      }, 900);
+      wx.vibrateShort({ type: 'light' });
     }, 780);
   },
 

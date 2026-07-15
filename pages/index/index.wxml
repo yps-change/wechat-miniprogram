@@ -30,11 +30,6 @@
     </view>
   </view>
 
-  <view class="history-catcher {{historyCatching ? 'catching' : ''}}">
-    <text class="history-catcher-icon">🗂️</text>
-    <text class="history-catcher-text">历史</text>
-  </view>
-
   <view class="container">
     <!-- 顶部标题区 -->
     <view class="header">
