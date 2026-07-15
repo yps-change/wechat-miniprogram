@@ -517,12 +517,19 @@ Page({
       wx.vibrateShort({ type: 'light' });
     }, 700);
 
+    // 先清理首页结果，再短暂切换原生历史 Tab，触发微信自带的选中放大/变深效果
     setTimeout(function() {
       that.setData({
         showResult: false,
         absorbingResult: false
       });
-    }, 760);
+      wx.switchTab({ url: '/pages/history/history' });
+    }, 820);
+
+    // 历史 Tab 保持短暂高亮后自动回到首页
+    setTimeout(function() {
+      wx.switchTab({ url: '/pages/index/index' });
+    }, 1280);
   },
 
   goToCandidates: function() {
