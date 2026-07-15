@@ -40,7 +40,8 @@ module.exports = {
           appName: '美团 App',
           url: 'http://dpurl.cn/7fAACdmz',
           copyText: '美团外卖节\n点我领取大额红包\n【下单链接】http://dpurl.cn/7fAACdmz\n【团口令】1来美团，吃得更好，生活更好❤️复制整条信息，打开👉美团👈 http:/💰y6ZDllYWNiZTQ💰',
-          copySuccessMessage: '复制成功！请打开【美团App】，系统将自动识别并弹出活动页面。'
+          copySuccessMessage: '复制成功！请打开【美团App】，系统将自动识别并弹出活动页面。',
+          image: '/images/外卖节.jpg'
         },
         {
           title: '吃喝玩乐 每日福利',
@@ -49,7 +50,8 @@ module.exports = {
           appName: '美团 App',
           url: 'http://dpurl.cn/XVTPeKwz',
           copyText: '吃喝玩乐 每日福利\n内部优惠3折起 每周五还可抢大额神券\n【下单链接】http://dpurl.cn/XVTPeKwz\n【团口令】1来美团，吃得更好，生活更好❤️复制整条信息，打开👉美团👈 http:/💰4uYWY0YThjOTk💰',
-          copySuccessMessage: '复制成功！请打开【美团App】，系统将自动识别并弹出活动页面。'
+          copySuccessMessage: '复制成功！请打开【美团App】，系统将自动识别并弹出活动页面。',
+          image: '/images/吃喝玩乐.jpg'
         },
         {
           title: '甄选好店 优惠专享',
@@ -58,7 +60,8 @@ module.exports = {
           appName: '美团 App',
           url: 'http://dpurl.cn/QsFpJt3z',
           copyText: '甄选好店 优惠专享\n专享甄选好店大额红包\n【下单链接】http://dpurl.cn/QsFpJt3z\n【团口令】1来美团，吃得更好，生活更好❤️复制整条信息，打开👉美团👈 http:/💰2tNDJjNWMxZDg💰',
-          copySuccessMessage: '复制成功！请打开【美团App】，系统将自动识别并弹出活动页面。'
+          copySuccessMessage: '复制成功！请打开【美团App】，系统将自动识别并弹出活动页面。',
+          image: '/images/甄选好店.jpg'
         },
         {
           title: '大牌饮品商品券会场',
@@ -67,7 +70,8 @@ module.exports = {
           appName: '美团 App',
           url: 'http://dpurl.cn/ix1k4Gjz',
           copyText: '大牌饮品商品券会场\n天天好品味蕾不重样\n\n大牌外卖省到爆！\n【下单链接】http://dpurl.cn/ix1k4Gjz\n【团口令】1来美团，吃得更好，生活更好❤️复制整条信息，打开👉美团👈 http:/💰rhNzE2MzkzOGM💰',
-          copySuccessMessage: '复制成功！请打开【美团App】，系统将自动识别并弹出活动页面。'
+          copySuccessMessage: '复制成功！请打开【美团App】，系统将自动识别并弹出活动页面。',
+          image: '/images/饮品.jpg'
         }
       ]
     }

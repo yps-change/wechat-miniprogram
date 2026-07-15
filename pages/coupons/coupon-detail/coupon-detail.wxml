@@ -1,5 +1,9 @@
 <view class="detail-page">
-  <view class="hero" style="background: linear-gradient(135deg, {{platform.accentColor}}, #FFB347);">
+  <view class="hero hero-poster" wx:if="{{coupon.image}}">
+    <image class="hero-image" src="{{coupon.image}}" mode="widthFix" />
+    <text class="hero-subtitle hero-poster-subtitle">打开 {{coupon.appName || platform.name}}，点击下方按钮复制口令</text>
+  </view>
+  <view class="hero" wx:else style="background: linear-gradient(135deg, {{platform.accentColor}}, #FFB347);">
     <text class="hero-emoji">{{platform.emoji}}</text>
     <text class="hero-title">{{coupon.title}}</text>
     <text class="hero-subtitle">打开 {{coupon.appName || platform.name}}，粘贴口令即可领取</text>
