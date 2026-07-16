@@ -49,7 +49,7 @@
 
 .coupon-ticket {
   position: relative;
-  margin: 24rpx 30rpx 24rpx;
+  margin: 24rpx 0;
   padding: 34rpx 28rpx 32rpx;
   background: #FFFFFF;
   border-radius: 28rpx;
