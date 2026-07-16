@@ -21,7 +21,6 @@
         <view class="coupon-row" wx:for="{{platform.coupons}}" wx:for-item="coupon" wx:key="url">
           <view class="coupon-info">
             <text class="coupon-title">{{coupon.title}}</text>
-            <text class="coupon-description">{{coupon.description}}</text>
           </view>
           <button class="coupon-button" style="color: {{platform.accentColor}};" bindtap="openCouponDetail" data-platform-index="{{platformIndex}}" data-coupon-index="{{index}}">查看领券</button>
         </view>
