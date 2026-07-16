@@ -160,6 +160,26 @@ Page({
     if (this.wheelCtx) this.drawWheel(this.currentAngle);
   },
 
+  // 获取 emoji 对应的预渲染 PNG（Canvas 2D 不支持彩色 emoji 字体，用图片替代）
+  getEmojiImage: function(emoji) {
+    if (!this.wheelCanvas) return null;
+    var key = (emoji || '🍽️').codePointAt(0).toString(16);
+    var cache = this.emojiImages || (this.emojiImages = {});
+    var entry = cache[key];
+    if (entry) return entry.loaded ? entry.img : null;
+
+    var img = this.wheelCanvas.createImage();
+    entry = { img: img, loaded: false };
+    cache[key] = entry;
+    var that = this;
+    img.onload = function() {
+      entry.loaded = true;
+      that.drawWheel(that.currentAngle);
+    };
+    img.src = '/images/emoji/' + key + '.png';
+    return null;
+  },
+
   // 绘制转盘
   drawWheel: function(angle) {
     var ctx = this.wheelCtx;
@@ -211,15 +231,14 @@ Page({
       if (name.length > 4) name = name.substring(0, 4) + '..';
       ctx.fillText(name, radius * 0.45, -6);
 
-      // 食物 emoji（外侧），使用每个菜品自己的 emoji
+      // 食物 emoji（外侧）：用预渲染 PNG 绘制，Canvas 不支持彩色 emoji 字体
       var iconX = radius * 0.72;
       var iconY = 2;
-      ctx.save();
-      ctx.font = '30px "PingFang SC", "Apple Color Emoji", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(this.wheelFoods[i].emoji || '🍽️', iconX, iconY);
-      ctx.restore();
+      var emojiImg = this.getEmojiImage(this.wheelFoods[i].emoji);
+      if (emojiImg) {
+        var s = 34;
+        ctx.drawImage(emojiImg, iconX - s / 2, iconY - s / 2, s, s);
+      }
 
       ctx.restore();
     }
