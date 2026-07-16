@@ -1,5 +1,5 @@
 <view class="detail-page">
-  <view class="hero hero-poster" wx:if="{{coupon.image}}">
+  <view class="hero hero-poster {{platform.id}}" wx:if="{{coupon.image}}">
     <image class="hero-image" src="{{coupon.image}}" mode="widthFix" />
   </view>
   <view class="hero" wx:else style="background: linear-gradient(135deg, {{platform.accentColor}}, #FFB347);">
@@ -8,7 +8,7 @@
     <text class="hero-subtitle">打开 {{coupon.appName || platform.name}}，粘贴口令即可领取</text>
   </view>
 
-  <view class="coupon-ticket">
+  <view class="coupon-ticket {{platform.id}}">
     <view class="ticket-tag">限时红包</view>
     <text class="ticket-title">{{coupon.title}}</text>
     <text class="ticket-description">{{coupon.description}}</text>
