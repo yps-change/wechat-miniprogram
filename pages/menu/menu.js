@@ -104,11 +104,12 @@ Page({
   },
 
   onShareAppMessage: function() {
-    var menuNames = this.data.customMenu.length > 0 ? this.data.customMenu : ['你最喜欢的美食'];
+    // “让好友帮我推荐”：把我的专属菜单作为可选建议带过去，好友自由推荐一道菜。
+    var menuNames = this.data.customMenu.length > 0 ? this.data.customMenu : [];
     var sessionId = Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 10);
     return {
-      title: '帮我推荐一道你喜欢吃的！',
-      path: shareUtil.buildMenuSharePath(menuNames, '好友', sessionId)
+      title: '帮我推荐一道好吃的吧！🍜',
+      path: shareUtil.buildRecommendSharePath(menuNames, sessionId)
     };
   }
 });

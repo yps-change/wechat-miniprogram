@@ -21,7 +21,8 @@ Page({
     recommendationInput: '',
     submitted: false,
     sessionId: '',
-    receivedFood: {}
+    receivedFood: {},
+    suggestions: []
   },
 
   onLoad: function(options) {
@@ -35,23 +36,29 @@ Page({
       data.candidates = shareUtil.getFoodsByIds(foodsData.foods, ids);
     }
     if (options.names) {
-      data.candidates = decodeURIComponent(options.names).split('|').filter(function(name) {
+      var nameList = decodeURIComponent(options.names).split('|').filter(function(name) {
         return name;
-      }).map(function(name, index) {
-        return {
-          id: 'shared_' + index,
-          name: name,
-          categoryName: '好友推荐菜单',
-          priceRange: '自定',
-          emoji: '🍽️',
-          description: '好友邀请你从专属菜单中选择的美食。'
-        };
       });
+      // recommend 模式：菜单名仅作为快捷建议 chip；其他模式仍作为候选列表。
+      if (mode === 'recommend') {
+        data.suggestions = nameList;
+      } else {
+        data.candidates = nameList.map(function(name, index) {
+          return {
+            id: 'shared_' + index,
+            name: name,
+            categoryName: '好友推荐菜单',
+            priceRange: '自定',
+            emoji: '🍽️',
+            description: '好友邀请你从专属菜单中选择的美食。'
+          };
+        });
+      }
     }
     if (options.recommend) {
       data.recommendationInput = decodeURIComponent(options.recommend);
     }
-    if (mode === 'menu' && !sessionId) {
+    if ((mode === 'menu' || mode === 'recommend') && !sessionId) {
       sessionId = createSessionId();
       data.sessionId = sessionId;
     }
@@ -63,8 +70,15 @@ Page({
   },
 
   onRecommendationInput: function(e) {
-    this.setData({ recommendationInput: e.detail.value });
+    this.setData({ recommendationInput: e.detail.value, submitted: false });
   },
+
+  // 点选建议 chip，快速填入推荐框
+  onPickSuggestion: function(e) {
+    var name = e.currentTarget.dataset.name;
+    this.setData({ recommendationInput: name, submitted: false });
+  },
+
 
   submitRecommendation: function() {
     var name = (this.data.recommendationInput || '').trim();
@@ -127,28 +141,43 @@ Page({
   },
 
   onShareAppMessage: function() {
-    var isReceived = this.data.mode === 'received';
+    var mode = this.data.mode;
     var selectedFood = this.data.chosenFood;
-    var foodName = isReceived
-      ? this.data.receivedFood.name
-      : (selectedFood ? selectedFood.name : this.data.recommendationInput);
-    var title = isReceived
-      ? '好友帮你推荐了：' + foodName
-      : (foodName ? '我帮你选了：' + foodName : '帮我推荐一道你喜欢吃的！');
 
-    // 从候选列表选中菜品后，必须生成“结果回传”链接，不能再生成邀请链接。
-    if (selectedFood && !isReceived) {
+    // received：把好友推荐结果继续转发（保留原样式）
+    if (mode === 'received') {
+      var recvName = this.data.receivedFood.name;
       return {
-        title: title,
-        path: shareUtil.buildRecommendationSharePath(foodName, this.data.fromName, this.data.sessionId)
+        title: '好友帮你推荐了：' + recvName,
+        path: shareUtil.buildRecommendationSharePath(recvName, this.data.fromName, this.data.sessionId)
       };
     }
 
+    // recommend：好友自由推荐后，回传推荐结果给发起人
+    if (mode === 'recommend') {
+      var recName = (this.data.recommendationInput || '').trim();
+      return {
+        title: recName ? '我帮你推荐了：' + recName : '帮我推荐一道好吃的吧！🍜',
+        path: recName
+          ? shareUtil.buildRecommendationSharePath(recName, this.data.fromName, this.data.sessionId)
+          : shareUtil.buildRecommendSharePath(this.data.suggestions, this.data.sessionId)
+      };
+    }
+
+    // choose/menu：从候选里选中后，回传推荐结果
+    if (selectedFood) {
+      return {
+        title: '我帮你选了：' + selectedFood.name,
+        path: shareUtil.buildRecommendationSharePath(selectedFood.name, this.data.fromName, this.data.sessionId)
+      };
+    }
+
+    // 未选中，继续作为邀请转发
     return {
-      title: title,
-      path: isReceived
-        ? shareUtil.buildRecommendationSharePath(foodName, this.data.fromName, this.data.sessionId)
-        : shareUtil.buildMenuSharePath(this.data.candidates.map(function(food) { return food.name; }), '好友', this.data.sessionId)
+      title: '帮我从这几个里选一个！',
+      path: shareUtil.buildMenuSharePath(
+        this.data.candidates.map(function(food) { return food.name; }),
+        '好友', this.data.sessionId)
     };
   }
 });

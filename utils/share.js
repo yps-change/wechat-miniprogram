@@ -21,6 +21,16 @@ function buildChooseSharePath(candidateIds, fromName) {
 }
 
 /**
+ * 构建“让好友帮我推荐”的邀请路径。好友打开后自由推荐一道菜，
+ * menuNames 作为可选的快捷建议，sessionId 用于把回传结果绑定到本次邀请。
+ */
+function buildRecommendSharePath(menuNames, sessionId) {
+  var names = (menuNames && menuNames.length > 0) ? menuNames.join('|') : '';
+  return '/pages/help-choose/help-choose?mode=recommend&names=' +
+    encodeURIComponent(names) + '&sessionId=' + encodeURIComponent(sessionId || '');
+}
+
+/**
  * 构建好友推荐菜单的分享路径。sessionId 用于把推荐结果绑定到本次邀请。
  */
 function buildMenuSharePath(menuNames, fromName, sessionId) {
@@ -70,6 +80,7 @@ module.exports = {
   buildRandomSharePath: buildRandomSharePath,
   buildChooseSharePath: buildChooseSharePath,
   buildMenuSharePath: buildMenuSharePath,
+  buildRecommendSharePath: buildRecommendSharePath,
   buildRecommendationSharePath: buildRecommendationSharePath,
   parseIds: parseIds,
   getFoodsByIds: getFoodsByIds

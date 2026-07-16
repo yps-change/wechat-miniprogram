@@ -91,6 +91,40 @@
   margin-top: 28rpx;
 }
 
+/* 快捷建议 chip */
+.suggestion-wrap {
+  margin-top: 28rpx;
+  text-align: left;
+}
+
+.suggestion-label {
+  display: block;
+  font-size: 24rpx;
+  color: var(--text-hint);
+  margin-bottom: 16rpx;
+}
+
+.suggestion-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.suggestion-chip {
+  padding: 12rpx 28rpx;
+  background: #F6F8FF;
+  color: var(--primary-color);
+  border: 2rpx solid transparent;
+  border-radius: 32rpx;
+  font-size: 26rpx;
+}
+
+.suggestion-chip.active {
+  background: var(--primary-light);
+  border-color: var(--primary-color);
+  font-weight: 600;
+}
+
 /* 候选列表 */
 .candidate-list {
   width: 100%;
