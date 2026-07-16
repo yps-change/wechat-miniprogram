@@ -22,7 +22,8 @@ Page({
     submitted: false,
     sessionId: '',
     receivedFood: {},
-    suggestions: []
+    suggestions: [],
+    isAuthor: false
   },
 
   onLoad: function(options) {
@@ -65,7 +66,14 @@ Page({
     this.setData(data);
 
     if (mode === 'received' && data.recommendationInput) {
-      this.receiveRecommendation(data.recommendationInput, fromName);
+      // 区分打开者身份：本机存过“我为该 session 做过推荐”的标记 => 我是推荐人本人
+      var sid = this.data.sessionId;
+      var iRecommended = sid ? wx.getStorageSync('my_recommendation_' + sid) : '';
+      if (iRecommended) {
+        this.showAuthorView(data.recommendationInput);
+      } else {
+        this.receiveRecommendation(data.recommendationInput, fromName);
+      }
     }
   },
 
@@ -83,6 +91,11 @@ Page({
   submitRecommendation: function() {
     var name = (this.data.recommendationInput || '').trim();
     if (!name) return;
+    // 本机记录“我为该 session 推荐了什么”，用于区分推荐人本人打开回传卡片
+    var sid = this.data.sessionId;
+    if (sid) {
+      wx.setStorageSync('my_recommendation_' + sid, name);
+    }
     this.setData({
       submitted: true,
       recommendationInput: name
@@ -95,15 +108,27 @@ Page({
     this.setData({ submitted: false });
   },
 
-  receiveRecommendation: function(name, fromName) {
-    var food = getFoodByName(name) || {
+  // 根据菜名解析菜品信息（库内匹配，否则给通用兜底）
+  resolveFood: function(name) {
+    return getFoodByName(name) || {
       name: name,
       emoji: '🍽️',
       categoryName: '好友推荐',
       priceRange: '自定',
       description: '这是好友为你推荐的美食，快去尝尝吧！'
     };
-    this.setData({ receivedFood: food });
+  },
+
+  // 推荐人本人打开自己分享的回传卡片：只展示“我推荐了啥”，不入历史
+  showAuthorView: function(name) {
+    var food = this.resolveFood(name);
+    this.setData({ receivedFood: food, isAuthor: true });
+  },
+
+  receiveRecommendation: function(name, fromName) {
+    var food = this.resolveFood(name);
+    this.setData({ receivedFood: food, isAuthor: false });
+
     var sessionId = this.data.sessionId || 'legacy';
     var receiveKey = 'received_recommendation_' + sessionId;
     if (wx.getStorageSync(receiveKey)) return;

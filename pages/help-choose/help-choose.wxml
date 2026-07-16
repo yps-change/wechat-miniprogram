@@ -1,7 +1,8 @@
 <view class="container">
   <view class="header">
-    <text class="from-text">{{fromName}} 邀请你来帮忙</text>
-    <text class="title" wx:if="{{mode === 'received'}}">好友帮你推荐了</text>
+    <text class="from-text" wx:if="{{mode !== 'received'}}">{{fromName}} 邀请你来帮忙</text>
+    <text class="title" wx:if="{{mode === 'received' && isAuthor}}">你已完成推荐</text>
+    <text class="title" wx:elif="{{mode === 'received'}}">好友帮你推荐了</text>
     <text class="title" wx:elif="{{mode === 'recommend'}}">推荐一道你爱吃的</text>
     <text class="title" wx:elif="{{mode === 'menu'}}">帮TA推荐一道菜单</text>
     <text class="title" wx:else>帮TA从这几个里选一个！</text>
@@ -11,8 +12,19 @@
     <text class="received-emoji">{{receivedFood.emoji}}</text>
     <text class="received-name">{{receivedFood.name}}</text>
     <text class="received-description">{{receivedFood.categoryName}} · {{receivedFood.priceRange}}元 · {{receivedFood.description}}</text>
-    <button class="btn-primary" bindtap="goToIndex">加入历史，去看看</button>
+
+    <!-- 推荐人本人查看：不入历史 -->
+    <block wx:if="{{isAuthor}}">
+      <text class="author-note">这是你推荐给 TA 的，等 TA 打开就会收到并存入TA的历史～</text>
+      <button class="btn-primary" bindtap="goToIndex">回到首页</button>
+    </block>
+
+    <!-- 接收者查看：已自动入历史 -->
+    <block wx:else>
+      <button class="btn-primary" bindtap="goToIndex">加入历史，去看看</button>
+    </block>
   </view>
+
 
   <!-- 直接推荐模式 -->
   <view class="recommend-panel" wx:if="{{mode === 'recommend'}}">
