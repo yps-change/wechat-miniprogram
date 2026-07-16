@@ -21,18 +21,44 @@ module.exports = {
       accentColor: '#FF6A00',
       coupons: [
         {
-          title: '淘宝闪购 12 元红包',
-          description: '先领取基础红包',
-          actionLabel: '复制短链接',
+          title: '最高抢66元大红包｜红包集合页',
+          description: '最全活动会场，最高可抢66元大红包',
+          actionLabel: '复制淘口令',
           appName: '淘宝 App',
-          url: 'https://a.saier1.cn/ny1k3d'
+          url: '',
+          copyText: '￥kk90grw6eR9￥/ HU7405',
+          copySuccessMessage: '淘口令已复制！请打开淘宝 App，粘贴到搜索框识别红包。',
+          image: '/images/淘宝_超值红包组合.jpg'
         },
         {
-          title: '淘宝闪购叠加红包',
-          description: '再领叠加券，满减更划算',
-          actionLabel: '复制短链接',
+          title: '最高22元叠加红包',
+          description: '最高22元，可与其他优惠叠加',
+          actionLabel: '复制淘口令',
           appName: '淘宝 App',
-          url: 'https://a.saier1.cn/ups3yo'
+          url: '',
+          copyText: '￥5CHugrwhFMo￥/ HU7405',
+          copySuccessMessage: '淘口令已复制！请打开淘宝 App，粘贴到搜索框识别红包。',
+          image: '/images/淘宝_闪购品牌日.jpg'
+        },
+        {
+          title: '每晚8点抢免单红包',
+          description: '每晚8点限时抢免单红包',
+          actionLabel: '复制淘口令',
+          appName: '淘宝 App',
+          url: '',
+          copyText: '￥ZNp3grwRqfo￥/ HU7405',
+          copySuccessMessage: '淘口令已复制！请打开淘宝 App，粘贴到搜索框识别红包。',
+          image: '/images/淘宝_夜宵专场.jpg'
+        },
+        {
+          title: '闪购大额满减红包',
+          description: '闪购专享大额满减红包',
+          actionLabel: '复制淘口令',
+          appName: '淘宝 App',
+          url: '',
+          copyText: '￥U5PzgrwjSkt￥/ HU7405',
+          copySuccessMessage: '淘口令已复制！请打开淘宝 App，粘贴到搜索框识别红包。',
+          image: '/images/淘宝_免单.jpg'
         }
       ]
     },
