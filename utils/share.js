@@ -21,19 +21,21 @@ function buildChooseSharePath(candidateIds, fromName) {
 }
 
 /**
- * 构建同事推荐菜单的分享路径。
+ * 构建好友推荐菜单的分享路径。sessionId 用于把推荐结果绑定到本次邀请。
  */
-function buildMenuSharePath(menuNames, fromName) {
+function buildMenuSharePath(menuNames, fromName, sessionId) {
   return '/pages/help-choose/help-choose?mode=menu&names=' +
-    encodeURIComponent(menuNames.join('|')) + '&from=' + encodeURIComponent(fromName || '好友');
+    encodeURIComponent(menuNames.join('|')) + '&from=' + encodeURIComponent(fromName || '好友') +
+    '&sessionId=' + encodeURIComponent(sessionId || '');
 }
 
 /**
- * 构建同事推荐结果的回传路径。
+ * 构建好友推荐结果回传给发起者的分享路径。
  */
-function buildRecommendationSharePath(foodName, fromName) {
-  return '/pages/help-choose/help-choose?mode=recommend&recommend=' +
-    encodeURIComponent(foodName || '') + '&from=' + encodeURIComponent(fromName || '好友');
+function buildRecommendationSharePath(foodName, fromName, sessionId) {
+  return '/pages/help-choose/help-choose?mode=received&recommend=' +
+    encodeURIComponent(foodName || '') + '&from=' + encodeURIComponent(fromName || '好友') +
+    '&sessionId=' + encodeURIComponent(sessionId || '');
 }
 
 /**

@@ -1,7 +1,7 @@
 <view class="container">
-  <view class="history-receiver {{receiving ? 'receiving' : ''}}" wx:if="{{historyList.length > 0}}">
+  <view class="history-receiver {{receiving ? 'receiving' : ''}}" wx:if="{{receivedNotice}}">
     <text class="receiver-icon">🗂️</text>
-    <text class="receiver-text">已接收新结果</text>
+    <text class="receiver-text">收到{{receivedNotice.fromName || '好友'}}推荐：{{receivedNotice.foodName}}</text>
   </view>
 
   <view class="header" wx:if="{{historyList.length > 0}}">

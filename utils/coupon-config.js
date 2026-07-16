@@ -2,8 +2,17 @@
  * 外卖券推广链接配置。
  * copyText 可配置平台提供的淘口令/短链接；未配置时默认复制 url。
  * 复制后需由用户切换到对应 App，再粘贴到搜索框或识别入口。
+ *
+ * 美团 activityId 需与后端 meituan_links 表中的活动标识一致。
  */
 module.exports = {
+  // 填写你自己的业务后端地址；不要在小程序中配置美团 AppKey/AppSecret。
+  // 如需从小程序直接跳转美团小程序，补充已获授权的 appId 和页面 path。
+  meituan: {
+    linkApiUrl: '',
+    appId: '',
+    path: ''
+  },
   platforms: [
     {
       id: 'taobao-flash',
@@ -35,6 +44,7 @@ module.exports = {
       coupons: [
         {
           title: '美团外卖节',
+          activityId: 'meituan-food-festival',
           description: '点我领取大额红包',
           actionLabel: '复制口令领红包',
           appName: '美团 App',
@@ -45,6 +55,7 @@ module.exports = {
         },
         {
           title: '吃喝玩乐 每日福利',
+          activityId: 'meituan-food-entertainment-daily',
           description: '内部优惠3折起，每周五还可抢大额神券',
           actionLabel: '复制口令领红包',
           appName: '美团 App',
@@ -55,6 +66,7 @@ module.exports = {
         },
         {
           title: '甄选好店 优惠专享',
+          activityId: 'meituan-selected-stores',
           description: '专享甄选好店大额红包',
           actionLabel: '复制口令领红包',
           appName: '美团 App',
@@ -65,6 +77,7 @@ module.exports = {
         },
         {
           title: '大牌饮品商品券会场',
+          activityId: 'meituan-drink-coupon-mall',
           description: '天天好品味蕾不重样，大牌外卖省到爆！',
           actionLabel: '复制口令领红包',
           appName: '美团 App',

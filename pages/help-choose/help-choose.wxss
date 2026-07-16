@@ -25,6 +25,40 @@
   color: var(--text-color);
 }
 
+.received-panel {
+  width: 100%;
+  padding: 48rpx 30rpx;
+  box-sizing: border-box;
+  background: var(--card-bg);
+  border-radius: 20rpx;
+  text-align: center;
+  box-shadow: 0 8rpx 24rpx rgba(74,123,247,0.1);
+}
+
+.received-emoji,
+.received-name,
+.received-description {
+  display: block;
+}
+
+.received-emoji {
+  font-size: 96rpx;
+}
+
+.received-name {
+  margin-top: 18rpx;
+  font-size: 46rpx;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.received-description {
+  margin: 18rpx 0 32rpx;
+  font-size: 28rpx;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
 .recommend-panel {
   width: 100%;
   padding: 36rpx 30rpx;

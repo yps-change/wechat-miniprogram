@@ -105,9 +105,10 @@ Page({
 
   onShareAppMessage: function() {
     var menuNames = this.data.customMenu.length > 0 ? this.data.customMenu : ['你最喜欢的美食'];
+    var sessionId = Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 10);
     return {
       title: '帮我推荐一道你喜欢吃的！',
-      path: shareUtil.buildMenuSharePath(menuNames, '好友')
+      path: shareUtil.buildMenuSharePath(menuNames, '好友', sessionId)
     };
   }
 });

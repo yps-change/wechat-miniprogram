@@ -6,12 +6,17 @@ Page({
       self: '自己选的',
       custom: '专属菜单',
       friend_random: '朋友帮抽',
-      friend_choose: '朋友帮选'
+      friend_choose: '朋友帮选',
+      friend_recommend: '好友推荐'
     },
-    receiving: false
+    receiving: false,
+    receivedNotice: null
   },
 
   onShow: function() {
+    var pending = wx.getStorageSync('pending_friend_recommendation');
+    this.setData({ receivedNotice: pending || null });
+    if (pending) wx.removeStorageSync('pending_friend_recommendation');
     this.loadHistory();
   },
 
@@ -21,13 +26,13 @@ Page({
     this.setData({
       historyList: history,
       groupedHistory: grouped,
-      receiving: history.length > 0
+      receiving: false
     });
-    if (history.length > 0) {
+    if (this.data.receivedNotice) {
       var that = this;
       setTimeout(function() {
-        that.setData({ receiving: false });
-      }, 900);
+        that.setData({ receivedNotice: null });
+      }, 3000);
     }
   },
 

@@ -23,7 +23,7 @@
       <button class="menu-add-btn" bindtap="addMenuItem">添加</button>
     </view>
     <button class="history-btn" bindtap="generateMenuFromHistory">从历史生成专属菜单</button>
-    <button class="share-btn" open-type="share">📣 让同事帮我推荐</button>
+    <button class="share-btn" open-type="share">📣 让好友帮我推荐</button>
   </view>
 
   <view class="menu-card list-card">

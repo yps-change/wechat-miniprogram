@@ -14,9 +14,10 @@
     <text class="ticket-description">{{coupon.description}}</text>
     <view class="ticket-divider"></view>
     <text class="ticket-hint">点击下方按钮复制口令，再打开{{coupon.appName || platform.name}}自动识别</text>
-    <view class="copy-preview">{{copyText}}</view>
-    <button class="copy-button" style="background: {{platform.accentColor}};" bindtap="copyCode">
-      📋 {{coupon.actionLabel || '复制口令'}}
+    <view class="copy-preview" wx:if="{{linkLoading}}">正在获取最新推广链接…</view>
+    <view class="copy-preview" wx:else>{{copyText}}</view>
+    <button class="copy-button" style="background: {{platform.accentColor}};" bindtap="copyCode" loading="{{linkLoading}}" disabled="{{linkLoading}}">
+      📋 {{linkLoading ? '获取最新链接' : (coupon.actionLabel || '复制口令')}}
     </button>
   </view>
 
