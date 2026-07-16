@@ -132,15 +132,26 @@ Page({
   },
 
   onShareAppMessage: function() {
-    var hasRecommendation = !!this.data.recommendationInput;
     var isReceived = this.data.mode === 'received';
-    var foodName = isReceived ? this.data.receivedFood.name : this.data.recommendationInput;
+    var selectedFood = this.data.chosenFood;
+    var foodName = isReceived
+      ? this.data.receivedFood.name
+      : (selectedFood ? selectedFood.name : this.data.recommendationInput);
     var title = isReceived
       ? '好友帮你推荐了：' + foodName
-      : (hasRecommendation ? '我推荐你吃：' + foodName : '帮我推荐一道你喜欢吃的！');
+      : (foodName ? '我帮你选了：' + foodName : '帮我推荐一道你喜欢吃的！');
+
+    // 从候选列表选中菜品后，必须生成“结果回传”链接，不能再生成邀请链接。
+    if (selectedFood && !isReceived) {
+      return {
+        title: title,
+        path: shareUtil.buildRecommendationSharePath(foodName, this.data.fromName, this.data.sessionId)
+      };
+    }
+
     return {
       title: title,
-      path: isReceived || hasRecommendation
+      path: isReceived
         ? shareUtil.buildRecommendationSharePath(foodName, this.data.fromName, this.data.sessionId)
         : shareUtil.buildMenuSharePath(this.data.candidates.map(function(food) { return food.name; }), '好友', this.data.sessionId)
     };
