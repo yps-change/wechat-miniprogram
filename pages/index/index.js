@@ -211,10 +211,30 @@ Page({
       if (name.length > 4) name = name.substring(0, 4) + '..';
       ctx.fillText(name, radius * 0.45, -6);
 
-      // emoji（外侧，不与文字重叠）
-      ctx.font = '28px sans-serif';
-      var emoji = this.wheelFoods[i].emoji || '🍽️';
-      ctx.fillText(emoji, radius * 0.78, 2);
+      // 不直接绘制 emoji：部分微信基础库缺少彩色 emoji 字体，会将其渲染成方框。
+      // 用 Canvas 基础图形绘制一个稳定的餐盘图标，保证所有设备都能正常显示。
+      var iconX = radius * 0.78;
+      var iconY = 2;
+      ctx.save();
+      ctx.strokeStyle = textColor;
+      ctx.fillStyle = 'rgba(255,255,255,0.82)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(iconX, iconY, 10, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(iconX, iconY, 6, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(iconX - 17, iconY - 10);
+      ctx.lineTo(iconX - 17, iconY + 10);
+      ctx.moveTo(iconX - 21, iconY - 8);
+      ctx.lineTo(iconX - 13, iconY - 8);
+      ctx.moveTo(iconX - 21, iconY - 3);
+      ctx.lineTo(iconX - 13, iconY - 3);
+      ctx.stroke();
+      ctx.restore();
 
       ctx.restore();
     }
