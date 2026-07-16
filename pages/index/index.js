@@ -211,42 +211,27 @@ Page({
       if (name.length > 4) name = name.substring(0, 4) + '..';
       ctx.fillText(name, radius * 0.45, -6);
 
-      // 不直接绘制 emoji：部分微信基础库缺少彩色 emoji 字体，会将其渲染成方框。
-      // 用 Canvas 基础图形绘制一个稳定的餐盘图标，保证所有设备都能正常显示。
-      var iconX = radius * 0.78;
+      // 食物 emoji（外侧），使用每个菜品自己的 emoji
+      var iconX = radius * 0.72;
       var iconY = 2;
       ctx.save();
-      ctx.strokeStyle = textColor;
-      ctx.fillStyle = 'rgba(255,255,255,0.82)';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.arc(iconX, iconY, 10, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(iconX, iconY, 6, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(iconX - 17, iconY - 10);
-      ctx.lineTo(iconX - 17, iconY + 10);
-      ctx.moveTo(iconX - 21, iconY - 8);
-      ctx.lineTo(iconX - 13, iconY - 8);
-      ctx.moveTo(iconX - 21, iconY - 3);
-      ctx.lineTo(iconX - 13, iconY - 3);
-      ctx.stroke();
+      ctx.font = '30px "PingFang SC", "Apple Color Emoji", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(this.wheelFoods[i].emoji || '🍽️', iconX, iconY);
       ctx.restore();
 
       ctx.restore();
     }
 
-    // 中心保留较小的非交互装饰圆，不产生按钮暗示
-    var centerRadius = radius * 0.11;
+    // 中心装饰圆：实心白底（遮住底下转盘）+ 深色描边
+    var centerRadius = radius * 0.12;
     ctx.beginPath();
     ctx.arc(0, 0, centerRadius, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+    ctx.fillStyle = '#FFFFFF';
     ctx.fill();
-    ctx.strokeStyle = 'rgba(74,123,247,0.48)';
-    ctx.lineWidth = 2.5;
+    ctx.strokeStyle = '#2B4F9E';
+    ctx.lineWidth = 4;
     ctx.stroke();
 
     ctx.restore();
