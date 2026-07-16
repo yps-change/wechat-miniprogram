@@ -7,7 +7,7 @@
 
   <view class="notice-card">
     <text class="notice-icon">💡</text>
-    <text class="notice-text">同一平台建议按顺序领取。点击“查看领券”进入领券页，复制口令或链接后打开对应 App，粘贴到搜索框等待识别。</text>
+    <text class="notice-text">同一平台建议按顺序领取。点击“查看领券”进入领券页，复制口令或链接后打开对应 App 自动识别。</text>
   </view>
 
   <view class="platform-list">
