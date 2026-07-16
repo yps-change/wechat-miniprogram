@@ -37,6 +37,10 @@
 
 .received-panel .btn-primary {
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .received-emoji,
