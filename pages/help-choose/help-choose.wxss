@@ -35,6 +35,10 @@
   box-shadow: 0 8rpx 24rpx rgba(74,123,247,0.1);
 }
 
+.received-panel .btn-primary {
+  white-space: nowrap;
+}
+
 .received-emoji,
 .received-name,
 .received-description {

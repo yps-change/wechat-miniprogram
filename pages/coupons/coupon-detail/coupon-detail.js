@@ -64,7 +64,7 @@ Page({
         wx.showModal({
           title: '口令已复制',
           content: platform.id === 'taobao-flash'
-            ? '淘口令已复制！打开淘宝 App 自动弹出。'
+            ? '淘口令已复制！打开淘宝 App 自动识别'
             : (platform.id === 'meituan'
               ? '请直接切换或打开美团 App。若美团已在前台，请先进入首页或下拉刷新，再粘贴口令；美团会根据剪贴板内容弹出对应活动页面。'
               : (coupon.copySuccessMessage || ('现在打开' + (coupon.appName || platform.name) + '，粘贴到搜索框，App 会自动识别并弹出红包。'))),

@@ -21,7 +21,7 @@
 
     <!-- 接收者查看：已自动入历史 -->
     <block wx:else>
-      <button class="btn-primary" bindtap="goToIndex">加入历史，去看看</button>
+      <button class="btn-primary" bindtap="goToIndex">已加入历史，去看看</button>
     </block>
   </view>
 
