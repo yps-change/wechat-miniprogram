@@ -101,11 +101,6 @@ Page({
     });
     if (history.length > 50) history = history.slice(0, 50);
     wx.setStorageSync('food_history', history);
-    wx.setStorageSync('pending_friend_recommendation', {
-      foodName: food.name,
-      fromName: fromName,
-      timestamp: timestamp
-    });
 
     wx.showModal({
       title: '收到好友推荐',

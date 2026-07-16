@@ -14,9 +14,8 @@ Page({
   },
 
   onShow: function() {
-    var pending = wx.getStorageSync('pending_friend_recommendation');
-    this.setData({ receivedNotice: pending || null });
-    if (pending) wx.removeStorageSync('pending_friend_recommendation');
+    // 推荐结果已在接收结果页直接处理；这里仅展示当前设备自己的历史。
+    this.setData({ receivedNotice: null });
     this.loadHistory();
   },
 
