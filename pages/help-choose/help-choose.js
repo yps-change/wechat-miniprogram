@@ -87,7 +87,12 @@ Page({
       submitted: true,
       recommendationInput: name
     });
-    wx.showToast({ title: '请点击分享结果发回', icon: 'none' });
+    wx.showToast({ title: '选好啦！记得发回给TA', icon: 'none' });
+  },
+
+  // 重新选：回到填写状态
+  redoRecommendation: function() {
+    this.setData({ submitted: false });
   },
 
   receiveRecommendation: function(name, fromName) {

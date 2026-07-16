@@ -16,22 +16,36 @@
 
   <!-- 直接推荐模式 -->
   <view class="recommend-panel" wx:if="{{mode === 'recommend'}}">
-    <text class="recommend-hint">告诉TA一道你觉得好吃的</text>
-    <input class="recommend-input" value="{{recommendationInput}}" placeholder="例如：酸菜鱼、牛肉面" bindinput="onRecommendationInput" />
+    <!-- 未提交：填写推荐 -->
+    <block wx:if="{{!submitted}}">
+      <text class="recommend-hint">告诉TA一道你觉得好吃的</text>
+      <input class="recommend-input" value="{{recommendationInput}}" placeholder="例如：酸菜鱼、牛肉面" bindinput="onRecommendationInput" />
 
-    <!-- 快捷建议（来自TA的专属菜单） -->
-    <view class="suggestion-wrap" wx:if="{{suggestions.length > 0}}">
-      <text class="suggestion-label">TA常吃的，点一下直接填入：</text>
-      <view class="suggestion-chips">
-        <text class="suggestion-chip {{recommendationInput === item ? 'active' : ''}}"
-              wx:for="{{suggestions}}" wx:key="*this"
-              bindtap="onPickSuggestion" data-name="{{item}}">{{item}}</text>
+      <!-- 快捷建议（来自TA的专属菜单） -->
+      <view class="suggestion-wrap" wx:if="{{suggestions.length > 0}}">
+        <text class="suggestion-label">TA常吃的，点一下直接填入：</text>
+        <view class="suggestion-chips">
+          <text class="suggestion-chip {{recommendationInput === item ? 'active' : ''}}"
+                wx:for="{{suggestions}}" wx:key="*this"
+                bindtap="onPickSuggestion" data-name="{{item}}">{{item}}</text>
+        </view>
       </view>
-    </view>
 
-    <button class="btn-primary recommend-submit" bindtap="submitRecommendation" disabled="{{submitted}}">{{submitted ? '已确定推荐' : '就推荐这个'}}</button>
-    <button class="share-result-btn" wx:if="{{submitted}}" open-type="share">📤 把推荐分享给TA</button>
+      <button class="btn-primary recommend-submit" bindtap="submitRecommendation">就推荐这个</button>
+    </block>
+
+    <!-- 已提交：突出“发回给TA”这一步 -->
+    <block wx:else>
+      <view class="recommend-done">
+        <text class="done-emoji">✅</text>
+        <text class="done-title">已选好：{{recommendationInput}}</text>
+        <text class="done-tip">最后一步 👇 把推荐发回给TA，TA 才能收到并存入历史</text>
+      </view>
+      <button class="btn-primary share-back-btn" open-type="share">📤 把推荐发回给TA</button>
+      <text class="redo-link" bindtap="redoRecommendation">重新选一个</text>
+    </block>
   </view>
+
 
 
   <!-- 候选列表 -->

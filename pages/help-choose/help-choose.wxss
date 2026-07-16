@@ -125,6 +125,66 @@
   font-weight: 600;
 }
 
+/* 推荐完成态：突出“发回给TA” */
+.recommend-done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16rpx 0 8rpx;
+}
+
+.done-emoji {
+  font-size: 72rpx;
+}
+
+.done-title {
+  margin-top: 16rpx;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.done-tip {
+  margin-top: 16rpx;
+  font-size: 26rpx;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.share-back-btn {
+  margin-top: 28rpx;
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  padding: 0;
+  background: var(--primary-color);
+  color: #FFFFFF;
+  border-radius: 44rpx;
+  font-size: 32rpx;
+  font-weight: 700;
+  box-shadow: 0 8rpx 24rpx rgba(74,123,247,0.35);
+  animation: share-pulse 1.6s ease-in-out infinite;
+}
+
+.share-back-btn::after {
+  border: none;
+}
+
+@keyframes share-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+.redo-link {
+  display: block;
+  margin-top: 24rpx;
+  font-size: 26rpx;
+  color: var(--text-hint);
+  text-align: center;
+  text-decoration: underline;
+}
+
 /* 候选列表 */
 .candidate-list {
   width: 100%;
