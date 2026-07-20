@@ -608,7 +608,7 @@ Page({
 
   onShareAppMessage: function(res) {
     return {
-      title: '我选不了了，帮我随机抽一个今天吃什么！',
+      title: '🎯 选择困难晚期，帮我抽一个今天吃啥！',
       path: shareUtil.buildRandomSharePath('好友')
     };
   },

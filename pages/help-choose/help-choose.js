@@ -178,7 +178,7 @@ Page({
     if (mode === 'received') {
       var recvName = this.data.receivedFood.name;
       return {
-        title: '好友帮你推荐了：' + recvName,
+        title: '😋 有人安利了「' + recvName + '」，你也来尝尝！',
         path: shareUtil.buildRecommendationSharePath(recvName, this.data.fromName, this.data.sessionId)
       };
     }
@@ -187,7 +187,7 @@ Page({
     if (mode === 'recommend') {
       var recName = (this.data.recommendationInput || '').trim();
       return {
-        title: recName ? '我帮你推荐了：' + recName : '帮我推荐一道好吃的吧！🍜',
+        title: recName ? '😋 我给你安利了「' + recName + '」，快去吃！' : '🍜 选择困难求助：帮我推荐一道好吃的呗！',
         path: recName
           ? shareUtil.buildRecommendationSharePath(recName, this.data.fromName, this.data.sessionId)
           : shareUtil.buildRecommendSharePath(this.data.suggestions, this.data.sessionId)
@@ -197,14 +197,14 @@ Page({
     // choose/menu：从候选里选中后，回传推荐结果
     if (selectedFood) {
       return {
-        title: '我帮你选了：' + selectedFood.name,
+        title: '✅ 帮你拍板了：' + selectedFood.name + '，就它！',
         path: shareUtil.buildRecommendationSharePath(selectedFood.name, this.data.fromName, this.data.sessionId)
       };
     }
 
     // 未选中，继续作为邀请转发
     return {
-      title: '帮我从这几个里选一个！',
+      title: '🆘 选择困难求助：帮我从这几个里挑一个！',
       path: shareUtil.buildMenuSharePath(
         this.data.candidates.map(function(food) { return food.name; }),
         '好友', this.data.sessionId)

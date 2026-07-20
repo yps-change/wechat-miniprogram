@@ -16,7 +16,7 @@
         <text class="tag" wx:for="{{currentFood.tags}}" wx:key="*this">{{tagNames[item] || item}}</text>
       </view>
 
-      <text class="result-draw-tip">抽卡揭晓 · 轻轻震动</text>
+      <text class="result-draw-tip">🤝 拿不准？发给同事帮你拍板</text>
 
       <!-- 弹窗内操作按钮 -->
       <view class="popup-actions">
@@ -25,7 +25,7 @@
           <button class="popup-btn-again" bindtap="onSpinAgain">🎲 再转一次</button>
           <button class="popup-btn-candidates" bindtap="goToCandidates">🎯 多来几个</button>
         </view>
-        <button class="popup-btn-share" open-type="share" data-mode="random">📤 帮我随机抽</button>
+        <button class="popup-btn-share" open-type="share" data-mode="random">📤 发给同事帮我抽</button>
       </view>
     </view>
   </view>

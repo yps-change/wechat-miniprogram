@@ -108,7 +108,7 @@ Page({
     var menuNames = this.data.customMenu.length > 0 ? this.data.customMenu : [];
     var sessionId = Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 10);
     return {
-      title: '帮我推荐一道好吃的吧！🍜',
+      title: '🍜 帮我推荐一道今天的午饭吧，纠结中…',
       path: shareUtil.buildRecommendSharePath(menuNames, sessionId)
     };
   }

@@ -45,7 +45,7 @@ Page({
     wx.setStorageSync('food_history', history);
 
     wx.showToast({
-      title: '今天就吃' + food.name + '！',
+      title: '就这么定了：' + food.name + ' 🍽️',
       icon: 'none',
       duration: 2000
     });
