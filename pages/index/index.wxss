@@ -88,6 +88,27 @@
   letter-spacing: 2rpx;
 }
 
+.pool-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 16rpx;
+  padding: 6rpx 20rpx;
+  background: rgba(74, 123, 247, 0.1);
+  border: 1rpx solid rgba(74, 123, 247, 0.25);
+  border-radius: 40rpx;
+}
+
+.pool-badge-icon {
+  font-size: 24rpx;
+  margin-right: 8rpx;
+}
+
+.pool-badge-text {
+  font-size: 24rpx;
+  color: #4A7BF7;
+  font-weight: 500;
+}
+
 /* ========== 转盘区域 ========== */
 .wheel-area {
   position: relative;

@@ -43,6 +43,10 @@
         <text class="title">今天吃什么？</text>
       </view>
       <text class="subtitle">转一转，命运帮你选</text>
+      <view class="pool-badge" bindtap="goToMenu">
+        <text class="pool-badge-icon">{{useCustomMenu ? '📋' : '🎲'}}</text>
+        <text class="pool-badge-text">{{poolLabel}}</text>
+      </view>
     </view>
 
     <!-- 转盘区域 -->

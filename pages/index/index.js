@@ -106,7 +106,8 @@ Page({
     absorbingResult: false,
     historyPulse: false,
     customMenu: [],
-    useCustomMenu: false
+    useCustomMenu: false,
+    poolLabel: '默认美食库'
   },
 
   // 转盘状态
@@ -164,9 +165,11 @@ Page({
     });
     var useCustomMenu = wx.getStorageSync('use_custom_food_menu');
     useCustomMenu = useCustomMenu === '' ? customMenu.length > 0 : !!useCustomMenu;
+    var useCustom = useCustomMenu && customMenu.length > 0;
     this.setData({
       customMenu: customMenu,
-      useCustomMenu: useCustomMenu && customMenu.length > 0
+      useCustomMenu: useCustom,
+      poolLabel: useCustom ? ('专属菜单 · ' + customMenu.length + ' 道') : '默认美食库'
     });
     if (this.wheelCtx) {
       this.pickWheelFoods();
@@ -615,5 +618,10 @@ Page({
 
   goToCoupons: function() {
     wx.navigateTo({ url: '/pages/coupons/coupons' });
+  },
+
+  // 点击转盘上方的菜单来源徽章，跳到“专属菜单”tab
+  goToMenu: function() {
+    wx.switchTab({ url: '/pages/menu/menu' });
   }
 });
