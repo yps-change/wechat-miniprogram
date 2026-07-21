@@ -29,7 +29,7 @@
 
 ```mermaid
 graph TD
-  subgraph P["页面层 pages/ (UI + 交互)"]
+  subgraph 页面层_pages
     idx["index<br/>转盘首页"]
     res["result<br/>结果详情"]
     cand["candidates<br/>多候选"]
@@ -40,22 +40,22 @@ graph TD
     cp["coupons<br/>优惠券"]
   end
 
-  subgraph C["组件层 components/ (可复用UI)"]
+  subgraph 组件层_components
     fc["food-card"]
     ci["candidate-item"]
   end
 
-  subgraph U["工具层 utils/ (纯函数)"]
+  subgraph 工具层_utils
     rnd["random.js<br/>随机/洗牌/过滤"]
     shr["share.js<br/>分享链接编解码"]
     cfg["coupon-config.js<br/>优惠券配置"]
   end
 
-  subgraph D["数据层 data/"]
+  subgraph 数据层_data
     foods["foods.js<br/>菜品库"]
   end
 
-  subgraph S["本地存储 wx.Storage"]
+  subgraph 本地存储_Storage
     st1["food_history"]
     st2["custom_food_menu"]
     st3["use_custom_food_menu"]
