@@ -133,9 +133,11 @@ def paste_emoji(img, ch, size, cx, cy, rot=0):
 
 
 def draw_wheel(img, cx, cy, r):
-    """在封面画一个迷你彩色转盘，呼应小程序。"""
+    """在封面画一个迷你彩色转盘，带食物名字，呼应小程序。"""
     colors = [(255, 107, 107), (78, 205, 196), (255, 209, 61), (108, 92, 231),
               (255, 138, 92), (168, 230, 207), (243, 129, 129), (69, 183, 209)]
+    names = ['火锅', '日料', '饺子', '烤鱼',
+             '拉面', '炒饭', '汉堡', '烧烤']
     layer = Image.new('RGBA', (r * 2 + 20, r * 2 + 20), (0, 0, 0, 0))
     ld = ImageDraw.Draw(layer)
     ox = oy = r + 10
@@ -146,6 +148,15 @@ def draw_wheel(img, cx, cy, r):
         ld.pieslice([ox - r, oy - r, ox + r, oy + r], a0, a1, fill=colors[i])
     # 外圈
     ld.ellipse([ox - r, oy - r, ox + r, oy + r], outline=(74, 123, 247), width=10)
+    # 食物名字（水平放置在每个扇区质心，白字+深蓝描边）
+    import math
+    nf = font(int(r * 0.15), bold=True)
+    for i in range(n):
+        mid = math.radians(i * 360 / n - 90 + 22.5)
+        tx = ox + math.cos(mid) * r * 0.60
+        ty = oy + math.sin(mid) * r * 0.60
+        ld.text((tx, ty), names[i], font=nf, fill=(255, 255, 255),
+                anchor='mm', stroke_width=4, stroke_fill=(43, 58, 103))
     # 中心白圆
     cr = int(r * 0.16)
     ld.ellipse([ox - cr, oy - cr, ox + cr, oy + cr], fill=(255, 255, 255), outline=(43, 79, 158), width=6)
