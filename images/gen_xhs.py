@@ -138,6 +138,8 @@ def draw_wheel(img, cx, cy, r):
               (255, 138, 92), (168, 230, 207), (243, 129, 129), (69, 183, 209)]
     names = ['火锅', '日料', '饺子', '烤鱼',
              '拉面', '炒饭', '汉堡', '烧烤']
+    nemoji = ['🍲', '🍣', '🥟', '🐟',
+              '🍜', '🍚', '🍔', '🍢']
     layer = Image.new('RGBA', (r * 2 + 20, r * 2 + 20), (0, 0, 0, 0))
     ld = ImageDraw.Draw(layer)
     ox = oy = r + 10
@@ -148,14 +150,17 @@ def draw_wheel(img, cx, cy, r):
         ld.pieslice([ox - r, oy - r, ox + r, oy + r], a0, a1, fill=colors[i])
     # 外圈
     ld.ellipse([ox - r, oy - r, ox + r, oy + r], outline=(74, 123, 247), width=10)
-    # 食物名字（水平放置在每个扇区质心，白字+深蓝描边）
+    # 食物 emoji + 名字（emoji 在上、名字在下，白字+深蓝描边）
     import math
-    nf = font(int(r * 0.15), bold=True)
+    nf = font(int(r * 0.14), bold=True)
+    em_size = int(r * 0.20)
     for i in range(n):
         mid = math.radians(i * 360 / n - 90 + 22.5)
-        tx = ox + math.cos(mid) * r * 0.60
-        ty = oy + math.sin(mid) * r * 0.60
-        ld.text((tx, ty), names[i], font=nf, fill=(255, 255, 255),
+        tx = ox + math.cos(mid) * r * 0.62
+        ty = oy + math.sin(mid) * r * 0.62
+        em = emoji_img(nemoji[i], em_size)
+        layer.paste(em, (int(tx - em_size / 2), int(ty - em_size - r * 0.02)), em)
+        ld.text((tx, ty + r * 0.10), names[i], font=nf, fill=(255, 255, 255),
                 anchor='mm', stroke_width=4, stroke_fill=(43, 58, 103))
     # 中心白圆
     cr = int(r * 0.16)
