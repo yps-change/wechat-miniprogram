@@ -13,8 +13,10 @@ os.makedirs(OUT, exist_ok=True)
 
 CJK = '/usr/share/fonts/opentype/noto/NotoSansCJK-Black.ttc'
 CJK_R = '/usr/share/fonts/opentype/noto/NotoSansCJK-Medium.ttc'
+UKAI = '/usr/share/fonts/truetype/arphic/ukai.ttc'   # 楷体（手写可爱感）
 EMOJI = '/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf'
 SC_INDEX = 2
+UKAI_INDEX = 0
 
 BLUE = (74, 123, 247)
 BLUE_L = (120, 165, 255)
@@ -43,7 +45,9 @@ ITEMS = [
 ]
 
 
-def font(size, bold=True):
+def font(size, bold=True, cute=False):
+    if cute:
+        return ImageFont.truetype(UKAI, size, index=UKAI_INDEX)
     return ImageFont.truetype(CJK if bold else CJK_R, size, index=SC_INDEX)
 
 
@@ -87,19 +91,19 @@ def tokens(s):
     return res
 
 
-def measure(d, s, size, bold=True):
-    fnt = font(size, bold)
+def measure(d, s, size, bold=True, cute=False):
+    fnt = font(size, bold, cute)
     total = 0
     for typ, val in tokens(s):
         total += d.textlength(val, font=fnt) if typ == 't' else size
     return total
 
 
-def draw_center(img, cx, y, s, size, fill, bold=True, stroke=0, stroke_fill=NAVY):
+def draw_center(img, cx, y, s, size, fill, bold=True, stroke=0, stroke_fill=NAVY, cute=False):
     """图文混排居中：中文用字体，emoji 用彩色图片贴。"""
     d = ImageDraw.Draw(img)
-    fnt = font(size, bold)
-    total = measure(d, s, size, bold)
+    fnt = font(size, bold, cute)
+    total = measure(d, s, size, bold, cute)
     x = cx - total / 2
     for typ, val in tokens(s):
         if typ == 't':
@@ -127,15 +131,16 @@ def vgradient(w, h, top, bot):
     return base
 
 
-def block_center(canvas, cx, y, s, size, text_fill, block_fill, bold=True):
+def block_center(canvas, cx, y, s, size, text_fill, block_fill, bold=True, cute=False, stroke=0):
     """先画圆角高亮块，再在块上居中画图文，最大化可读性。"""
     d = ImageDraw.Draw(canvas)
-    tw = measure(d, s, size, bold)
+    tw = measure(d, s, size, bold, cute)
     padx = size * 0.45
     pady = size * 0.30
     box = [cx - tw / 2 - padx, y - pady, cx + tw / 2 + padx, y + size + pady]
     d.rounded_rectangle(box, radius=int(size * 0.42), fill=block_fill)
-    draw_center(canvas, cx, y, s, size, text_fill, bold)
+    draw_center(canvas, cx, y, s, size, text_fill, bold, stroke=stroke,
+                stroke_fill=text_fill, cute=cute)
     return box
 
 
@@ -157,9 +162,9 @@ def process(item):
         ss = int(W * 0.055)
         ns = int(W * 0.05)
         y0 = band * 0.11
-        block_center(canvas, W / 2, y0, title, ts, NAVY, YELLOW)
+        block_center(canvas, W / 2, y0, title, ts, NAVY, YELLOW, cute=True, stroke=2)
         draw_center(canvas, W / 2, y0 + ts * 1.7, sub, ss, WHITE,
-                    stroke=5, stroke_fill=NAVY)
+                    stroke=5, stroke_fill=NAVY, cute=True)
         # 小程序名徽标（奶油底圆角）
         d = ImageDraw.Draw(canvas)
         name_txt = '👉 微信搜「' + APP_NAME + '」'
@@ -174,7 +179,7 @@ def process(item):
         ts = int(W * 0.078)
         ns = int(W * 0.044)
         y0 = band * 0.20
-        block_center(canvas, W / 2, y0, title, ts, NAVY, YELLOW)
+        block_center(canvas, W / 2, y0, title, ts, NAVY, YELLOW, cute=True, stroke=2)
         draw_center(canvas, W / 2, y0 + ts * 1.75,
                     '小程序「' + APP_NAME + '」', ns, WHITE)
 
