@@ -147,7 +147,7 @@ def process(item):
     fname, out, cover, title, sub = item
     src = Image.open(os.path.join(SRC_DIR, fname)).convert('RGB')
     W, Hs = src.size
-    band = int(W * (0.44 if cover else 0.27))
+    band = int(W * (0.44 if cover else 0.17))
     canvas = Image.new('RGB', (W, Hs + band), WHITE)
 
     # 顶部渐变标题条（加深到深蓝，衬托亮色文字）
@@ -164,23 +164,20 @@ def process(item):
         block_center(canvas, W / 2, y0, title, ts, NAVY, YELLOW, cute=True, stroke=2)
         draw_center(canvas, W / 2, y0 + ts * 1.7, sub, ss, WHITE,
                     stroke=5, stroke_fill=NAVY, cute=True)
-        # 小程序名徽标（奶油底圆角）
+        # 底部钩子标签（不涉及任何平台/导流，避免违规）
         d = ImageDraw.Draw(canvas)
-        name_txt = '👉 微信搜「' + APP_NAME + '」'
-        nw = measure(d, name_txt, ns)
+        badge_txt = '🎯 选择困难星人自救指南'
+        nw = measure(d, badge_txt, ns, cute=True)
         pad = int(W * 0.032)
         by = y0 + ts * 1.7 + ss * 2.0
         box = [W / 2 - nw / 2 - pad, by, W / 2 + nw / 2 + pad, by + ns * 1.6]
         d.rounded_rectangle(box, radius=int(ns * 0.8), fill=CREAM)
-        draw_center(canvas, W / 2, by + ns * 0.3, name_txt, ns, NAVY)
+        draw_center(canvas, W / 2, by + ns * 0.3, badge_txt, ns, NAVY, cute=True)
     else:
-        # 内容图：黄底大标题（撞色）+ 白色小程序名
+        # 内容图：只保留黄底大标题（不写“小程序/微信/名字”，避免导流）
         ts = int(W * 0.078)
-        ns = int(W * 0.044)
-        y0 = band * 0.20
+        y0 = band * 0.27
         block_center(canvas, W / 2, y0, title, ts, NAVY, YELLOW, cute=True, stroke=2)
-        draw_center(canvas, W / 2, y0 + ts * 1.75,
-                    '小程序「' + APP_NAME + '」', ns, WHITE)
 
     canvas.save(os.path.join(OUT, out), quality=92)
     print('生成', out, canvas.size)
