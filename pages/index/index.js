@@ -1,6 +1,7 @@
 var foodsData = require('../../data/foods.js');
 var randomUtil = require('../../utils/random.js');
 var shareUtil = require('../../utils/share.js');
+var logger = require('../../utils/logger.js');
 
 // 转盘扇区颜色（高对比度、明亮清晰）
 var WHEEL_COLORS = [
@@ -133,14 +134,17 @@ Page({
   lightTimer: null,
 
   onLoad: function() {
+    logger.info('index', 'onLoad');
     this.loadCustomMenu();
   },
 
   onShow: function() {
+    logger.info('index', 'onShow');
     this.loadCustomMenu();
   },
 
   onReady: function() {
+    logger.info('index', 'onReady 初始化转盘/粒子/灯光');
     this.initWheelCanvas();
     this.initParticleCanvas();
     this.pickWheelFoods();
@@ -166,6 +170,7 @@ Page({
     var useCustomMenu = wx.getStorageSync('use_custom_food_menu');
     useCustomMenu = useCustomMenu === '' ? customMenu.length > 0 : !!useCustomMenu;
     var useCustom = useCustomMenu && customMenu.length > 0;
+    logger.debug('index', 'loadCustomMenu 菜池=' + (useCustom ? '专属菜单' : '默认库') + ' 专属数量=' + customMenu.length);
     this.setData({
       customMenu: customMenu,
       useCustomMenu: useCustom,
@@ -207,6 +212,7 @@ Page({
   pickWheelFoods: function() {
     var pool = this.getFoodPool();
     this.wheelFoods = randomUtil.getRandomMultiple(pool, Math.min(WHEEL_SLOTS, pool.length));
+    logger.debug('index', 'pickWheelFoods 抽中 ' + this.wheelFoods.length + ' 道（池共 ' + pool.length + ' 道）');
     if (this.wheelCtx) this.drawWheel(this.currentAngle);
   },
 
@@ -322,6 +328,7 @@ Page({
       return;
     }
     var combo = this.data.comboCount + 1;
+    logger.info('index', '一键出结果=' + food.name);
     this.setData({
       comboCount: combo,
       currentFood: food,
@@ -341,6 +348,7 @@ Page({
       wx.showToast({ title: '先添加专属菜单或切回默认库', icon: 'none' });
       return;
     }
+    logger.info('index', '点击开始转盘');
 
     // 重置结果
     if (this.data.showResult) {
@@ -388,6 +396,7 @@ Page({
         // 旋转结束
         that.setData({ spinning: false });
         var selectedFood = that.wheelFoods[targetIndex];
+        logger.info('index', '转盘停止，结果=' + selectedFood.name);
         that.setData({
           currentFood: selectedFood,
           showResult: true,
@@ -571,6 +580,7 @@ Page({
   onConfirm: function() {
     var food = this.data.currentFood;
     if (!food || !food.id || this.data.absorbingResult) return;
+    logger.info('index', '确认选择并写入历史=' + food.name);
 
     var history = wx.getStorageSync('food_history') || [];
     history.unshift({

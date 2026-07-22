@@ -1,5 +1,6 @@
 var foodsData = require('../../data/foods.js');
 var randomUtil = require('../../utils/random.js');
+var logger = require('../../utils/logger.js');
 
 Page({
   data: {
@@ -30,6 +31,7 @@ Page({
   onConfirm: function() {
     var food = this.data.food;
     if (!food || !food.id) return;
+    logger.info('result', '确认选择并写入历史=' + food.name);
 
     var history = wx.getStorageSync('food_history') || [];
     history.unshift({

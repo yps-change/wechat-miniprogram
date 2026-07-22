@@ -1,5 +1,6 @@
 var foodsData = require('../../data/foods.js');
 var shareUtil = require('../../utils/share.js');
+var logger = require('../../utils/logger.js');
 
 function createSessionId() {
   return Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 10);
@@ -31,6 +32,7 @@ Page({
     var sessionId = options.sessionId ? decodeURIComponent(options.sessionId) : '';
     this.setData({ fromName: fromName, sessionId: sessionId });
     var mode = options.mode || 'choose';
+    logger.info('help-choose', 'onLoad mode=' + mode + ' from=' + fromName + ' sessionId=' + (sessionId || '无'));
     var data = { mode: mode };
     if (options.ids) {
       var ids = shareUtil.parseIds(options.ids);
@@ -70,8 +72,10 @@ Page({
       var sid = this.data.sessionId;
       var iRecommended = sid ? wx.getStorageSync('my_recommendation_' + sid) : '';
       if (iRecommended) {
+        logger.info('help-choose', '推荐人本人打开回传卡片');
         this.showAuthorView(data.recommendationInput);
       } else {
+        logger.info('help-choose', '接收方打开，记录好友推荐');
         this.receiveRecommendation(data.recommendationInput, fromName);
       }
     }
@@ -91,6 +95,7 @@ Page({
   submitRecommendation: function() {
     var name = (this.data.recommendationInput || '').trim();
     if (!name) return;
+    logger.info('help-choose', '提交推荐=' + name);
     // 本机记录“我为该 session 推荐了什么”，用于区分推荐人本人打开回传卡片
     var sid = this.data.sessionId;
     if (sid) {
