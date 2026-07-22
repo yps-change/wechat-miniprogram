@@ -33,13 +33,13 @@ SRC_DIR = '/home/yps/.config/Qoder/SharedClientCache/cache/images/3c07adc4'
 ITEMS = [
     # (文件名, 输出名, 是否封面, 主标题, 副标题)
     ('7a752ed98310990827a2fe144fd65021-701fe080.jpg', '1_cover.png', True,
-     '治好我的选择困难🎯', '打工人中午干饭 0 内耗'),
+     '治好我的选择困难🎯', '打工人中午干饭 0 内耗', 130, None),
     ('11935d6d2513962df54ffe9070b94553-0e3543ab.jpg', '2_result.png', False,
-     '手一划，命运帮我决定吃啥🎲', None),
+     '手一划，命运帮我决定吃啥🎲', None, 210, 1500),
     ('78874f9f75a5ff8b327f6fe64be933db-ab4912a7.jpg', '3_menu.png', False,
-     '把常点的存成「专属菜单」📝', None),
+     '把常点的存成「专属菜单」📝', None, 210, None),
     ('d4c9e7b7e2f9c4ef51a319ae1fb99766-cbe0ad00.jpg', '4_help.png', False,
-     '纠结就甩给同事帮我抽🤝', None),
+     '纠结就甩给同事帮我抽🤝', None, 210, None),
     # 注：原「外卖券」截图含淘宝/美团等第三方平台，小红书禁止导流，已移除。
 ]
 
@@ -144,9 +144,25 @@ def block_center(canvas, cx, y, s, size, text_fill, block_fill, bold=True, cute=
 
 
 def process(item):
-    fname, out, cover, title, sub = item
+    fname, out, cover, title, sub, crop, crop_b = item
     src = Image.open(os.path.join(SRC_DIR, fname)).convert('RGB')
     W, Hs = src.size
+
+    # 封面：盖住 App 自带的「领外卖券」按钮（避免领券/导流痕迹）
+    if cover:
+        d0 = ImageDraw.Draw(src)
+        bg = src.getpixel((60, 1520))          # 取按钮左侧空白处的背景色
+        d0.rectangle([250, 1440, 726, 1600], fill=bg)   # 先抹平原按钮
+        pill = [270, 1452, 706, 1588]
+        d0.rounded_rectangle(pill, radius=68, fill=CREAM)
+        draw_center(src, W / 2, 1486, '🎲 转到啥就吃啥', int(W * 0.046),
+                    NAVY, cute=True)
+
+    # 裁顶部微信状态栏/导航栏（含 ···⊙ 胶囊）；需要时一并裁掉底部领券条/标签栏
+    bottom = crop_b if crop_b else Hs
+    src = src.crop((0, crop, W, bottom))
+    W, Hs = src.size
+
     band = int(W * (0.44 if cover else 0.17))
     canvas = Image.new('RGB', (W, Hs + band), WHITE)
 
