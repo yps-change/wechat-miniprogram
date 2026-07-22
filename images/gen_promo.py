@@ -40,8 +40,7 @@ ITEMS = [
      '把常点的存成「专属菜单」📝', None),
     ('d4c9e7b7e2f9c4ef51a319ae1fb99766-cbe0ad00.jpg', '4_help.png', False,
      '纠结就甩给同事帮我抽🤝', None),
-    ('5adcfd7050cfdbbef80eef67bda54340-ca42d1e3.jpg', '5_coupon.png', False,
-     '转完顺手领个外卖红包💰', None),
+    # 注：原「外卖券」截图含淘宝/美团等第三方平台，小红书禁止导流，已移除。
 ]
 
 
