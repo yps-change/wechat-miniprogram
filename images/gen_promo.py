@@ -127,41 +127,56 @@ def vgradient(w, h, top, bot):
     return base
 
 
+def block_center(canvas, cx, y, s, size, text_fill, block_fill, bold=True):
+    """先画圆角高亮块，再在块上居中画图文，最大化可读性。"""
+    d = ImageDraw.Draw(canvas)
+    tw = measure(d, s, size, bold)
+    padx = size * 0.45
+    pady = size * 0.30
+    box = [cx - tw / 2 - padx, y - pady, cx + tw / 2 + padx, y + size + pady]
+    d.rounded_rectangle(box, radius=int(size * 0.42), fill=block_fill)
+    draw_center(canvas, cx, y, s, size, text_fill, bold)
+    return box
+
+
 def process(item):
     fname, out, cover, title, sub = item
     src = Image.open(os.path.join(SRC_DIR, fname)).convert('RGB')
     W, Hs = src.size
-    band = int(W * (0.34 if cover else 0.20))
+    band = int(W * (0.44 if cover else 0.27))
     canvas = Image.new('RGB', (W, Hs + band), WHITE)
 
-    # 顶部渐变标题条
-    grad = vgradient(W, band, BLUE_L, BLUE)
+    # 顶部渐变标题条（加深到深蓝，衬托亮色文字）
+    grad = vgradient(W, band, BLUE, NAVY)
     canvas.paste(grad, (0, 0))
     canvas.paste(src, (0, band))
 
     if cover:
-        # 封面：大主标题 + 副标题 + 小程序名徽标
-        ts = int(W * 0.088)
-        ss = int(W * 0.05)
-        ns = int(W * 0.046)
-        draw_center(canvas, W / 2, band * 0.16, title, ts, WHITE, stroke=6)
-        draw_center(canvas, W / 2, band * 0.16 + ts * 1.35, sub, ss, YELLOW)
+        # 封面：黄底大主标题（撞色最跳）+ 白色副标题 + 小程序名徽标
+        ts = int(W * 0.098)
+        ss = int(W * 0.055)
+        ns = int(W * 0.05)
+        y0 = band * 0.11
+        block_center(canvas, W / 2, y0, title, ts, NAVY, YELLOW)
+        draw_center(canvas, W / 2, y0 + ts * 1.7, sub, ss, WHITE,
+                    stroke=5, stroke_fill=NAVY)
         # 小程序名徽标（奶油底圆角）
         d = ImageDraw.Draw(canvas)
         name_txt = '👉 微信搜「' + APP_NAME + '」'
         nw = measure(d, name_txt, ns)
-        pad = int(W * 0.03)
-        by = band * 0.16 + ts * 1.35 + ss * 1.7
-        box = [W / 2 - nw / 2 - pad, by, W / 2 + nw / 2 + pad, by + ns * 1.5]
-        d.rounded_rectangle(box, radius=int(ns * 0.75), fill=CREAM)
-        draw_center(canvas, W / 2, by + ns * 0.28, name_txt, ns, NAVY)
+        pad = int(W * 0.032)
+        by = y0 + ts * 1.7 + ss * 2.0
+        box = [W / 2 - nw / 2 - pad, by, W / 2 + nw / 2 + pad, by + ns * 1.6]
+        d.rounded_rectangle(box, radius=int(ns * 0.8), fill=CREAM)
+        draw_center(canvas, W / 2, by + ns * 0.3, name_txt, ns, NAVY)
     else:
-        # 内容图：单行标题 + 小程序名副行
-        ts = int(W * 0.062)
-        ns = int(W * 0.038)
-        draw_center(canvas, W / 2, band * 0.24, title, ts, WHITE, stroke=5)
-        draw_center(canvas, W / 2, band * 0.24 + ts * 1.35,
-                    '小程序「' + APP_NAME + '」', ns, CREAM, bold=False)
+        # 内容图：黄底大标题（撞色）+ 白色小程序名
+        ts = int(W * 0.078)
+        ns = int(W * 0.044)
+        y0 = band * 0.20
+        block_center(canvas, W / 2, y0, title, ts, NAVY, YELLOW)
+        draw_center(canvas, W / 2, y0 + ts * 1.75,
+                    '小程序「' + APP_NAME + '」', ns, WHITE)
 
     canvas.save(os.path.join(OUT, out), quality=92)
     print('生成', out, canvas.size)
