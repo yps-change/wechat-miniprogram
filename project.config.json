@@ -1,7 +1,13 @@
 {
   "description": "今天吃什么 - 上班族外卖决策助手",
   "packOptions": {
-    "ignore": [],
+    "ignore": [
+      { "type": "folder", "value": "images/xhs" },
+      { "type": "folder", "value": "images/xhs_promo" },
+      { "type": "folder", "value": "docs" },
+      { "type": "glob", "value": "images/*.py" },
+      { "type": "glob", "value": "**/*.md" }
+    ],
     "include": []
   },
   "setting": {
