@@ -49,6 +49,17 @@
   display: block;
 }
 
+.received-from {
+  display: inline-block;
+  margin-bottom: 20rpx;
+  padding: 8rpx 24rpx;
+  background: var(--primary-light);
+  color: var(--primary-color);
+  border-radius: 28rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
 .received-emoji {
   font-size: 96rpx;
 }
@@ -106,6 +117,10 @@
 
 .recommend-submit {
   margin-top: 28rpx;
+}
+
+.recommend-name {
+  margin-top: 20rpx;
 }
 
 /* 快捷建议 chip */

@@ -20,6 +20,7 @@ Page({
     chosenFood: null,
     mode: 'choose',
     recommendationInput: '',
+    recommenderName: '',
     submitted: false,
     sessionId: '',
     receivedFood: {},
@@ -66,6 +67,10 @@ Page({
       sessionId = createSessionId();
       data.sessionId = sessionId;
     }
+    if (mode === 'recommend') {
+      // 预填本机记住的昵称，好友无需每次重输
+      data.recommenderName = wx.getStorageSync('my_nickname') || '';
+    }
     this.setData(data);
 
     if (mode === 'received' && data.recommendationInput) {
@@ -92,6 +97,12 @@ Page({
     this.setData({ recommendationInput: name, submitted: false });
   },
 
+  // 好友填写自己的昵称（type=nickname 聚焦时微信会自动带出微信昵称），
+  // input / blur 两个事件都走这里，确保自动填充的值也能被捕获
+  onRecommenderNameInput: function(e) {
+    this.setData({ recommenderName: e.detail.value });
+  },
+
 
   submitRecommendation: function() {
     var name = (this.data.recommendationInput || '').trim();
@@ -101,6 +112,11 @@ Page({
     var sid = this.data.sessionId;
     if (sid) {
       wx.setStorageSync('my_recommendation_' + sid, name);
+    }
+    // 记住昵称，方便好友下次推荐时自动带出
+    var byName = (this.data.recommenderName || '').trim();
+    if (byName) {
+      wx.setStorageSync('my_nickname', byName);
     }
     this.setData({
       submitted: true,
@@ -204,10 +220,12 @@ Page({
     // recommend：好友自由推荐后，回传推荐结果给发起人
     if (mode === 'recommend') {
       var recName = (this.data.recommendationInput || '').trim();
+      // 带上好友昵称，让发起人知道是谁推荐的
+      var byName = (this.data.recommenderName || '').trim() || '好友';
       return {
         title: recName ? '😋 我给你安利了「' + recName + '」，快去吃！' : '🍜 选择困难求助：帮我推荐一道好吃的呗！',
         path: recName
-          ? shareUtil.buildRecommendationSharePath(recName, this.data.fromName, this.data.sessionId)
+          ? shareUtil.buildRecommendationSharePath(recName, byName, this.data.sessionId)
           : shareUtil.buildRecommendSharePath(this.data.suggestions, this.data.sessionId)
       };
     }
