@@ -19,9 +19,9 @@
       <button class="btn-primary" bindtap="goToIndex">回到首页</button>
     </block>
 
-    <!-- 接收者查看：已自动入历史 -->
+    <!-- 接收者查看：手动点击才加入历史 -->
     <block wx:else>
-      <button class="btn-primary" bindtap="goToIndex">已加入历史，去看看</button>
+      <button class="btn-primary" bindtap="addRecommendationToHistory">{{added ? '已加入历史，去看看' : '加入历史，去看看'}}</button>
     </block>
   </view>
 

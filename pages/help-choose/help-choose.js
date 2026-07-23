@@ -24,7 +24,8 @@ Page({
     sessionId: '',
     receivedFood: {},
     suggestions: [],
-    isAuthor: false
+    isAuthor: false,
+    added: false
   },
 
   onLoad: function(options) {
@@ -75,8 +76,8 @@ Page({
         logger.info('help-choose', '推荐人本人打开回传卡片');
         this.showAuthorView(data.recommendationInput);
       } else {
-        logger.info('help-choose', '接收方打开，记录好友推荐');
-        this.receiveRecommendation(data.recommendationInput, fromName);
+        logger.info('help-choose', '接收方打开，展示好友推荐，等待手动加入');
+        this.prepareReceivedRecommendation(data.recommendationInput, fromName);
       }
     }
   },
@@ -130,33 +131,45 @@ Page({
     this.setData({ receivedFood: food, isAuthor: true });
   },
 
-  receiveRecommendation: function(name, fromName) {
-    var food = this.resolveFood(name);
-    this.setData({ receivedFood: food, isAuthor: false });
-
+  // 生成某条推荐在本次邀请中的去重键：同一 session 下按菜名区分，
+  // 使得多位好友的不同推荐都能各自加入历史，且同一条推荐不会重复添加。
+  receivedAddedKey: function(foodName) {
     var sessionId = this.data.sessionId || 'legacy';
-    var receiveKey = 'received_recommendation_' + sessionId;
-    if (wx.getStorageSync(receiveKey)) return;
-    wx.setStorageSync(receiveKey, true);
+    return 'received_recommendation_' + sessionId + '_' + foodName;
+  },
 
-    var timestamp = Date.now();
-    var history = wx.getStorageSync('food_history') || [];
-    history.unshift({
-      foodName: food.name,
-      emoji: food.emoji,
-      timestamp: timestamp,
-      source: 'friend_recommend',
-      fromName: fromName
-    });
-    if (history.length > 50) history = history.slice(0, 50);
-    wx.setStorageSync('food_history', history);
+  // 接收方打开：只展示好友推荐结果，是否已加入历史决定按钮文案，
+  // 真正入历史需用户手动点击（见 addRecommendationToHistory）。
+  prepareReceivedRecommendation: function(name, fromName) {
+    var food = this.resolveFood(name);
+    var alreadyAdded = !!wx.getStorageSync(this.receivedAddedKey(food.name));
+    this.setData({ receivedFood: food, isAuthor: false, added: alreadyAdded });
+  },
 
-    wx.showModal({
-      title: '收到好友推荐',
-      content: fromName + '已完成推荐，推荐了“' + name + '”。已将它加入历史记录。',
-      showCancel: false,
-      confirmText: '知道了'
-    });
+  // 手动把这条好友推荐加入历史，然后跳转到历史页查看。
+  // 同一 session 支持多条不同推荐，重复点击/重复打开同一条不会重复入历史。
+  addRecommendationToHistory: function() {
+    var food = this.data.receivedFood;
+    if (!food || !food.name) return;
+    var addedKey = this.receivedAddedKey(food.name);
+
+    if (!this.data.added && !wx.getStorageSync(addedKey)) {
+      var history = wx.getStorageSync('food_history') || [];
+      history.unshift({
+        foodName: food.name,
+        emoji: food.emoji,
+        timestamp: Date.now(),
+        source: 'friend_recommend',
+        fromName: this.data.fromName
+      });
+      if (history.length > 50) history = history.slice(0, 50);
+      wx.setStorageSync('food_history', history);
+      wx.setStorageSync(addedKey, true);
+      this.setData({ added: true });
+      logger.info('help-choose', '手动加入历史=' + food.name);
+    }
+
+    wx.switchTab({ url: '/pages/history/history' });
   },
 
   onChoose: function(e) {
