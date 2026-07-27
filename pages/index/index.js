@@ -141,6 +141,8 @@ Page({
   onShow: function() {
     logger.info('index', 'onShow');
     this.loadCustomMenu();
+    // 从后台/其他页返回时恢复闪灯（首次启动由 onReady 负责）
+    if (this._inited) this.startLightBlink();
   },
 
   onReady: function() {
@@ -149,10 +151,16 @@ Page({
     this.initParticleCanvas();
     this.pickWheelFoods();
     this.startLightBlink();
+    this._inited = true;
+  },
+
+  onHide: function() {
+    // 页面不可见时停掉定时器，避免无谓的 setData
+    this.stopLightBlink();
   },
 
   onUnload: function() {
-    if (this.lightTimer) clearInterval(this.lightTimer);
+    this.stopLightBlink();
   },
 
   getFoodPool: function() {
@@ -426,10 +434,18 @@ Page({
 
   // ========== 灯光闪烁 ==========
   startLightBlink: function() {
+    if (this.lightTimer) return; // 防重复启动
     var that = this;
     this.lightTimer = setInterval(function() {
       that.setData({ lightOn: !that.data.lightOn });
     }, 500);
+  },
+
+  stopLightBlink: function() {
+    if (this.lightTimer) {
+      clearInterval(this.lightTimer);
+      this.lightTimer = null;
+    }
   },
 
   // ========== 粒子系统 ==========
@@ -582,19 +598,27 @@ Page({
     if (!food || !food.id || this.data.absorbingResult) return;
     logger.info('index', '确认选择并写入历史=' + food.name);
 
-    var history = wx.getStorageSync('food_history') || [];
-    history.unshift({
-      foodId: food.id,
-      foodName: food.name,
-      emoji: food.emoji,
-      timestamp: Date.now(),
-      source: food.isCustom ? 'custom' : 'self'
-    });
-    if (history.length > 50) history = history.slice(0, 50);
-    wx.setStorageSync('food_history', history);
-
-    // 卡片落向右下角历史 Tab 的位置，但不切换页面
+    // 先启动吸收动画：让点击立刻有反馈，存储 I/O 不挡首帧
+    // 动画窗口内暂停闪灯，避免额外 setData 抢占渲染
+    this.stopLightBlink();
     this.setData({ absorbingResult: true });
+
+    // 历史写入全异步，避免同步存储阻塞 JS 线程导致动画/粒子掉帧
+    wx.getStorage({
+      key: 'food_history',
+      complete: function(res) {
+        var history = (res && res.data) || [];
+        history.unshift({
+          foodId: food.id,
+          foodName: food.name,
+          emoji: food.emoji,
+          timestamp: Date.now(),
+          source: food.isCustom ? 'custom' : 'self'
+        });
+        if (history.length > 50) history = history.slice(0, 50);
+        wx.setStorage({ key: 'food_history', data: history });
+      }
+    });
 
     var that = this;
     // 卡片抵达底部历史 Tab 的落点时触发一次轻震，并显示按钮脉冲
@@ -608,6 +632,8 @@ Page({
         showResult: false,
         absorbingResult: false
       });
+      // 动画结束，恢复闪灯
+      that.startLightBlink();
     }, 820);
 
     setTimeout(function() {
