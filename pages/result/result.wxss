@@ -191,6 +191,98 @@
   border-radius: 20rpx;
 }
 
+/* ========== 附近餐馆 ========== */
+.nearby-section {
+  width: 100%;
+  max-width: 640rpx;
+  margin-bottom: 40rpx;
+  animation: info-in 0.5s ease 0.5s both;
+}
+
+.nearby-map {
+  width: 100%;
+  height: 340rpx;
+  border-radius: 24rpx;
+  overflow: hidden;
+}
+
+.nearby-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16rpx;
+  padding: 22rpx 26rpx;
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  box-shadow: 0 6rpx 20rpx rgba(74,123,247,0.12);
+}
+
+.nearby-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  margin-right: 16rpx;
+}
+
+.nearby-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #1A1A1A;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nearby-address {
+  margin-top: 8rpx;
+  font-size: 23rpx;
+  color: #999;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nearby-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.nearby-distance {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #FF6B6B;
+}
+
+.nearby-nav {
+  margin-top: 6rpx;
+  font-size: 24rpx;
+  color: #4A7BF7;
+  font-weight: 600;
+}
+
+.nearby-loading {
+  padding: 28rpx 0;
+  text-align: center;
+  font-size: 26rpx;
+  color: #999;
+}
+
+.nearby-btn {
+  width: 100%;
+  padding: 24rpx 0;
+  background: #EBF0FF;
+  color: #4A7BF7;
+  border: none;
+  border-radius: 50rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.nearby-btn::after { border: none; }
+
 /* ========== 操作按钮 ========== */
 .actions {
   width: 100%;

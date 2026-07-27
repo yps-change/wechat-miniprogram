@@ -2,6 +2,7 @@ var foodsData = require('../../data/foods.js');
 var randomUtil = require('../../utils/random.js');
 var logger = require('../../utils/logger.js');
 var subscribeUtil = require('../../utils/subscribe.js');
+var nearbyUtil = require('../../utils/nearby.js');
 
 Page({
   data: {
@@ -13,10 +14,18 @@ Page({
       sweet: '偏甜',
       sour: '酸爽',
       fresh: '鲜美'
-    }
+    },
+    // 附近餐馆（需配置腾讯位置服务 Key 后启用）
+    nearbyEnabled: false,
+    nearbyLoading: false,
+    nearbyShop: null,
+    markers: [],
+    mapLatitude: 0,
+    mapLongitude: 0
   },
 
   onLoad: function(options) {
+    this.setData({ nearbyEnabled: nearbyUtil.isEnabled() });
     if (options.id) {
       var id = parseInt(options.id, 10);
       var food = foodsData.foods.find(function(f) {
@@ -24,6 +33,7 @@ Page({
       });
       if (food) {
         this.setData({ food: food });
+        this.autoSearchNearby();
       }
     }
   },
@@ -65,6 +75,95 @@ Page({
   onAgain: function() {
     var food = randomUtil.getRandomOne(foodsData.foods);
     this.setData({ food: food });
+    // 新菜名重新搜附近
+    this.autoSearchNearby();
+  },
+
+  // ========== 附近餐馆 ==========
+
+  // 有缓存位置时静默自动搜索；没有则等用户点按钮
+  autoSearchNearby: function() {
+    if (!this.data.nearbyEnabled) return;
+    var loc = nearbyUtil.getCachedLocation();
+    if (loc) {
+      this.doSearchNearby(loc);
+    } else {
+      // 清掉上一道菜的旧结果
+      this.setData({ nearbyShop: null, markers: [] });
+    }
+  },
+
+  // 「看看附近哪家店」按钮：无缓存位置时先让用户在地图上确认位置
+  findNearby: function() {
+    var that = this;
+    var loc = nearbyUtil.getCachedLocation();
+    if (loc) {
+      this.doSearchNearby(loc);
+      return;
+    }
+    nearbyUtil.chooseLocation(function(picked) {
+      if (picked) that.doSearchNearby(picked);
+    });
+  },
+
+  doSearchNearby: function(loc) {
+    var that = this;
+    var keyword = this.data.food.name;
+    if (!keyword) return;
+    this.setData({ nearbyLoading: true, nearbyShop: null, markers: [] });
+
+    nearbyUtil.searchNearby(keyword, loc.latitude, loc.longitude, function(list) {
+      if (list.length === 0) {
+        that.setData({ nearbyLoading: false });
+        wx.showToast({ title: '附近没搜到「' + keyword + '」', icon: 'none' });
+        return;
+      }
+      var nearest = list[0];
+      // 最多标 5 家，最近一家常显气泡
+      var markers = list.map(function(item, index) {
+        return {
+          id: index,
+          latitude: item.location.lat,
+          longitude: item.location.lng,
+          iconPath: '/images/marker_food.png',
+          width: 28,
+          height: 35,
+          callout: {
+            content: item.title + '  ' + nearbyUtil.formatDistance(item._distance),
+            fontSize: 12,
+            borderRadius: 8,
+            padding: 6,
+            display: index === 0 ? 'ALWAYS' : 'BYCLICK'
+          }
+        };
+      });
+      that.setData({
+        nearbyLoading: false,
+        nearbyShop: {
+          title: nearest.title,
+          address: nearest.address,
+          distanceText: nearbyUtil.formatDistance(nearest._distance),
+          latitude: nearest.location.lat,
+          longitude: nearest.location.lng
+        },
+        markers: markers,
+        mapLatitude: nearest.location.lat,
+        mapLongitude: nearest.location.lng
+      });
+    });
+  },
+
+  // 点卡片/导航按钮：打开微信内置地图，可一键导航过去
+  openNavigation: function() {
+    var shop = this.data.nearbyShop;
+    if (!shop) return;
+    wx.openLocation({
+      latitude: shop.latitude,
+      longitude: shop.longitude,
+      name: shop.title,
+      address: shop.address,
+      scale: 16
+    });
   },
 
   // 返回首页

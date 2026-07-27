@@ -18,6 +18,12 @@
     "backgroundTextStyle": "light"
   },
   "lazyCodeLoading":"requiredComponents",
+  "requiredPrivateInfos": ["chooseLocation"],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于查找你附近有这道菜的餐馆"
+    }
+  },
   "tabBar": {
     "color": "#999999",
     "selectedColor": "#4A7BF7",
