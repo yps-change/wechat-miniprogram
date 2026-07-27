@@ -15,7 +15,7 @@
  */
 var logger = require('./logger.js');
 
-var LBS_KEY = ''; // TODO: 填入腾讯位置服务 Key 后，附近功能自动启用
+var LBS_KEY = 'HYVBZ-IBJWM-X2T6Y-6NHX2-O65Q2-XUBQU'; // 腾讯位置服务 Key，附近功能已启用
 
 var LOCATION_CACHE_KEY = 'cached_user_location';
 var LOCATION_TTL = 30 * 60 * 1000; // 位置缓存 30 分钟
