@@ -1,6 +1,7 @@
 var foodsData = require('../../data/foods.js');
 var randomUtil = require('../../utils/random.js');
 var logger = require('../../utils/logger.js');
+var subscribeUtil = require('../../utils/subscribe.js');
 
 Page({
   data: {
@@ -32,6 +33,9 @@ Page({
     var food = this.data.food;
     if (!food || !food.id) return;
     logger.info('result', '确认选择并写入历史=' + food.name);
+
+    // 确认时机请求饭点提醒订阅（必须处于点击调用链中）
+    subscribeUtil.requestMealReminder();
 
     var history = wx.getStorageSync('food_history') || [];
     history.unshift({

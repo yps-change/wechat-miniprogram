@@ -1,6 +1,7 @@
 var foodsData = require('../../data/foods.js');
 var shareUtil = require('../../utils/share.js');
 var logger = require('../../utils/logger.js');
+var subscribeUtil = require('../../utils/subscribe.js');
 
 function createSessionId() {
   return Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 10);
@@ -168,6 +169,9 @@ Page({
     var food = this.data.receivedFood;
     if (!food || !food.name) return;
     var addedKey = this.receivedAddedKey(food.name);
+
+    // 加入历史的点击时机，顺带请求饭点提醒订阅
+    subscribeUtil.requestMealReminder();
 
     if (!this.data.added && !wx.getStorageSync(addedKey)) {
       var history = wx.getStorageSync('food_history') || [];
