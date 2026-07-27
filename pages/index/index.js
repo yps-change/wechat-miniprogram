@@ -110,13 +110,10 @@ Page({
     customMenu: [],
     useCustomMenu: false,
     poolLabel: '默认美食库',
-    // 附近餐馆（结果弹窗内展示，需配置腾讯位置服务 Key）
+    // 附近餐馆（结果弹窗内一行入口，需配置腾讯位置服务 Key）
     nearbyEnabled: false,
     nearbyLoading: false,
-    nearbyShop: null,
-    markers: [],
-    mapLatitude: 0,
-    mapLongitude: 0
+    nearbyShop: null
   },
 
   // 转盘状态
@@ -588,9 +585,9 @@ Page({
     });
   },
 
-  // ========== 附近餐馆（结果弹窗内） ==========
+  // ========== 附近餐馆（弹窗内一行入口，详情在 pages/nearby） ==========
 
-  // 有缓存位置时静默自动搜索；没有则等用户点按钮
+  // 有缓存位置时静默搜最近一家，用于入口文案；没有则显示引导入口
   autoSearchNearby: function() {
     if (!this.data.nearbyEnabled) return;
     var loc = nearbyUtil.getCachedLocation();
@@ -598,97 +595,53 @@ Page({
       this.doSearchNearby(loc);
     } else {
       // 清掉上一道菜的旧结果
-      this.setData({ nearbyShop: null, markers: [] });
+      this.setData({ nearbyShop: null });
     }
-  },
-
-  // 「看看附近哪家店」按钮：无缓存位置时先让用户在地图上确认位置
-  findNearby: function() {
-    var that = this;
-    var loc = nearbyUtil.getCachedLocation();
-    if (loc) {
-      this.doSearchNearby(loc);
-      return;
-    }
-    nearbyUtil.chooseLocation(function(picked) {
-      if (picked) that.doSearchNearby(picked);
-    });
   },
 
   doSearchNearby: function(loc) {
     var that = this;
     var keyword = this.data.currentFood.name;
     if (!keyword) return;
-    this.setData({ nearbyLoading: true, nearbyShop: null, markers: [] });
+    this.setData({ nearbyLoading: true, nearbyShop: null });
 
     nearbyUtil.searchNearby(keyword, loc.latitude, loc.longitude, function(list) {
-      // 弹窗已关闭则丢弃结果
-      if (!that.data.showResult) {
+      // 弹窗已关闭或已换菜则丢弃结果
+      if (!that.data.showResult || that.data.currentFood.name !== keyword) {
         that.setData({ nearbyLoading: false });
         return;
       }
       if (list.length === 0) {
         that.setData({ nearbyLoading: false });
-        wx.showToast({ title: '附近没搜到「' + keyword + '」', icon: 'none' });
         return;
       }
       var nearest = list[0];
-      // 最多标 5 家，最近一家常显气泡
-      var markers = list.map(function(item, index) {
-        return {
-          id: index,
-          latitude: item.location.lat,
-          longitude: item.location.lng,
-          iconPath: '/images/marker_food.png',
-          width: 28,
-          height: 35,
-          callout: {
-            content: item.title + '  ' + nearbyUtil.formatDistance(item._distance),
-            fontSize: 12,
-            borderRadius: 8,
-            padding: 6,
-            display: index === 0 ? 'ALWAYS' : 'BYCLICK'
-          }
-        };
-      });
       that.setData({
         nearbyLoading: false,
         nearbyShop: {
           title: nearest.title,
-          address: nearest.address,
-          distanceText: nearbyUtil.formatDistance(nearest._distance),
-          latitude: nearest.location.lat,
-          longitude: nearest.location.lng
-        },
-        markers: markers,
-        mapLatitude: nearest.location.lat,
-        mapLongitude: nearest.location.lng
+          distanceText: nearbyUtil.formatDistance(nearest._distance)
+        }
       });
     });
   },
 
-  // 点卡片：打开微信内置地图，可一键导航过去
-  openNavigation: function() {
-    var shop = this.data.nearbyShop;
-    if (!shop) return;
-    wx.openLocation({
-      latitude: shop.latitude,
-      longitude: shop.longitude,
-      name: shop.title,
-      address: shop.address,
-      scale: 16
-    });
+  // 点入口进入全屏地图页（无位置时由该页引导选点）
+  goToNearby: function() {
+    var keyword = this.data.currentFood.name;
+    if (!keyword) return;
+    wx.navigateTo({ url: '/pages/nearby/nearby?keyword=' + encodeURIComponent(keyword) });
   },
 
   // ========== 关闭结果弹窗 ==========
   dismissResult: function() {
     if (this.data.absorbingResult) return;
-    this.setData({ showResult: false, nearbyShop: null, markers: [], nearbyLoading: false });
+    this.setData({ showResult: false, nearbyShop: null, nearbyLoading: false });
   },
 
   // ========== 弹窗内再转一次 ==========
   onSpinAgain: function() {
-    this.setData({ showResult: false, nearbyShop: null, markers: [], nearbyLoading: false });
+    this.setData({ showResult: false, nearbyShop: null, nearbyLoading: false });
     var that = this;
     setTimeout(function() {
       that.onSpin();

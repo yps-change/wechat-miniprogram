@@ -1,0 +1,49 @@
+<view class="nearby-page">
+  <!-- 上半屏：大地图 -->
+  <map class="big-map"
+    latitude="{{mapLatitude}}"
+    longitude="{{mapLongitude}}"
+    scale="15"
+    markers="{{markers}}"
+    show-location="{{true}}"
+    enable-zoom="{{true}}"
+    enable-scroll="{{true}}"
+    bindmarkertap="onMarkerTap"
+    wx:if="{{shops.length > 0}}"></map>
+
+  <!-- 下半屏：店铺列表 -->
+  <view class="shop-panel" wx:if="{{shops.length > 0}}">
+    <view class="panel-header">
+      <text class="panel-title">附近 {{shops.length}} 家「{{keyword}}」</text>
+      <text class="relocate-btn" bindtap="onRelocate">📍 换个位置</text>
+    </view>
+    <scroll-view class="shop-list" scroll-y>
+      <view class="shop-item {{activeIndex === index ? 'active' : ''}}"
+        wx:for="{{shops}}" wx:key="index"
+        data-index="{{index}}" bindtap="onSelectShop">
+        <view class="shop-rank {{index === 0 ? 'top' : ''}}">{{index + 1}}</view>
+        <view class="shop-info">
+          <text class="shop-title">{{item.title}}</text>
+          <text class="shop-address">{{item.address}}</text>
+        </view>
+        <view class="shop-right">
+          <text class="shop-distance">{{item.distanceText}}</text>
+          <view class="shop-nav-btn" catchtap="onNavigate" data-index="{{index}}">导航</view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="state-view" wx:if="{{loading}}">
+    <text class="state-emoji">🔍</text>
+    <text class="state-text">正在找附近的「{{keyword}}」…</text>
+  </view>
+
+  <!-- 空结果 -->
+  <view class="state-view" wx:if="{{!loading && shops.length === 0}}">
+    <text class="state-emoji">🤷</text>
+    <text class="state-text">附近 3 公里没搜到「{{keyword}}」</text>
+    <view class="state-btn" bindtap="onRelocate">📍 换个位置试试</view>
+  </view>
+</view>

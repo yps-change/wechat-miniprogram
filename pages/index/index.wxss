@@ -453,98 +453,43 @@
   border-radius: 16rpx;
 }
 
-/* ========== 结果弹窗内：附近餐馆 ========== */
-.nearby-section {
-  width: 100%;
-  margin-top: 20rpx;
-  position: relative;
-  z-index: 1;
-}
-
-.nearby-map {
-  width: 100%;
-  height: 280rpx;
-  border-radius: 20rpx;
-  overflow: hidden;
-}
-
-.nearby-card {
+/* ========== 结果弹窗内：附近餐馆一行入口 ========== */
+.nearby-entry {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 12rpx;
-  padding: 16rpx 20rpx;
-  background: #F6F8FF;
-  border-radius: 16rpx;
+  width: 100%;
+  margin-top: 20rpx;
+  padding: 16rpx 24rpx;
+  background: #EBF0FF;
+  border-radius: 40rpx;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
 }
 
-.nearby-card-main {
-  display: flex;
-  flex-direction: column;
+.nearby-entry-text {
   flex: 1;
   min-width: 0;
-  margin-right: 12rpx;
-}
-
-.nearby-card-title {
-  font-size: 26rpx;
-  font-weight: 700;
-  color: #1A1A1A;
+  font-size: 25rpx;
+  font-weight: 600;
+  color: #4A7BF7;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.nearby-card-address {
-  margin-top: 6rpx;
-  font-size: 22rpx;
+.nearby-entry-text.loading {
   color: #999;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-weight: 400;
 }
 
-.nearby-card-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+.nearby-entry-arrow {
   flex-shrink: 0;
-}
-
-.nearby-card-distance {
-  font-size: 28rpx;
+  margin-left: 8rpx;
+  font-size: 30rpx;
   font-weight: 700;
-  color: #FF6B6B;
-}
-
-.nearby-card-nav {
-  margin-top: 4rpx;
-  font-size: 22rpx;
   color: #4A7BF7;
-  font-weight: 600;
-}
-
-.nearby-loading {
-  padding: 20rpx 0;
-  text-align: center;
-  font-size: 24rpx;
-  color: #999;
-}
-
-.nearby-btn {
-  width: 100%;
-  padding: 18rpx 0;
-  background: #EBF0FF;
-  color: #4A7BF7;
-  border: none;
-  border-radius: 50rpx;
-  font-size: 26rpx;
-  font-weight: 600;
-  line-height: 1.4;
-}
-
-.nearby-btn::after {
-  border: none;
 }
 
 /* ========== 操作按钮（首页） ========== */

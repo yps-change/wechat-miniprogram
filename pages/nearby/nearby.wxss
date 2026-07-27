@@ -1,0 +1,163 @@
+page {
+  height: 100%;
+  background: #F0F5FF;
+}
+
+.nearby-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* ========== 大地图 ========== */
+.big-map {
+  width: 100%;
+  height: 52vh;
+  flex-shrink: 0;
+}
+
+/* ========== 店铺面板 ========== */
+.shop-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  margin-top: -24rpx;
+  background: #FFFFFF;
+  border-radius: 24rpx 24rpx 0 0;
+  box-shadow: 0 -8rpx 24rpx rgba(0,0,0,0.06);
+  position: relative;
+  z-index: 1;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28rpx 30rpx 16rpx;
+}
+
+.panel-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1A1A1A;
+}
+
+.relocate-btn {
+  font-size: 24rpx;
+  color: #4A7BF7;
+  font-weight: 600;
+}
+
+.shop-list {
+  flex: 1;
+  min-height: 0;
+}
+
+.shop-item {
+  display: flex;
+  align-items: center;
+  padding: 22rpx 30rpx;
+  border-bottom: 1rpx solid #F2F4F8;
+}
+
+.shop-item.active {
+  background: #F6F8FF;
+}
+
+.shop-rank {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background: #E8ECF5;
+  color: #888;
+  font-size: 24rpx;
+  font-weight: 700;
+  text-align: center;
+  line-height: 40rpx;
+  flex-shrink: 0;
+  margin-right: 20rpx;
+}
+
+.shop-rank.top {
+  background: #FF6B6B;
+  color: #FFFFFF;
+}
+
+.shop-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  margin-right: 16rpx;
+}
+
+.shop-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1A1A1A;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.shop-address {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: #999;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.shop-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.shop-distance {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #FF6B6B;
+}
+
+.shop-nav-btn {
+  margin-top: 8rpx;
+  padding: 6rpx 24rpx;
+  background: #4A7BF7;
+  color: #FFFFFF;
+  font-size: 22rpx;
+  font-weight: 600;
+  border-radius: 24rpx;
+}
+
+/* ========== 加载/空状态 ========== */
+.state-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20rpx;
+}
+
+.state-emoji {
+  font-size: 88rpx;
+}
+
+.state-text {
+  font-size: 28rpx;
+  color: #888;
+}
+
+.state-btn {
+  margin-top: 10rpx;
+  padding: 16rpx 48rpx;
+  background: #4A7BF7;
+  color: #FFFFFF;
+  font-size: 26rpx;
+  font-weight: 600;
+  border-radius: 40rpx;
+}
