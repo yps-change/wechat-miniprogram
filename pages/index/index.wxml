@@ -16,6 +16,32 @@
         <text class="tag" wx:for="{{currentFood.tags}}" wx:key="*this">{{tagNames[item] || item}}</text>
       </view>
 
+      <!-- 附近餐馆（配置腾讯位置服务 Key 后启用） -->
+      <view class="nearby-section" wx:if="{{nearbyEnabled}}">
+        <block wx:if="{{nearbyShop}}">
+          <map class="nearby-map"
+            latitude="{{mapLatitude}}"
+            longitude="{{mapLongitude}}"
+            scale="15"
+            markers="{{markers}}"
+            show-location="{{true}}"
+            enable-zoom="{{true}}"
+            enable-scroll="{{true}}"></map>
+          <view class="nearby-card" bindtap="openNavigation">
+            <view class="nearby-card-main">
+              <text class="nearby-card-title">📍 最近：{{nearbyShop.title}}</text>
+              <text class="nearby-card-address">{{nearbyShop.address}}</text>
+            </view>
+            <view class="nearby-card-right">
+              <text class="nearby-card-distance">{{nearbyShop.distanceText}}</text>
+              <text class="nearby-card-nav">导航 ›</text>
+            </view>
+          </view>
+        </block>
+        <view class="nearby-loading" wx:elif="{{nearbyLoading}}">🔍 正在找附近的「{{currentFood.name}}」…</view>
+        <button class="nearby-btn" wx:else bindtap="findNearby">📍 看看附近哪家店有「{{currentFood.name}}」</button>
+      </view>
+
       <text class="result-draw-tip">🤝 拿不准？发给好友帮你拍板</text>
 
       <!-- 弹窗内操作按钮 -->
