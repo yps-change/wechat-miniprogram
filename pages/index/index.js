@@ -626,6 +626,13 @@ Page({
     };
   },
 
+  // 朋友圈分享：单页模式打开首页转盘
+  onShareTimeline: function() {
+    return {
+      title: '🎯 今天吃什么？让转盘帮你决定！'
+    };
+  },
+
   goToCoupons: function() {
     wx.navigateTo({ url: '/pages/coupons/coupons' });
   },

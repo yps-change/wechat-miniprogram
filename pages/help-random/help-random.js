@@ -51,5 +51,12 @@ Page({
       title: '今天吃什么？来随机一个！',
       path: '/pages/index/index'
     };
+  },
+
+  // 朋友圈分享：单页模式打开本页，不带参数也可直接摇
+  onShareTimeline: function() {
+    return {
+      title: '🎲 今天吃什么？摇一下就知道！'
+    };
   }
 });

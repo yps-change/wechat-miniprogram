@@ -111,5 +111,12 @@ Page({
       title: '🍜 帮我推荐一道今天的午饭吧，纠结中…',
       path: shareUtil.buildRecommendSharePath(menuNames, sessionId)
     };
+  },
+
+  // 朋友圈分享：单页模式打开本页，展示专属菜单玩法
+  onShareTimeline: function() {
+    return {
+      title: '🍱 我的专属外卖菜单，再也不纠结吃什么！'
+    };
   }
 });

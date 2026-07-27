@@ -37,5 +37,12 @@ Page({
       title: '帮我从这几个里选一个吧！',
       path: shareUtil.buildChooseSharePath(ids, '好友')
     };
+  },
+
+  // 朋友圈分享：单页模式打开本页会重新随机一批候选，直接可玩
+  onShareTimeline: function() {
+    return {
+      title: '🍽️ 四选一，今天吃哪个？'
+    };
   }
 });

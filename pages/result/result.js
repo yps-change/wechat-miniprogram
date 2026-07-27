@@ -66,5 +66,23 @@ Page({
   // 返回首页
   goBack: function() {
     wx.navigateBack();
+  },
+
+  // 好友分享：晒抽签结果，好友打开还原同一道菜
+  onShareAppMessage: function() {
+    var food = this.data.food;
+    return {
+      title: food.name ? '🎉 今天就吃「' + food.name + '」！你也来抽一个？' : '今天吃什么？来抽一个！',
+      path: food.id ? '/pages/result/result?id=' + food.id : '/pages/index/index'
+    };
+  },
+
+  // 朋友圈分享：单页模式带 id 还原结果页
+  onShareTimeline: function() {
+    var food = this.data.food;
+    return {
+      title: food.name ? '🎉 今天就吃「' + food.name + '」！你也来抽一个？' : '🎯 今天吃什么？抽一个！',
+      query: food.id ? 'id=' + food.id : ''
+    };
   }
 });

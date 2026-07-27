@@ -245,5 +245,24 @@ Page({
         this.data.candidates.map(function(food) { return food.name; }),
         '好友', this.data.sessionId)
     };
+  },
+
+  // 朋友圈分享：单页模式以当前 query 打开本页
+  onShareTimeline: function() {
+    var mode = this.data.mode;
+    // received：晒好友安利的结果，打开后还原同一张推荐卡片
+    if (mode === 'received' && this.data.receivedFood.name) {
+      return {
+        title: '😋 好友安利了「' + this.data.receivedFood.name + '」，你也来试试！',
+        query: 'mode=received&recommend=' + encodeURIComponent(this.data.receivedFood.name) +
+          '&from=' + encodeURIComponent(this.data.fromName) +
+          '&sessionId=' + encodeURIComponent(this.data.sessionId)
+      };
+    }
+    // 其他模式：作为通用入口，打开后是自由推荐页
+    return {
+      title: '🍜 选择困难星人自救神器，今天吃什么一挑就定！',
+      query: 'mode=recommend'
+    };
   }
 });
