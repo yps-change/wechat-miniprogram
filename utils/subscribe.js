@@ -17,7 +17,12 @@ var MEAL_REMINDER_TMPL_ID = 'Yq-OXFyqYMHS5uDMHndI3lnEXUCZE9k0tBK3uv84iBI';
 function requestMealReminder() {
   // 当天明确拒绝过就不再打扰，避免反感
   var today = new Date().toDateString();
-  if (wx.getStorageSync('meal_reminder_reject_date') === today) return;
+  if (wx.getStorageSync('meal_reminder_reject_date') === today) {
+    logger.info('subscribe', '今日已拒绝过，跳过订阅请求');
+    return;
+  }
+
+  logger.info('subscribe', '发起订阅请求');
 
   wx.requestSubscribeMessage({
     tmplIds: [MEAL_REMINDER_TMPL_ID],
