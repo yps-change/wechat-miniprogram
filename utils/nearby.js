@@ -46,6 +46,17 @@ function chooseLocation(callback) {
     fail: function(err) {
       // 用户取消或未授权位置权限
       logger.warn('nearby', 'chooseLocation 取消/失败', err);
+      var msg = (err && err.errMsg) || '';
+      // 主动取消不打扰；真实错误（隐私未声明/权限被拒）给出可见提示
+      if (msg.indexOf('cancel') === -1) {
+        wx.showToast({
+          title: msg.indexOf('privacy') !== -1
+            ? '需先在后台配置隐私保护指引'
+            : '获取位置失败：' + msg,
+          icon: 'none',
+          duration: 3000
+        });
+      }
       callback(null);
     }
   });
