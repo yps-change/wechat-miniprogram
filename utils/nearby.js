@@ -102,7 +102,8 @@ function showDiagnostic(errMsg) {
   }
 }
 
-// 周边关键词搜索，按距离升序返回（最多 6 条），失败返回空数组
+// 周边关键词搜索，按距离升序返回（最多 6 条）
+// callback(list, errMsg)：errMsg 仅在接口/网络报错时有值（区别于"正常无结果"）
 function searchNearby(keyword, latitude, longitude, callback) {
   wx.request({
     url: 'https://apis.map.qq.com/ws/place/v1/search',
@@ -118,16 +119,20 @@ function searchNearby(keyword, latitude, longitude, callback) {
       var body = res.data;
       if (body && body.status === 0 && body.data && body.data.length > 0) {
         logger.info('nearby', '搜到 ' + body.data.length + ' 家「' + keyword + '」');
-        callback(body.data);
+        callback(body.data, null);
+      } else if (body && body.status !== 0) {
+        // Key 配额超限/未开通/签名错误等，继续换词也没用
+        logger.warn('nearby', '接口报错 status=' + body.status, body.message);
+        callback([], '接口错误(' + body.status + '): ' + (body.message || '未知'));
       } else {
-        logger.warn('nearby', '「' + keyword + '」无结果或接口报错', body && body.message);
-        callback([]);
+        logger.warn('nearby', '「' + keyword + '」无结果');
+        callback([], null);
       }
     },
     fail: function(err) {
       // 常见原因：域名未加白名单 / Key 未开通 WebServiceAPI
       logger.warn('nearby', '搜索请求失败', err);
-      callback([]);
+      callback([], '网络请求失败: ' + ((err && err.errMsg) || ''));
     }
   });
 }
@@ -175,17 +180,20 @@ function buildKeywordChain(name) {
 }
 
 // 智能搜索：沿关键词链逐级降级，保证尽量有结果
-// callback(list, usedKeyword)：usedKeyword 为实际命中的关键词，全部失败时 list 为空数组
+// callback(list, usedKeyword, errMsg)：接口级报错立即中止降级并回传 errMsg
 function searchNearbySmart(name, latitude, longitude, callback) {
   var chain = buildKeywordChain(name);
   var tryIndex = function(i) {
     if (i >= chain.length) {
-      callback([], null);
+      callback([], null, null);
       return;
     }
-    searchNearby(chain[i], latitude, longitude, function(list) {
-      if (list.length > 0) {
-        callback(list, chain[i]);
+    searchNearby(chain[i], latitude, longitude, function(list, errMsg) {
+      if (errMsg) {
+        // Key 配额/权限类错误，换词无意义
+        callback([], null, errMsg);
+      } else if (list.length > 0) {
+        callback(list, chain[i], null);
       } else {
         tryIndex(i + 1);
       }

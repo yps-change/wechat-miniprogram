@@ -123,10 +123,20 @@ Page({
     this.setData({ nearbyLoading: true, nearbyList: [], markers: [], nearbyNote: '' });
 
     // 智能降级搜索：原菜名→品类词→美食，保证尽量有结果
-    nearbyUtil.searchNearbySmart(keyword, loc.latitude, loc.longitude, function(list, usedKeyword) {
+    nearbyUtil.searchNearbySmart(keyword, loc.latitude, loc.longitude, function(list, usedKeyword, errMsg) {
       if (list.length === 0) {
         that.setData({ nearbyLoading: false });
-        wx.showToast({ title: '搜索失败，请检查网络后重试', icon: 'none' });
+        if (errMsg) {
+          // 接口级错误（配额超限/Key 配置问题等），弹出真实原因便于排查
+          wx.showModal({
+            title: '附近搜索失败',
+            content: errMsg,
+            showCancel: false,
+            confirmText: '知道了'
+          });
+        } else {
+          wx.showToast({ title: '附近实在没找到吃的 😅', icon: 'none' });
+        }
         return;
       }
       // 降级命中时提示用的是什么词
