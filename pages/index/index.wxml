@@ -2,53 +2,6 @@
   <!-- 粒子画布覆盖层 -->
   <canvas type="2d" id="particleCanvas" class="particle-canvas" bindtouchstart="onPageTouch"></canvas>
 
-  <!-- 结果弹窗（顶层） -->
-  <view class="result-popup {{showResult ? 'show' : ''}} {{absorbingResult ? 'absorbing' : ''}}" catchtap="dismissResult">
-    <view class="result-card" catchtap="">
-      <view class="result-glow"></view>
-      <text class="result-emoji">{{currentFood.emoji || '🍽️'}}</text>
-      <text class="result-name">{{currentFood.name || ''}}</text>
-      <view class="result-info">
-        <text class="result-category">{{currentFood.categoryName || ''}}</text>
-        <text class="result-price">￥{{currentFood.priceRange || ''}}</text>
-      </view>
-      <view class="result-tags" wx:if="{{currentFood.tags && currentFood.tags.length > 0}}">
-        <text class="tag" wx:for="{{currentFood.tags}}" wx:key="*this">{{tagNames[item] || item}}</text>
-      </view>
-
-      <!-- 附近餐馆一行入口（配置腾讯位置服务 Key 后启用，详情在全屏地图页） -->
-      <view class="nearby-entry" wx:if="{{nearbyEnabled}}" bindtap="goToNearby">
-        <block wx:if="{{nearbyShop}}">
-          <text class="nearby-entry-text">📍 最近 {{nearbyShop.distanceText}} · {{nearbyShop.title}}</text>
-        </block>
-        <block wx:elif="{{nearbyLoading}}">
-          <text class="nearby-entry-text loading">🔍 正在找附近的「{{currentFood.name}}」…</text>
-        </block>
-        <block wx:else>
-          <text class="nearby-entry-text">📍 看看附近哪家店有「{{currentFood.name}}」</text>
-        </block>
-        <text class="nearby-entry-arrow">›</text>
-      </view>
-
-      <text class="result-draw-tip">🤝 拿不准？发给好友帮你拍板</text>
-
-      <!-- 弹窗内操作按钮 -->
-      <view class="popup-actions">
-        <button class="popup-btn-confirm" bindtap="onConfirm">🔥 就它了</button>
-        <view class="popup-sub-actions">
-          <button class="popup-btn-again" bindtap="onSpinAgain">🎲 再转一次</button>
-          <button class="popup-btn-candidates" bindtap="goToCandidates">🎯 多来几个</button>
-        </view>
-        <button class="popup-btn-share" open-type="share" data-mode="random">📤 发给好友帮我抽</button>
-      </view>
-    </view>
-  </view>
-
-  <!-- 对齐原生历史 Tab 的落点反馈，不触发页面切换 -->
-  <view class="history-pulse" wx:if="{{historyPulse}}" aria-hidden="true">
-    <view class="history-pulse-icon">🗂️</view>
-  </view>
-
   <view class="container">
     <!-- 顶部标题区 -->
     <view class="header">

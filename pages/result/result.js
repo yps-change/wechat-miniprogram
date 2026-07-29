@@ -3,6 +3,7 @@ var randomUtil = require('../../utils/random.js');
 var logger = require('../../utils/logger.js');
 var subscribeUtil = require('../../utils/subscribe.js');
 var nearbyUtil = require('../../utils/nearby.js');
+var foodPool = require('../../utils/food-pool.js');
 
 Page({
   data: {
@@ -13,7 +14,8 @@ Page({
       heavy: '重口味',
       sweet: '偏甜',
       sour: '酸爽',
-      fresh: '鲜美'
+      fresh: '鲜美',
+      custom: '专属'
     },
     // 附近餐馆（需配置腾讯位置服务 Key 后启用）
     nearbyEnabled: false,
@@ -26,15 +28,20 @@ Page({
 
   onLoad: function(options) {
     this.setData({ nearbyEnabled: nearbyUtil.isEnabled() });
+    var food = null;
     if (options.id) {
+      // 默认菜库菜品
       var id = parseInt(options.id, 10);
-      var food = foodsData.foods.find(function(f) {
+      food = foodsData.foods.find(function(f) {
         return f.id === id;
       });
-      if (food) {
-        this.setData({ food: food });
-        this.autoSearchNearby();
-      }
+    } else if (options.name) {
+      // 专属菜单菜品（转盘传 name 进来）
+      food = foodPool.normalizeCustomFood(decodeURIComponent(options.name), 0);
+    }
+    if (food) {
+      this.setData({ food: food });
+      this.autoSearchNearby();
     }
   },
 
@@ -53,7 +60,7 @@ Page({
       foodName: food.name,
       emoji: food.emoji,
       timestamp: Date.now(),
-      source: 'self'
+      source: food.isCustom ? 'custom' : 'self'
     });
     if (history.length > 50) {
       history = history.slice(0, 50);
@@ -71,9 +78,10 @@ Page({
     }, 1500);
   },
 
-  // 换一个（随机新菜品刷新本页）
+  // 换一个（与转盘同池随机，刷新本页）
   onAgain: function() {
-    var food = randomUtil.getRandomOne(foodsData.foods);
+    var food = randomUtil.getRandomOne(foodPool.getPool());
+    if (!food) return;
     this.setData({ food: food });
     // 新菜名重新搜附近
     this.autoSearchNearby();
@@ -171,21 +179,31 @@ Page({
     wx.navigateBack();
   },
 
+  // 分享还原参数：默认菜品用 id，专属菜品用 name
+  buildShareQuery: function() {
+    var food = this.data.food;
+    if (!food || !food.id) return '';
+    return food.isCustom
+      ? 'name=' + encodeURIComponent(food.name)
+      : 'id=' + food.id;
+  },
+
   // 好友分享：晒抽签结果，好友打开还原同一道菜
   onShareAppMessage: function() {
     var food = this.data.food;
+    var query = this.buildShareQuery();
     return {
       title: food.name ? '🎉 今天就吃「' + food.name + '」！你也来抽一个？' : '今天吃什么？来抽一个！',
-      path: food.id ? '/pages/result/result?id=' + food.id : '/pages/index/index'
+      path: query ? '/pages/result/result?' + query : '/pages/index/index'
     };
   },
 
-  // 朋友圈分享：单页模式带 id 还原结果页
+  // 朋友圈分享：单页模式带参还原结果页
   onShareTimeline: function() {
     var food = this.data.food;
     return {
       title: food.name ? '🎉 今天就吃「' + food.name + '」！你也来抽一个？' : '🎯 今天吃什么？抽一个！',
-      query: food.id ? 'id=' + food.id : ''
+      query: this.buildShareQuery()
     };
   }
 });

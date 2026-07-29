@@ -2,7 +2,7 @@ var foodsData = require('../../data/foods.js');
 var randomUtil = require('../../utils/random.js');
 var shareUtil = require('../../utils/share.js');
 var logger = require('../../utils/logger.js');
-var nearbyUtil = require('../../utils/nearby.js');
+var foodPool = require('../../utils/food-pool.js');
 
 // 转盘扇区颜色（高对比度、明亮清晰）
 var WHEEL_COLORS = [
@@ -26,94 +26,17 @@ var PARTICLE_COLORS = [
   '#00FA9A', '#3CB371', '#2E8B57'
 ];
 
-// 标签名映射
-var TAG_NAMES = {
-  spicy: '辣', mild: '清淡', heavy: '重口味',
-  sweet: '偏甜', sour: '酸爽', fresh: '鲜美', custom: '专属'
-};
-
 // 转盘上展示的菜品数
 var WHEEL_SLOTS = 8;
 
-// 根据菜名智能匹配 emoji（顺序敏感：更具体的关键词在前）
-var EMOJI_RULES = [
-  [['寿司', '刺身', '生鱼片'], '🍣'],
-  [['天妇罗', '虾'], '🍤'],
-  [['咖喱'], '🍛'],
-  [['汉堡', '堡'], '🍔'],
-  [['披萨', '比萨', '匹萨'], '🍕'],
-  [['薯条'], '🍟'],
-  [['沙拉', '轻食', '蔬菜'], '🥗'],
-  [['三明治'], '🥪'],
-  [['牛油果'], '🥑'],
-  [['粥'], '🥣'],
-  [['饺', '馄饨', '云吞', '烧麦', '肠粉', '包'], '🥟'],
-  [['煎饼', '肉夹馍', '馍', '饼'], '🫓'],
-  [['卷'], '🌯'],
-  [['串串', '串'], '🍢'],
-  [['火锅', '麻辣烫', '冒菜', '香锅', '锅'], '🍲'],
-  [['鸭', '鹅'], '🦆'],
-  [['鱼'], '🐟'],
-  [['鸡'], '🍗'],
-  [['牛排', '排', '牛肉', '肉'], '🥩'],
-  [['麻辣', '辣', '川'], '🌶️'],
-  [['蛋'], '🍳'],
-  [['面', '粉', '米线'], '🍜'],
-  [['饭', '煲仔'], '🍚'],
-  [['奶', '酸奶'], '🥛']
-];
-
-function guessEmoji(name) {
-  var cleanName = (name || '').trim();
-  if (!cleanName) return '🍽️';
-  // 1. 默认菜品库精确匹配
-  var foods = foodsData.foods || [];
-  for (var i = 0; i < foods.length; i++) {
-    if (foods[i].name === cleanName && foods[i].emoji) return foods[i].emoji;
-  }
-  // 2. 关键词匹配
-  for (var r = 0; r < EMOJI_RULES.length; r++) {
-    var keys = EMOJI_RULES[r][0];
-    for (var k = 0; k < keys.length; k++) {
-      if (cleanName.indexOf(keys[k]) !== -1) return EMOJI_RULES[r][1];
-    }
-  }
-  // 3. 兜底
-  return '🍽️';
-}
-
-function normalizeCustomFood(name, index) {
-  var cleanName = (name || '').trim();
-  return {
-    id: 'custom_' + cleanName + '_' + index,
-    name: cleanName,
-    category: 'custom',
-    categoryName: '专属菜单',
-    tags: ['custom'],
-    priceRange: '自定',
-    priceLevel: 1,
-    emoji: guessEmoji(cleanName),
-    isCustom: true
-  };
-}
-
 Page({
   data: {
-    currentFood: {},
-    showResult: false,
     spinning: false,
     lightOn: true,
     comboCount: 0,
-    tagNames: TAG_NAMES,
-    absorbingResult: false,
-    historyPulse: false,
     customMenu: [],
     useCustomMenu: false,
-    poolLabel: '默认美食库',
-    // 附近餐馆（结果弹窗内一行入口，需配置腾讯位置服务 Key）
-    nearbyEnabled: false,
-    nearbyLoading: false,
-    nearbyShop: null
+    poolLabel: '默认美食库'
   },
 
   // 转盘状态
@@ -140,7 +63,6 @@ Page({
 
   onLoad: function() {
     logger.info('index', 'onLoad');
-    this.setData({ nearbyEnabled: nearbyUtil.isEnabled() });
     this.loadCustomMenu();
   },
 
@@ -179,7 +101,7 @@ Page({
   loadCustomMenu: function() {
     var rawMenu = wx.getStorageSync('custom_food_menu') || [];
     var customMenu = rawMenu.map(function(name, index) {
-      return normalizeCustomFood(name, index);
+      return foodPool.normalizeCustomFood(name, index);
     });
     var useCustomMenu = wx.getStorageSync('use_custom_food_menu');
     useCustomMenu = useCustomMenu === '' ? customMenu.length > 0 : !!useCustomMenu;
@@ -343,15 +265,17 @@ Page({
     }
     var combo = this.data.comboCount + 1;
     logger.info('index', '一键出结果=' + food.name);
-    this.setData({
-      comboCount: combo,
-      currentFood: food,
-      showResult: true,
-      absorbingResult: false
-    });
+    this.setData({ comboCount: combo });
     wx.vibrateShort({ type: 'light' });
-    this.triggerResultExplosion();
-    this.autoSearchNearby();
+    this.goToResult(food);
+  },
+
+  // 跳转到结果页（自定义菜品用 name 传参，默认菜品用 id）
+  goToResult: function(food) {
+    var url = food.isCustom
+      ? '/pages/result/result?name=' + encodeURIComponent(food.name)
+      : '/pages/result/result?id=' + food.id;
+    wx.navigateTo({ url: url });
   },
 
   // ========== 转盘旋转 ==========
@@ -364,11 +288,6 @@ Page({
       return;
     }
     logger.info('index', '点击开始转盘');
-
-    // 重置结果
-    if (this.data.showResult) {
-      this.setData({ showResult: false });
-    }
 
     // 连击计数
     var combo = this.data.comboCount + 1;
@@ -412,15 +331,12 @@ Page({
         that.setData({ spinning: false });
         var selectedFood = that.wheelFoods[targetIndex];
         logger.info('index', '转盘停止，结果=' + selectedFood.name);
-        that.setData({
-          currentFood: selectedFood,
-          showResult: true,
-          absorbingResult: false
-        });
         wx.vibrateShort({ type: 'light' });
-        // 触发爆炸特效
+        // 爆炸特效稍作停留后跳转结果页
         that.triggerResultExplosion();
-        that.autoSearchNearby();
+        setTimeout(function() {
+          that.goToResult(selectedFood);
+        }, 500);
       }
     };
 
@@ -583,118 +499,6 @@ Page({
     this.particleCanvas.requestAnimationFrame(function() {
       that.animateParticles();
     });
-  },
-
-  // ========== 附近餐馆（弹窗内一行入口，详情在 pages/nearby） ==========
-
-  // 有缓存位置时静默搜最近一家，用于入口文案；没有则显示引导入口
-  autoSearchNearby: function() {
-    if (!this.data.nearbyEnabled) return;
-    var loc = nearbyUtil.getCachedLocation();
-    if (loc) {
-      this.doSearchNearby(loc);
-    } else {
-      // 清掉上一道菜的旧结果
-      this.setData({ nearbyShop: null });
-    }
-  },
-
-  doSearchNearby: function(loc) {
-    var that = this;
-    var keyword = this.data.currentFood.name;
-    if (!keyword) return;
-    this.setData({ nearbyLoading: true, nearbyShop: null });
-
-    nearbyUtil.searchNearby(keyword, loc.latitude, loc.longitude, function(list) {
-      // 弹窗已关闭或已换菜则丢弃结果
-      if (!that.data.showResult || that.data.currentFood.name !== keyword) {
-        that.setData({ nearbyLoading: false });
-        return;
-      }
-      if (list.length === 0) {
-        that.setData({ nearbyLoading: false });
-        return;
-      }
-      var nearest = list[0];
-      that.setData({
-        nearbyLoading: false,
-        nearbyShop: {
-          title: nearest.title,
-          distanceText: nearbyUtil.formatDistance(nearest._distance)
-        }
-      });
-    });
-  },
-
-  // 点入口进入全屏地图页（无位置时由该页引导选点）
-  goToNearby: function() {
-    var keyword = this.data.currentFood.name;
-    if (!keyword) return;
-    wx.navigateTo({ url: '/pages/nearby/nearby?keyword=' + encodeURIComponent(keyword) });
-  },
-
-  // ========== 关闭结果弹窗 ==========
-  dismissResult: function() {
-    if (this.data.absorbingResult) return;
-    this.setData({ showResult: false, nearbyShop: null, nearbyLoading: false });
-  },
-
-  // ========== 弹窗内再转一次 ==========
-  onSpinAgain: function() {
-    this.setData({ showResult: false, nearbyShop: null, nearbyLoading: false });
-    var that = this;
-    setTimeout(function() {
-      that.onSpin();
-    }, 300);
-  },
-
-  // ========== 确认选择 ==========
-  onConfirm: function() {
-    var food = this.data.currentFood;
-    if (!food || !food.id || this.data.absorbingResult) return;
-    logger.info('index', '确认选择并写入历史=' + food.name);
-
-    // 先启动吸收动画：让点击立刻有反馈，存储 I/O 不挡首帧
-    // 动画窗口内暂停闪灯，避免额外 setData 抢占渲染
-    this.stopLightBlink();
-    this.setData({ absorbingResult: true });
-
-    // 历史写入全异步，避免同步存储阻塞 JS 线程导致动画/粒子掉帧
-    wx.getStorage({
-      key: 'food_history',
-      complete: function(res) {
-        var history = (res && res.data) || [];
-        history.unshift({
-          foodId: food.id,
-          foodName: food.name,
-          emoji: food.emoji,
-          timestamp: Date.now(),
-          source: food.isCustom ? 'custom' : 'self'
-        });
-        if (history.length > 50) history = history.slice(0, 50);
-        wx.setStorage({ key: 'food_history', data: history });
-      }
-    });
-
-    var that = this;
-    // 卡片抵达底部历史 Tab 的落点时触发一次轻震，并显示按钮脉冲
-    setTimeout(function() {
-      wx.vibrateShort({ type: 'light' });
-      that.setData({ historyPulse: true });
-    }, 700);
-
-    setTimeout(function() {
-      that.setData({
-        showResult: false,
-        absorbingResult: false
-      });
-      // 动画结束，恢复闪灯
-      that.startLightBlink();
-    }, 820);
-
-    setTimeout(function() {
-      that.setData({ historyPulse: false });
-    }, 1080);
   },
 
   goToCandidates: function() {

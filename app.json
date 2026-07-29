@@ -8,8 +8,7 @@
     "pages/menu/menu",
     "pages/coupons/coupons",
     "pages/coupons/coupon-detail/coupon-detail",
-    "pages/history/history",
-    "pages/nearby/nearby"
+    "pages/history/history"
   ],
   "window": {
     "navigationBarBackgroundColor": "#4A7BF7",
