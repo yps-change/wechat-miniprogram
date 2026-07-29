@@ -37,6 +37,14 @@ function getCachedLocation() {
 // 打开地图让用户确认位置（无需后台接口申请），成功后写缓存
 // 先主动触发隐私授权弹窗（基础库 2.32.3+），真机调试下被动弹窗经常不出来
 function chooseLocation(callback) {
+  // 诊断日志：确认平台侧隐私协议是否已生效
+  if (wx.getPrivacySetting) {
+    wx.getPrivacySetting({
+      success: function(res) {
+        logger.info('nearby', '隐私状态 needAuth=' + res.needAuthorization + ' contract=' + (res.privacyContractName || '无'));
+      }
+    });
+  }
   if (wx.requirePrivacyAuthorize) {
     wx.requirePrivacyAuthorize({
       success: function() { doChooseLocation(callback); },
