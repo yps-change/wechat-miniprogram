@@ -71,19 +71,35 @@ function doChooseLocation(callback) {
       // 用户取消或未授权位置权限
       logger.warn('nearby', 'chooseLocation 取消/失败', err);
       var msg = (err && err.errMsg) || '';
-      // 主动取消不打扰；真实错误（隐私授权未通过/权限被拒）给出可见提示
+      // 主动取消不打扰；真实错误弹出完整诊断信息（含平台隐私协议状态）便于排查
       if (msg.indexOf('cancel') === -1) {
-        wx.showToast({
-          title: msg.indexOf('privacy') !== -1
-            ? '隐私授权未生效，请退出小程序重进再试'
-            : '获取位置失败：' + msg,
-          icon: 'none',
-          duration: 3000
-        });
+        showDiagnostic(msg);
       }
       callback(null);
     }
   });
+}
+
+// 失败诊断弹窗：展示原始报错 + 平台侧隐私协议状态
+function showDiagnostic(errMsg) {
+  var show = function(privacyInfo) {
+    wx.showModal({
+      title: '定位失败诊断',
+      content: '报错: ' + errMsg + '\n' + privacyInfo,
+      showCancel: false,
+      confirmText: '知道了'
+    });
+  };
+  if (wx.getPrivacySetting) {
+    wx.getPrivacySetting({
+      success: function(res) {
+        show('需授权: ' + res.needAuthorization + '\n协议: ' + (res.privacyContractName || '未配置'));
+      },
+      fail: function() { show('隐私状态查询失败'); }
+    });
+  } else {
+    show('基础库不支持隐私接口(过旧)');
+  }
 }
 
 // 周边关键词搜索，按距离升序返回（最多 5 条），失败返回空数组
