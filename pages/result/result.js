@@ -129,13 +129,11 @@ Page({
         that.setData({ nearbyLoading: false });
         if (cacheOnly) return; // 静默模式无缓存：保留按钮等用户手动搜
         if (errMsg) {
-          // 接口级错误（配额超限/Key 配置问题等），弹出真实原因便于排查
-          wx.showModal({
-            title: '附近搜索失败',
-            content: errMsg,
-            showCancel: false,
-            confirmText: '知道了'
-          });
+          // 接口暂时不可用（多为每日免费配额用尽），给用户友好提示
+          var friendly = errMsg.indexOf('(121)') !== -1
+            ? '今天查附近的人太多啦，明天再来试试吧'
+            : '附近搜索暂时不可用，请稍后再试';
+          wx.showToast({ title: friendly, icon: 'none', duration: 2500 });
         } else {
           wx.showToast({ title: '附近实在没找到吃的 😅', icon: 'none' });
         }
