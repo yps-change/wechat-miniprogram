@@ -31,23 +31,29 @@
 
   <!-- 附近餐馆（配置腾讯位置服务 Key 后显示） -->
   <view class="nearby-section" wx:if="{{nearbyEnabled}}">
-    <block wx:if="{{nearbyShop}}">
+    <block wx:if="{{nearbyList.length > 0}}">
       <map class="nearby-map"
            latitude="{{mapLatitude}}"
            longitude="{{mapLongitude}}"
-           scale="15"
+           scale="14"
            markers="{{markers}}"
+           include-points="{{includePoints}}"
            show-location="{{true}}"
            enable-zoom="{{true}}"
            enable-scroll="{{true}}"></map>
-      <view class="nearby-card" bindtap="openNavigation">
-        <view class="nearby-info">
-          <text class="nearby-title">📍 最近：{{nearbyShop.title}}</text>
-          <text class="nearby-address">{{nearbyShop.address}}</text>
-        </view>
-        <view class="nearby-right">
-          <text class="nearby-distance">{{nearbyShop.distanceText}}</text>
-          <text class="nearby-nav">导航 ›</text>
+      <!-- 由近及远列表，点任意一家打开导航 -->
+      <view class="nearby-list">
+        <view class="nearby-item" wx:for="{{nearbyList}}" wx:key="rank"
+              data-index="{{index}}" bindtap="onShopTap">
+          <view class="nearby-rank {{index === 0 ? 'rank-first' : ''}}">{{item.rank}}</view>
+          <view class="nearby-info">
+            <text class="nearby-title">{{item.title}}</text>
+            <text class="nearby-address">{{item.address}}</text>
+          </view>
+          <view class="nearby-right">
+            <text class="nearby-distance">{{item.distanceText}}</text>
+            <text class="nearby-nav">导航 ›</text>
+          </view>
         </view>
       </view>
     </block>

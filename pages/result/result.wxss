@@ -201,20 +201,49 @@
 
 .nearby-map {
   width: 100%;
-  height: 340rpx;
+  height: 400rpx;
   border-radius: 24rpx;
   overflow: hidden;
 }
 
-.nearby-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+/* 由近及远列表 */
+.nearby-list {
   margin-top: 16rpx;
-  padding: 22rpx 26rpx;
   background: #FFFFFF;
   border-radius: 20rpx;
   box-shadow: 0 6rpx 20rpx rgba(74,123,247,0.12);
+  overflow: hidden;
+}
+
+.nearby-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  border-bottom: 1rpx solid #F2F4F8;
+}
+
+.nearby-item:last-child {
+  border-bottom: none;
+}
+
+.nearby-rank {
+  width: 40rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  text-align: center;
+  border-radius: 50%;
+  background: #F0F3FA;
+  color: #8A94A6;
+  font-size: 24rpx;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-right: 18rpx;
+}
+
+/* 最近一家高亮 */
+.nearby-rank.rank-first {
+  background: linear-gradient(135deg, #4A7BF7, #6C9BFF);
+  color: #FFFFFF;
 }
 
 .nearby-info {

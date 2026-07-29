@@ -20,8 +20,9 @@ Page({
     // 附近餐馆（需配置腾讯位置服务 Key 后启用）
     nearbyEnabled: false,
     nearbyLoading: false,
-    nearbyShop: null,
+    nearbyList: [],
     markers: [],
+    includePoints: [],
     mapLatitude: 0,
     mapLongitude: 0
   },
@@ -97,7 +98,7 @@ Page({
       this.doSearchNearby(loc);
     } else {
       // 清掉上一道菜的旧结果
-      this.setData({ nearbyShop: null, markers: [] });
+      this.setData({ nearbyList: [], markers: [] });
     }
   },
 
@@ -118,7 +119,7 @@ Page({
     var that = this;
     var keyword = this.data.food.name;
     if (!keyword) return;
-    this.setData({ nearbyLoading: true, nearbyShop: null, markers: [] });
+    this.setData({ nearbyLoading: true, nearbyList: [], markers: [] });
 
     nearbyUtil.searchNearby(keyword, loc.latitude, loc.longitude, function(list) {
       if (list.length === 0) {
@@ -126,8 +127,18 @@ Page({
         wx.showToast({ title: '附近没搜到「' + keyword + '」', icon: 'none' });
         return;
       }
-      var nearest = list[0];
-      // 最多标 5 家，最近一家常显气泡
+      // 由近及远的列表（接口已按距离升序返回）
+      var nearbyList = list.map(function(item, index) {
+        return {
+          rank: index + 1,
+          title: item.title,
+          address: item.address,
+          distanceText: nearbyUtil.formatDistance(item._distance),
+          latitude: item.location.lat,
+          longitude: item.location.lng
+        };
+      });
+      // 地图标注：气泡常显「序号+距离」，一眼看出远近
       var markers = list.map(function(item, index) {
         return {
           id: index,
@@ -137,33 +148,34 @@ Page({
           width: 28,
           height: 35,
           callout: {
-            content: item.title + '  ' + nearbyUtil.formatDistance(item._distance),
-            fontSize: 12,
+            content: (index + 1) + '.' + item.title.slice(0, 8) + ' ' + nearbyUtil.formatDistance(item._distance),
+            fontSize: 11,
             borderRadius: 8,
-            padding: 6,
-            display: index === 0 ? 'ALWAYS' : 'BYCLICK'
+            padding: 5,
+            display: 'ALWAYS'
           }
         };
       });
+      // 视野自动包含我的位置和所有店铺
+      var includePoints = list.map(function(item) {
+        return { latitude: item.location.lat, longitude: item.location.lng };
+      });
+      includePoints.push({ latitude: loc.latitude, longitude: loc.longitude });
       that.setData({
         nearbyLoading: false,
-        nearbyShop: {
-          title: nearest.title,
-          address: nearest.address,
-          distanceText: nearbyUtil.formatDistance(nearest._distance),
-          latitude: nearest.location.lat,
-          longitude: nearest.location.lng
-        },
+        nearbyList: nearbyList,
         markers: markers,
-        mapLatitude: nearest.location.lat,
-        mapLongitude: nearest.location.lng
+        includePoints: includePoints,
+        mapLatitude: loc.latitude,
+        mapLongitude: loc.longitude
       });
     });
   },
 
-  // 点卡片/导航按钮：打开微信内置地图，可一键导航过去
-  openNavigation: function() {
-    var shop = this.data.nearbyShop;
+  // 点列表某一家：打开微信内置地图，可一键导航过去
+  onShopTap: function(e) {
+    var index = e.currentTarget.dataset.index;
+    var shop = this.data.nearbyList[index];
     if (!shop) return;
     wx.openLocation({
       latitude: shop.latitude,

@@ -102,7 +102,7 @@ function showDiagnostic(errMsg) {
   }
 }
 
-// 周边关键词搜索，按距离升序返回（最多 5 条），失败返回空数组
+// 周边关键词搜索，按距离升序返回（最多 6 条），失败返回空数组
 function searchNearby(keyword, latitude, longitude, callback) {
   wx.request({
     url: 'https://apis.map.qq.com/ws/place/v1/search',
@@ -112,7 +112,7 @@ function searchNearby(keyword, latitude, longitude, callback) {
       // nearby(纬度,经度,半径米,auto_extend=1 无结果自动扩大范围)
       boundary: 'nearby(' + latitude + ',' + longitude + ',3000,1)',
       orderby: '_distance',
-      page_size: 5
+      page_size: 6
     },
     success: function(res) {
       var body = res.data;
