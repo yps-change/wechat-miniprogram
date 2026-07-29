@@ -180,19 +180,63 @@ function buildKeywordChain(name) {
 }
 
 // 智能搜索：沿关键词链逐级降级，保证尽量有结果
+// 个人 Key 地点搜索仅 200 次/日，结果按「菜名+位置网格」缓存 12 小时省配额
 // callback(list, usedKeyword, errMsg)：接口级报错立即中止降级并回传 errMsg
-function searchNearbySmart(name, latitude, longitude, callback) {
+// cacheOnly=true 时只查缓存，未命中直接返回空（用于进页自动搜索，不烧配额）
+var SEARCH_CACHE_KEY = 'nearby_search_cache';
+var SEARCH_CACHE_TTL = 12 * 60 * 60 * 1000;
+var SEARCH_CACHE_MAX = 30;
+
+// 位置取小数点后 2 位（约 1km 网格），同一片区域共享缓存
+function cacheKeyOf(name, latitude, longitude) {
+  return name + '|' + latitude.toFixed(2) + ',' + longitude.toFixed(2);
+}
+
+function readSearchCache(key) {
+  var cache = wx.getStorageSync(SEARCH_CACHE_KEY) || {};
+  var hit = cache[key];
+  if (hit && (Date.now() - hit.ts) < SEARCH_CACHE_TTL) return hit;
+  return null;
+}
+
+function writeSearchCache(key, list, usedKeyword) {
+  var cache = wx.getStorageSync(SEARCH_CACHE_KEY) || {};
+  cache[key] = { list: list, usedKeyword: usedKeyword, ts: Date.now() };
+  // 超量时清掉最旧的
+  var keys = Object.keys(cache);
+  if (keys.length > SEARCH_CACHE_MAX) {
+    keys.sort(function(a, b) { return cache[a].ts - cache[b].ts; });
+    delete cache[keys[0]];
+  }
+  wx.setStorage({ key: SEARCH_CACHE_KEY, data: cache });
+}
+
+function searchNearbySmart(name, latitude, longitude, callback, cacheOnly) {
+  var key = cacheKeyOf(name, latitude, longitude);
+  var hit = readSearchCache(key);
+  if (hit) {
+    logger.info('nearby', '命中搜索缓存「' + name + '」');
+    callback(hit.list, hit.usedKeyword, null);
+    return;
+  }
+  if (cacheOnly) {
+    callback([], null, null);
+    return;
+  }
   var chain = buildKeywordChain(name);
   var tryIndex = function(i) {
     if (i >= chain.length) {
+      // 「彻底没结果」也缓存，避免反复烧配额
+      writeSearchCache(key, [], null);
       callback([], null, null);
       return;
     }
     searchNearby(chain[i], latitude, longitude, function(list, errMsg) {
       if (errMsg) {
-        // Key 配额/权限类错误，换词无意义
+        // Key 配额/权限类错误，换词无意义（不写缓存，明天恢复后可重试）
         callback([], null, errMsg);
       } else if (list.length > 0) {
+        writeSearchCache(key, list, chain[i]);
         callback(list, chain[i], null);
       } else {
         tryIndex(i + 1);

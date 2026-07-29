@@ -91,12 +91,12 @@ Page({
 
   // ========== 附近餐馆 ==========
 
-  // 有缓存位置时静默自动搜索；没有则等用户点按钮
+  // 进页/换菜时静默尝试：只查缓存不发请求（省每日 200 次配额），没缓存就等用户点按钮
   autoSearchNearby: function() {
     if (!this.data.nearbyEnabled) return;
     var loc = nearbyUtil.getCachedLocation();
     if (loc) {
-      this.doSearchNearby(loc);
+      this.doSearchNearby(loc, true);
     } else {
       // 清掉上一道菜的旧结果
       this.setData({ nearbyList: [], markers: [] });
@@ -108,24 +108,25 @@ Page({
     var that = this;
     var loc = nearbyUtil.getCachedLocation();
     if (loc) {
-      this.doSearchNearby(loc);
+      this.doSearchNearby(loc, false);
       return;
     }
     nearbyUtil.chooseLocation(function(picked) {
-      if (picked) that.doSearchNearby(picked);
+      if (picked) that.doSearchNearby(picked, false);
     });
   },
 
-  doSearchNearby: function(loc) {
+  doSearchNearby: function(loc, cacheOnly) {
     var that = this;
     var keyword = this.data.food.name;
     if (!keyword) return;
-    this.setData({ nearbyLoading: true, nearbyList: [], markers: [], nearbyNote: '' });
+    this.setData({ nearbyLoading: !cacheOnly, nearbyList: [], markers: [], nearbyNote: '' });
 
-    // 智能降级搜索：原菜名→品类词→美食，保证尽量有结果
+    // 智能降级搜索：原菜名→品类词→美食，结果缓存 12 小时
     nearbyUtil.searchNearbySmart(keyword, loc.latitude, loc.longitude, function(list, usedKeyword, errMsg) {
       if (list.length === 0) {
         that.setData({ nearbyLoading: false });
+        if (cacheOnly) return; // 静默模式无缓存：保留按钮等用户手动搜
         if (errMsg) {
           // 接口级错误（配额超限/Key 配置问题等），弹出真实原因便于排查
           wx.showModal({
@@ -186,7 +187,7 @@ Page({
         mapLatitude: loc.latitude,
         mapLongitude: loc.longitude
       });
-    });
+    }, cacheOnly);
   },
 
   // 点列表某一家：打开微信内置地图，可一键导航过去
