@@ -72,11 +72,12 @@ Page({
     wx.showToast({
       title: '就这么定了：' + food.name + ' 🍽️',
       icon: 'none',
-      duration: 2000
+      duration: 1500
     });
 
+    // 定完顺路去领外卖券，正好点单用
     setTimeout(function() {
-      wx.switchTab({ url: '/pages/index/index' });
+      wx.redirectTo({ url: '/pages/coupons/coupons' });
     }, 1500);
   },
 

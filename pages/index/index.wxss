@@ -298,17 +298,23 @@
 }
 
 .coupon-entry-btn {
-  width: 360rpx;
-  height: 72rpx;
-  line-height: 72rpx;
+  width: 480rpx;
+  height: 84rpx;
+  line-height: 84rpx;
   padding: 0;
-  background: #FFF3E0;
-  color: #E67E22;
-  border: 2rpx solid rgba(230,126,34,0.2);
-  border-radius: 36rpx;
-  font-size: 27rpx;
+  background: linear-gradient(135deg, #FF9F43, #E67E22);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 42rpx;
+  font-size: 30rpx;
   font-weight: 700;
-  box-shadow: 0 6rpx 18rpx rgba(230,126,34,0.14);
+  box-shadow: 0 10rpx 26rpx rgba(230,126,34,0.35);
+  animation: coupon-breathe 2s ease-in-out infinite;
+}
+
+@keyframes coupon-breathe {
+  0%, 100% { transform: scale(1); box-shadow: 0 10rpx 26rpx rgba(230,126,34,0.35); }
+  50% { transform: scale(1.04); box-shadow: 0 14rpx 32rpx rgba(230,126,34,0.5); }
 }
 
 .coupon-entry-btn::after {
