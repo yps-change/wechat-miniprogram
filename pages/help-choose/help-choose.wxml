@@ -8,6 +8,11 @@
     <text class="title" wx:else>帮TA从这几个里选一个！</text>
   </view>
 
+  <!-- 领券入口：放最上面，一进来就能看到 -->
+  <view class="coupon-top">
+    <button class="coupon-entry-btn" bindtap="goToCoupons">🎟️ 领外卖券</button>
+  </view>
+
   <view class="received-panel" wx:if="{{mode === 'received'}}">
     <text class="received-from" wx:if="{{!isAuthor}}">来自「{{fromName}}」的推荐</text>
     <text class="received-emoji">{{receivedFood.emoji}}</text>
@@ -88,6 +93,5 @@
   <!-- 底部引导 -->
   <view class="footer">
     <button class="btn-primary" bindtap="goToIndex">我也来试试</button>
-    <button class="coupon-entry-btn" bindtap="goToCoupons">🎟️ 领外卖券，选完直接点</button>
   </view>
 </view>

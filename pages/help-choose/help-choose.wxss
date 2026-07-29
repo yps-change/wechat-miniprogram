@@ -309,7 +309,13 @@
   padding-bottom: 40rpx;
 }
 
-/* 领券入口（与首页同款薄荷绿） */
+/* 领券入口（顶部醒目位，与首页同款薄荷绿） */
+.coupon-top {
+  display: flex;
+  justify-content: center;
+  margin: 10rpx 0 30rpx;
+}
+
 .coupon-entry-btn {
   width: 480rpx;
   height: 84rpx;
@@ -322,6 +328,12 @@
   font-size: 30rpx;
   font-weight: 700;
   box-shadow: 0 10rpx 26rpx rgba(31,185,142,0.32);
+  animation: coupon-breathe 2s ease-in-out infinite;
+}
+
+@keyframes coupon-breathe {
+  0%, 100% { transform: scale(1); box-shadow: 0 10rpx 26rpx rgba(31,185,142,0.32); }
+  50% { transform: scale(1.04); box-shadow: 0 14rpx 32rpx rgba(31,185,142,0.45); }
 }
 
 .coupon-entry-btn::after {

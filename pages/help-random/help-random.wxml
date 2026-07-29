@@ -4,6 +4,11 @@
     <text class="title">帮TA随机抽一个！</text>
   </view>
 
+  <!-- 领券入口：放最上面，一进来就能看到 -->
+  <view class="coupon-top">
+    <button class="coupon-entry-btn" bindtap="goToCoupons">🎟️ 领外卖券</button>
+  </view>
+
   <!-- 卡片区域 -->
   <view class="card-area">
     <food-card food="{{currentFood}}" flipped="{{isFlipped}}" />
@@ -19,10 +24,5 @@
       <button class="btn-secondary" bindtap="onRandomPick">再抽一个</button>
       <button class="btn-primary" bindtap="goToIndex">我也来试试</button>
     </view>
-  </view>
-
-  <!-- 领券入口 -->
-  <view class="coupon-footer">
-    <button class="coupon-entry-btn" bindtap="goToCoupons">🎟️ 领外卖券，选完直接点</button>
   </view>
 </view>
