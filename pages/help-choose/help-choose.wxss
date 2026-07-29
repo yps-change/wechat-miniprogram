@@ -339,3 +339,8 @@
 .coupon-entry-btn::after {
   border: none;
 }
+
+/* 推荐模式下跟在「就推荐这个」按钮后面 */
+.coupon-below {
+  margin-top: 24rpx;
+}

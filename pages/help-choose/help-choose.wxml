@@ -8,8 +8,8 @@
     <text class="title" wx:else>帮TA从这几个里选一个！</text>
   </view>
 
-  <!-- 领券入口：放最上面，一进来就能看到 -->
-  <view class="coupon-top">
+  <!-- 领券入口：非推荐模式放顶部，推荐模式放「就推荐这个」下面 -->
+  <view class="coupon-top" wx:if="{{mode !== 'recommend'}}">
     <button class="coupon-entry-btn" bindtap="goToCoupons">🎟️ 领外卖券</button>
   </view>
 
@@ -52,6 +52,7 @@
       </view>
 
       <button class="btn-primary recommend-submit" bindtap="submitRecommendation">就推荐这个</button>
+      <button class="coupon-entry-btn coupon-below" bindtap="goToCoupons">🎟️ 领外卖券</button>
     </block>
 
     <!-- 已提交：突出“发回给TA”这一步 -->
@@ -63,6 +64,7 @@
       </view>
       <button class="btn-primary share-back-btn" open-type="share">📤 把推荐发回给TA</button>
       <text class="redo-link" bindtap="redoRecommendation">重新选一个</text>
+      <button class="coupon-entry-btn coupon-below" bindtap="goToCoupons">🎟️ 领外卖券</button>
     </block>
   </view>
 
