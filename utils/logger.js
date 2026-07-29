@@ -19,9 +19,9 @@
 
 var LEVELS = { debug: 10, info: 20, warn: 30, error: 40 };
 
-// ↓↓↓ 发布前把 ENABLED 改为 false（或 setLevel('error') 只留错误） ↓↓↓
+// ↓↓↓ 发布版：只保留 warn/error；开发调试时改回 LEVEL = 'debug' ↓↓↓
 var ENABLED = true;
-var LEVEL = 'debug';
+var LEVEL = 'warn';
 
 function shouldLog(level) {
   return ENABLED && LEVELS[level] >= LEVELS[LEVEL];
