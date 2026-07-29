@@ -68,6 +68,9 @@ Page({
 
   onShow: function() {
     logger.info('index', 'onShow');
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ selected: 0 });
+    }
     this.loadCustomMenu();
     // 从后台/其他页返回时恢复闪灯（首次启动由 onReady 负责）
     if (this._inited) this.startLightBlink();

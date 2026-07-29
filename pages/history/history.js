@@ -14,6 +14,9 @@ Page({
   },
 
   onShow: function() {
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ selected: 2 });
+    }
     // 推荐结果已在接收结果页直接处理；这里仅展示当前设备自己的历史。
     this.setData({ receivedNotice: null });
     this.loadHistory();

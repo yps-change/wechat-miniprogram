@@ -25,6 +25,7 @@
     }
   },
   "tabBar": {
+    "custom": true,
     "color": "#999999",
     "selectedColor": "#4A7BF7",
     "backgroundColor": "#ffffff",
