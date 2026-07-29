@@ -41,6 +41,8 @@
            show-location="{{true}}"
            enable-zoom="{{true}}"
            enable-scroll="{{true}}"></map>
+      <!-- 降级搜索提示 -->
+      <view class="nearby-note" wx:if="{{nearbyNote}}">{{nearbyNote}}</view>
       <!-- 由近及远列表，点任意一家打开导航 -->
       <view class="nearby-list">
         <view class="nearby-item" wx:for="{{nearbyList}}" wx:key="rank"

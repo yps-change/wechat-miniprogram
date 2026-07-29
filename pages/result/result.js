@@ -21,6 +21,7 @@ Page({
     nearbyEnabled: false,
     nearbyLoading: false,
     nearbyList: [],
+    nearbyNote: '',
     markers: [],
     includePoints: [],
     mapLatitude: 0,
@@ -119,14 +120,19 @@ Page({
     var that = this;
     var keyword = this.data.food.name;
     if (!keyword) return;
-    this.setData({ nearbyLoading: true, nearbyList: [], markers: [] });
+    this.setData({ nearbyLoading: true, nearbyList: [], markers: [], nearbyNote: '' });
 
-    nearbyUtil.searchNearby(keyword, loc.latitude, loc.longitude, function(list) {
+    // 智能降级搜索：原菜名→品类词→美食，保证尽量有结果
+    nearbyUtil.searchNearbySmart(keyword, loc.latitude, loc.longitude, function(list, usedKeyword) {
       if (list.length === 0) {
         that.setData({ nearbyLoading: false });
-        wx.showToast({ title: '附近没搜到「' + keyword + '」', icon: 'none' });
+        wx.showToast({ title: '搜索失败，请检查网络后重试', icon: 'none' });
         return;
       }
+      // 降级命中时提示用的是什么词
+      var note = usedKeyword !== keyword
+        ? '附近暂无「' + keyword + '」，按「' + usedKeyword + '」为你找了这些：'
+        : '';
       // 由近及远的列表（接口已按距离升序返回）
       var nearbyList = list.map(function(item, index) {
         return {
@@ -164,6 +170,7 @@ Page({
       that.setData({
         nearbyLoading: false,
         nearbyList: nearbyList,
+        nearbyNote: note,
         markers: markers,
         includePoints: includePoints,
         mapLatitude: loc.latitude,

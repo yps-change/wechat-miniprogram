@@ -120,7 +120,7 @@ function searchNearby(keyword, latitude, longitude, callback) {
         logger.info('nearby', '搜到 ' + body.data.length + ' 家「' + keyword + '」');
         callback(body.data);
       } else {
-        logger.warn('nearby', '无结果或接口报错', body && body.message);
+        logger.warn('nearby', '「' + keyword + '」无结果或接口报错', body && body.message);
         callback([]);
       }
     },
@@ -130,6 +130,68 @@ function searchNearby(keyword, latitude, longitude, callback) {
       callback([]);
     }
   });
+}
+
+// 菜名 → 可搜索品类词（菜名过于具体时 POI 库搜不到，降级为品类搜索）
+// 顺序敏感：越具体的规则放越前
+var SEARCH_RULES = [
+  ['汉堡', '汉堡'], ['堡', '汉堡'], ['披萨', '披萨'], ['比萨', '披萨'],
+  ['牛排', '牛排'], ['意面', '意大利面'], ['意大利', '意大利面'],
+  ['寿司', '寿司'], ['刺身', '日本料理'], ['三文鱼', '日本料理'],
+  ['拉面', '拉面'], ['咖喱', '咖喱'],
+  ['鳗鱼', '日本料理'], ['牛丼', '日本料理'], ['天妇罗', '日本料理'], ['定食', '日本料理'],
+  ['石锅', '韩国料理'], ['部队锅', '韩国料理'], ['泡菜', '韩国料理'],
+  ['紫菜包饭', '韩国料理'], ['韩式', '韩国料理'],
+  ['炸鸡', '炸鸡'], ['鸡翅', '炸鸡'], ['鸡排', '鸡排'], ['鸡腿', '炸鸡'], ['鸡肉卷', '汉堡'],
+  ['麻辣烫', '麻辣烫'], ['冒菜', '冒菜'], ['香锅', '麻辣香锅'], ['串串', '串串香'], ['火锅', '火锅'],
+  ['烤肉', '烤肉'], ['烧腊', '烧腊'], ['烧鹅', '烧腊'], ['叉烧', '烧腊'], ['烤鸭', '烤鸭'], ['烧烤', '烧烤'],
+  ['沙拉', '轻食沙拉'], ['三明治', '轻食沙拉'], ['藜麦', '轻食沙拉'], ['燕麦', '轻食沙拉'], ['轻食', '轻食沙拉'],
+  ['粥', '粥'], ['肠粉', '肠粉'], ['河粉', '米粉'], ['米粉', '米粉'], ['米线', '米线'],
+  ['云吞', '馄饨'], ['馄饨', '馄饨'], ['饺', '饺子'], ['烧麦', '早茶'],
+  ['酸辣粉', '酸辣粉'], ['螺蛳粉', '螺蛳粉'], ['面', '面馆'],
+  ['煎饼', '煎饼'], ['肉夹馍', '肉夹馍'], ['炒饭', '炒饭'], ['沙县', '沙县小吃'],
+  ['饭', '快餐'], ['鸡', '炸鸡'], ['肉', '餐馆']
+];
+
+// 生成降级关键词链：原名 → 去掉套餐类后缀 → 品类词 → 兜底「美食」
+function buildKeywordChain(name) {
+  var chain = [name];
+  var stripped = name.replace(/套餐|定食|拼盘|双拼|全家桶|单人餐/g, '');
+  if (stripped && stripped !== name) chain.push(stripped);
+  for (var i = 0; i < SEARCH_RULES.length; i++) {
+    if (name.indexOf(SEARCH_RULES[i][0]) !== -1) {
+      chain.push(SEARCH_RULES[i][1]);
+      break;
+    }
+  }
+  chain.push('美食');
+  // 去重（保持顺序）
+  var seen = {};
+  return chain.filter(function(k) {
+    if (seen[k]) return false;
+    seen[k] = true;
+    return true;
+  });
+}
+
+// 智能搜索：沿关键词链逐级降级，保证尽量有结果
+// callback(list, usedKeyword)：usedKeyword 为实际命中的关键词，全部失败时 list 为空数组
+function searchNearbySmart(name, latitude, longitude, callback) {
+  var chain = buildKeywordChain(name);
+  var tryIndex = function(i) {
+    if (i >= chain.length) {
+      callback([], null);
+      return;
+    }
+    searchNearby(chain[i], latitude, longitude, function(list) {
+      if (list.length > 0) {
+        callback(list, chain[i]);
+      } else {
+        tryIndex(i + 1);
+      }
+    });
+  };
+  tryIndex(0);
 }
 
 // 距离格式化：850 → "850m"，1260 → "1.3km"
@@ -144,5 +206,6 @@ module.exports = {
   getCachedLocation: getCachedLocation,
   chooseLocation: chooseLocation,
   searchNearby: searchNearby,
+  searchNearbySmart: searchNearbySmart,
   formatDistance: formatDistance
 };
