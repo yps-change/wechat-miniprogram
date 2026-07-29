@@ -19,18 +19,19 @@
   padding: 12rpx 0 8rpx;
 }
 
-/* 原生图标约 54rpx、文字约 20rpx，这里整体放大 */
+/* 原生图标约 54rpx、文字约 20rpx，这里适度放大 */
 .tab-bar-icon {
-  width: 72rpx;
-  height: 72rpx;
+  width: 60rpx;
+  height: 60rpx;
 }
 
 .tab-bar-text {
   margin-top: 4rpx;
-  font-size: 28rpx;
+  font-size: 24rpx;
+  font-weight: 600;
   line-height: 1.2;
 }
 
 .tab-bar-item.active .tab-bar-text {
-  font-weight: 600;
+  font-weight: 700;
 }
