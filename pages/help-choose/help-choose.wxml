@@ -88,5 +88,6 @@
   <!-- 底部引导 -->
   <view class="footer">
     <button class="btn-primary" bindtap="goToIndex">我也来试试</button>
+    <button class="coupon-entry-btn" bindtap="goToCoupons">🎟️ 领外卖券，选完直接点</button>
   </view>
 </view>

@@ -20,4 +20,9 @@
       <button class="btn-primary" bindtap="goToIndex">我也来试试</button>
     </view>
   </view>
+
+  <!-- 领券入口 -->
+  <view class="coupon-footer">
+    <button class="coupon-entry-btn" bindtap="goToCoupons">🎟️ 领外卖券，选完直接点</button>
+  </view>
 </view>

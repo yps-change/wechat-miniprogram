@@ -46,6 +46,10 @@ Page({
     wx.switchTab({ url: '/pages/index/index' });
   },
 
+  goToCoupons: function() {
+    wx.navigateTo({ url: '/pages/coupons/coupons' });
+  },
+
   onShareAppMessage: function() {
     return {
       title: '今天吃什么？来随机一个！',

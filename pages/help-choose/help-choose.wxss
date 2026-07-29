@@ -303,6 +303,27 @@
 .footer {
   margin-top: auto;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 20rpx;
   padding-bottom: 40rpx;
+}
+
+/* 领券入口（与首页同款薄荷绿） */
+.coupon-entry-btn {
+  width: 480rpx;
+  height: 84rpx;
+  line-height: 84rpx;
+  padding: 0;
+  background: linear-gradient(135deg, #34D1A5, #1FB98E);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 42rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  box-shadow: 0 10rpx 26rpx rgba(31,185,142,0.32);
+}
+
+.coupon-entry-btn::after {
+  border: none;
 }

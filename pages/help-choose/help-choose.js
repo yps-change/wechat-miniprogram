@@ -208,6 +208,10 @@ Page({
     wx.switchTab({ url: '/pages/index/index' });
   },
 
+  goToCoupons: function() {
+    wx.navigateTo({ url: '/pages/coupons/coupons' });
+  },
+
   onShareAppMessage: function() {
     var mode = this.data.mode;
     var selectedFood = this.data.chosenFood;
