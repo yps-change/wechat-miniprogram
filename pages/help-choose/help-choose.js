@@ -22,9 +22,12 @@ Page({
     mode: 'choose',
     recommendationInput: '',
     recommenderName: '',
+    recommendMsg: '',
     submitted: false,
     sessionId: '',
     receivedFood: {},
+    receivedMsg: '',
+    helpCount: 0,
     suggestions: [],
     isAuthor: false,
     added: false
@@ -64,6 +67,10 @@ Page({
     if (options.recommend) {
       data.recommendationInput = decodeURIComponent(options.recommend);
     }
+    if (options.msg) {
+      // 推荐人附带的留言
+      data.receivedMsg = decodeURIComponent(options.msg);
+    }
     if ((mode === 'menu' || mode === 'recommend') && !sessionId) {
       sessionId = createSessionId();
       data.sessionId = sessionId;
@@ -102,6 +109,11 @@ Page({
   // input / blur 两个事件都走这里，确保自动填充的值也能被捕获
   onRecommenderNameInput: function(e) {
     this.setData({ recommenderName: e.detail.value });
+  },
+
+  // 推荐人给TA捎一句话（选填）
+  onRecommendMsgInput: function(e) {
+    this.setData({ recommendMsg: e.detail.value });
   },
 
 
@@ -160,7 +172,21 @@ Page({
   prepareReceivedRecommendation: function(name, fromName) {
     var food = this.resolveFood(name);
     var alreadyAdded = !!wx.getStorageSync(this.receivedAddedKey(food.name));
-    this.setData({ receivedFood: food, isAuthor: false, added: alreadyAdded });
+    // 关系沉淀：按好友昵称累计帮选次数，同一条推荐只计一次
+    var helpCount = this.countFriendHelp(fromName, food.name);
+    this.setData({ receivedFood: food, isAuthor: false, added: alreadyAdded, helpCount: helpCount });
+  },
+
+  // 累计「这是 TA 第 N 次帮你选饭」：计数存本地，去重键绑 session+菜名
+  countFriendHelp: function(fromName, foodName) {
+    var countedKey = 'help_counted_' + (this.data.sessionId || 'legacy') + '_' + foodName;
+    var counts = wx.getStorageSync('friend_help_counts') || {};
+    if (!wx.getStorageSync(countedKey)) {
+      counts[fromName] = (counts[fromName] || 0) + 1;
+      wx.setStorageSync('friend_help_counts', counts);
+      wx.setStorageSync(countedKey, true);
+    }
+    return counts[fromName] || 1;
   },
 
   // 手动把这条好友推荐加入历史，然后跳转到历史页查看。
@@ -225,15 +251,16 @@ Page({
       };
     }
 
-    // recommend：好友自由推荐后，回传推荐结果给发起人
+    // recommend：好友自由推荐后，回传推荐结果给发起人（可附一句留言）
     if (mode === 'recommend') {
       var recName = (this.data.recommendationInput || '').trim();
       // 带上好友昵称，让发起人知道是谁推荐的
       var byName = (this.data.recommenderName || '').trim() || '好友';
+      var msg = (this.data.recommendMsg || '').trim();
       return {
         title: recName ? '😋 我给你安利了「' + recName + '」，快去吃！' : '🍜 选择困难求助：帮我推荐一道好吃的呗！',
         path: recName
-          ? shareUtil.buildRecommendationSharePath(recName, byName, this.data.sessionId)
+          ? shareUtil.buildRecommendationSharePath(recName, byName, this.data.sessionId, msg)
           : shareUtil.buildRecommendSharePath(this.data.suggestions, this.data.sessionId)
       };
     }

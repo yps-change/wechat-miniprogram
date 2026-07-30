@@ -60,6 +60,15 @@
   font-weight: 600;
 }
 
+/* 关系沉淀：累计帮选次数 */
+.help-count {
+  display: block;
+  margin-bottom: 16rpx;
+  font-size: 26rpx;
+  color: #E67E22;
+  font-weight: 600;
+}
+
 .received-emoji {
   font-size: 96rpx;
 }
@@ -76,6 +85,17 @@
   font-size: 28rpx;
   line-height: 1.7;
   color: var(--text-secondary);
+}
+
+/* 推荐人的留言气泡 */
+.received-msg {
+  margin: 0 0 28rpx;
+  padding: 18rpx 28rpx;
+  background: #FFF7EC;
+  border-radius: 20rpx;
+  font-size: 28rpx;
+  line-height: 1.6;
+  color: #B36A1B;
 }
 
 .author-note {
@@ -120,6 +140,10 @@
 }
 
 .recommend-name {
+  margin-top: 20rpx;
+}
+
+.recommend-msg {
   margin-top: 20rpx;
 }
 

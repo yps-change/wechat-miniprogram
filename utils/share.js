@@ -40,12 +40,16 @@ function buildMenuSharePath(menuNames, fromName, sessionId) {
 }
 
 /**
- * 构建好友推荐结果回传给发起者的分享路径。
+ * 构建好友推荐结果回传给发起者的分享路径。msg 为推荐人附带的一句留言（选填）。
  */
-function buildRecommendationSharePath(foodName, fromName, sessionId) {
-  return '/pages/help-choose/help-choose?mode=received&recommend=' +
+function buildRecommendationSharePath(foodName, fromName, sessionId, msg) {
+  var path = '/pages/help-choose/help-choose?mode=received&recommend=' +
     encodeURIComponent(foodName || '') + '&from=' + encodeURIComponent(fromName || '好友') +
     '&sessionId=' + encodeURIComponent(sessionId || '');
+  if (msg) {
+    path += '&msg=' + encodeURIComponent(msg);
+  }
+  return path;
 }
 
 /**
