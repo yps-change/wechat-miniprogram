@@ -1,6 +1,7 @@
 var foodsData = require('../../data/foods.js');
 var randomUtil = require('../../utils/random.js');
 var shareUtil = require('../../utils/share.js');
+var sceneUtil = require('../../utils/scene.js');
 var logger = require('../../utils/logger.js');
 var foodPool = require('../../utils/food-pool.js');
 
@@ -510,7 +511,8 @@ Page({
 
   onShareAppMessage: function(res) {
     return {
-      title: '🎯 选择困难晚期，帮我抽一个今天吃啥！',
+      // 时段场景化标题：夜宵/周五等（见 utils/scene.js）
+      title: sceneUtil.getRandomShareTitle(),
       path: shareUtil.buildRandomSharePath('好友')
     };
   },

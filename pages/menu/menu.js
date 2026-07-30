@@ -1,4 +1,5 @@
 var shareUtil = require('../../utils/share.js');
+var sceneUtil = require('../../utils/scene.js');
 
 Page({
   data: {
@@ -110,11 +111,9 @@ Page({
     // “让好友帮我推荐”：把我的专属菜单作为可选建议带过去，好友自由推荐一道菜。
     var menuNames = this.data.customMenu.length > 0 ? this.data.customMenu : [];
     var sessionId = Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 10);
-    // 按当前时段动态生成「早饭/午饭/晚饭」
-    var hour = new Date().getHours();
-    var meal = hour < 10 ? '早饭' : (hour < 16 ? '午饭' : '晚饭');
     return {
-      title: '🍜 帮我推荐一道今天的' + meal + '吧，纠结中…',
+      // 时段场景化标题：周五犒劳/夜宵/周末等（见 utils/scene.js）
+      title: sceneUtil.getRecommendShareTitle(),
       path: shareUtil.buildRecommendSharePath(menuNames, sessionId)
     };
   },
