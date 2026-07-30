@@ -19,7 +19,7 @@ Page({
       fresh: '鲜美',
       custom: '专属'
     },
-    // 附近餐馆（需配置腾讯位置服务 Key 后启用）
+    // 附近餐馆（Key 已在 utils/nearby.js 配置，onLoad 时按 isEnabled() 置为 true）
     nearbyEnabled: false,
     nearbyLoading: false,
     nearbyList: [],
