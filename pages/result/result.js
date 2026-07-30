@@ -220,10 +220,19 @@ Page({
   },
 
   // 好友分享：炫耀式标题晒结果，好友打开还原同一道菜
-  onShareAppMessage: function() {
+  // 若由「测默契」按钮发起，则邀请好友玩双人饭缘默契测试
+  onShareAppMessage: function(res) {
+    var food = this.data.food;
+    if (res && res.from === 'button' && res.target && res.target.dataset.type === 'match' && food.name) {
+      return {
+        title: '🤝 敢不敢测测我俩今天吃饭的默契？',
+        path: '/pages/match/match?food=' + encodeURIComponent(food.name) +
+          '&emoji=' + encodeURIComponent(food.emoji || '')
+      };
+    }
     var query = this.buildShareQuery();
     return {
-      title: quipsUtil.getBoastTitle(this.data.food.name),
+      title: quipsUtil.getBoastTitle(food.name),
       path: query ? '/pages/result/result?' + query : '/pages/index/index'
     };
   },

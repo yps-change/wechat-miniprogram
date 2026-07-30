@@ -378,6 +378,20 @@
 
 .again-btn::after { border: none; }
 
+/* 测默契入口：轻量文字按钮，不抢主操作 */
+.match-btn {
+  width: 100%;
+  margin-top: 20rpx;
+  padding: 20rpx 0;
+  background: transparent;
+  color: #8A94A6;
+  border: none;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.match-btn::after { border: none; }
+
 .back-btn {
   flex: 1;
   padding: 24rpx 0;

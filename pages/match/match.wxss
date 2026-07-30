@@ -1,0 +1,182 @@
+/* 饭缘默契测试页 */
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60rpx 40rpx;
+  box-sizing: border-box;
+  background: #F0F5FF;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 40rpx;
+}
+
+.from-text {
+  font-size: 28rpx;
+  color: #8A94A6;
+}
+
+.title {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: #333;
+}
+
+.sub-title {
+  font-size: 28rpx;
+  color: #8A94A6;
+}
+
+/* TA 的菜卡片 */
+.inviter-card {
+  width: 400rpx;
+  padding: 50rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20rpx;
+  background: #FFFFFF;
+  border-radius: 32rpx;
+  box-shadow: 0 12rpx 32rpx rgba(74,123,247,0.12);
+}
+
+.card-emoji {
+  font-size: 120rpx;
+  line-height: 1;
+}
+
+.card-name {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #333;
+}
+
+.spin-hint {
+  margin: 40rpx 0 30rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.btn-primary {
+  width: 480rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  padding: 0;
+  background: linear-gradient(135deg, #6B9AFF, #4A7BF7);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 44rpx;
+  font-size: 32rpx;
+  font-weight: 700;
+  box-shadow: 0 10rpx 26rpx rgba(74,123,247,0.35);
+}
+
+.btn-primary::after {
+  border: none;
+}
+
+/* 转的时候抖一抖 */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-6rpx); }
+  20%, 40%, 60%, 80% { transform: translateX(6rpx); }
+}
+
+.shaking {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* 默契度 */
+.score-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 40rpx;
+}
+
+.score-num {
+  font-size: 120rpx;
+  font-weight: 800;
+  color: #4A7BF7;
+  line-height: 1;
+  animation: score-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.score-unit {
+  font-size: 48rpx;
+  font-weight: 700;
+}
+
+@keyframes score-pop {
+  0% { transform: scale(0.3); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.score-level {
+  font-size: 30rpx;
+  color: #666;
+  font-weight: 600;
+}
+
+/* 双卡片对比 */
+.vs-row {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  margin-bottom: 50rpx;
+}
+
+.vs-card {
+  width: 260rpx;
+  padding: 36rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14rpx;
+  background: #FFFFFF;
+  border-radius: 28rpx;
+  box-shadow: 0 10rpx 26rpx rgba(74,123,247,0.10);
+}
+
+.vs-emoji {
+  font-size: 80rpx;
+  line-height: 1;
+}
+
+.vs-name {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #333;
+  padding: 0 16rpx;
+  text-align: center;
+}
+
+.vs-owner {
+  font-size: 24rpx;
+  color: #8A94A6;
+}
+
+.vs-mark {
+  font-size: 32rpx;
+  font-weight: 800;
+  color: #4A7BF7;
+}
+
+/* 次级链接 */
+.sub-actions {
+  display: flex;
+  gap: 60rpx;
+  margin-top: 30rpx;
+}
+
+.link {
+  font-size: 28rpx;
+  color: #4A7BF7;
+}

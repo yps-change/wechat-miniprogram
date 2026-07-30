@@ -1,0 +1,55 @@
+<view class="container">
+  <!-- 无邀请参数（朋友圈单页等入口）：引导回首页 -->
+  <block wx:if="{{invalid}}">
+    <view class="header">
+      <text class="title">🤝 饭缘默契测试</text>
+      <text class="sub-title">找个饭友，测测你俩今天吃饭有多默契</text>
+    </view>
+    <button class="btn-primary" bindtap="goToIndex">先去转个转盘</button>
+  </block>
+
+  <block wx:else>
+    <!-- 未出结果：TA 的菜 + 我来转 -->
+    <block wx:if="{{!tested}}">
+      <view class="header">
+        <text class="from-text">{{fromName}} 发起了饭缘默契测试</text>
+        <text class="title">TA 转到了这道菜</text>
+      </view>
+      <view class="inviter-card">
+        <text class="card-emoji">{{inviterFood.emoji}}</text>
+        <text class="card-name">{{inviterFood.name}}</text>
+      </view>
+      <text class="spin-hint">你也转一个，看看你俩今天吃饭的默契值 👇</text>
+      <button class="btn-primary {{shaking ? 'shaking' : ''}}" bindtap="onSpin">🎲 我也转一个</button>
+    </block>
+
+    <!-- 已出结果：双卡片 + 默契度 -->
+    <block wx:else>
+      <view class="header">
+        <text class="title">你们的饭缘默契值</text>
+      </view>
+      <view class="score-wrap">
+        <text class="score-num">{{score}}<text class="score-unit">%</text></text>
+        <text class="score-level">{{level}}</text>
+      </view>
+      <view class="vs-row">
+        <view class="vs-card">
+          <text class="vs-emoji">{{inviterFood.emoji}}</text>
+          <text class="vs-name">{{inviterFood.name}}</text>
+          <text class="vs-owner">TA 转到的</text>
+        </view>
+        <text class="vs-mark">VS</text>
+        <view class="vs-card">
+          <text class="vs-emoji">{{myFood.emoji}}</text>
+          <text class="vs-name">{{myFood.name}}</text>
+          <text class="vs-owner">你转到的</text>
+        </view>
+      </view>
+      <button class="btn-primary" open-type="share">📤 把默契值发给TA</button>
+      <view class="sub-actions">
+        <text class="link" bindtap="onRetry">再测一次</text>
+        <text class="link" bindtap="goToIndex">我也去转转盘</text>
+      </view>
+    </block>
+  </block>
+</view>

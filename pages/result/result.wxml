@@ -82,5 +82,9 @@
         <text>← 回去转转盘</text>
       </button>
     </view>
+    <!-- 发起双人默契测试：分享后好友也转一个，比默契度 -->
+    <button class="match-btn" open-type="share" data-type="match">
+      <text>🤝 测测你俩吃饭的默契</text>
+    </button>
   </view>
 </view>

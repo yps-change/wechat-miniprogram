@@ -5,6 +5,7 @@
     "pages/candidates/candidates",
     "pages/help-random/help-random",
     "pages/help-choose/help-choose",
+    "pages/match/match",
     "pages/menu/menu",
     "pages/coupons/coupons",
     "pages/coupons/coupon-detail/coupon-detail",
