@@ -4,10 +4,12 @@ var logger = require('../../utils/logger.js');
 var subscribeUtil = require('../../utils/subscribe.js');
 var nearbyUtil = require('../../utils/nearby.js');
 var foodPool = require('../../utils/food-pool.js');
+var quipsUtil = require('../../utils/quips.js');
 
 Page({
   data: {
     food: {},
+    quip: '',
     tagNames: {
       spicy: '辣',
       mild: '清淡',
@@ -42,7 +44,7 @@ Page({
       food = foodPool.normalizeCustomFood(decodeURIComponent(options.name), 0);
     }
     if (food) {
-      this.setData({ food: food });
+      this.setData({ food: food, quip: quipsUtil.getQuip() });
       this.autoSearchNearby();
     }
   },
@@ -85,7 +87,7 @@ Page({
   onAgain: function() {
     var food = randomUtil.getRandomOne(foodPool.getPool());
     if (!food) return;
-    this.setData({ food: food });
+    this.setData({ food: food, quip: quipsUtil.getQuip() });
     // 新菜名重新搜附近
     this.autoSearchNearby();
   },
@@ -217,21 +219,19 @@ Page({
       : 'id=' + food.id;
   },
 
-  // 好友分享：晒抽签结果，好友打开还原同一道菜
+  // 好友分享：炫耀式标题晒结果，好友打开还原同一道菜
   onShareAppMessage: function() {
-    var food = this.data.food;
     var query = this.buildShareQuery();
     return {
-      title: food.name ? '🎉 今天就吃「' + food.name + '」！你也来抽一个？' : '今天吃什么？来抽一个！',
+      title: quipsUtil.getBoastTitle(this.data.food.name),
       path: query ? '/pages/result/result?' + query : '/pages/index/index'
     };
   },
 
   // 朋友圈分享：单页模式带参还原结果页
   onShareTimeline: function() {
-    var food = this.data.food;
     return {
-      title: food.name ? '🎉 今天就吃「' + food.name + '」！你也来抽一个？' : '🎯 今天吃什么？抽一个！',
+      title: quipsUtil.getBoastTitle(this.data.food.name),
       query: this.buildShareQuery()
     };
   }

@@ -191,6 +191,14 @@
   border-radius: 20rpx;
 }
 
+/* 今日签文 */
+.food-quip {
+  margin-top: 20rpx;
+  font-size: 26rpx;
+  color: #8A94A6;
+  letter-spacing: 2rpx;
+}
+
 /* ========== 附近餐馆 ========== */
 .nearby-section {
   width: 100%;

@@ -27,6 +27,8 @@
     <view class="food-tags" wx:if="{{food.tags && food.tags.length > 0}}">
       <text class="tag" wx:for="{{food.tags}}" wx:key="*this">{{tagNames[item] || item}}</text>
     </view>
+    <!-- 今日签文：随机一句趣味文案，让晒结果更有梗 -->
+    <text class="food-quip" wx:if="{{quip}}">「{{quip}}」</text>
   </view>
 
   <!-- 附近餐馆（配置腾讯位置服务 Key 后显示） -->
