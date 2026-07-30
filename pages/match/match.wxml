@@ -21,6 +21,7 @@
       </view>
       <text class="spin-hint">你也转一个，看看你俩今天吃饭的默契值 👇</text>
       <button class="btn-primary {{shaking ? 'shaking' : ''}}" bindtap="onSpin">🎲 我也转一个</button>
+      <button class="coupon-entry-btn coupon-below" bindtap="goToCoupons">🎟️ 领外卖券</button>
     </block>
 
     <!-- 已出结果：双卡片 + 默契度（resultView=对方回传的结果，视角对调） -->
@@ -53,6 +54,7 @@
         <text class="link" wx:else bindtap="onRetry">再测一次</text>
         <text class="link" bindtap="goToIndex">我也去转转盘</text>
       </view>
+      <button class="coupon-entry-btn coupon-below" bindtap="goToCoupons">🎟️ 领外卖券，吃饭更香</button>
     </block>
   </block>
 </view>

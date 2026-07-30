@@ -195,3 +195,32 @@
 .share-link::after {
   border: none;
 }
+
+/* 领券入口：与帮选/帮抽页同款薄荷绿呼吸按钮 */
+.coupon-entry-btn {
+  width: 480rpx;
+  height: 84rpx;
+  line-height: 84rpx;
+  padding: 0;
+  background: linear-gradient(135deg, #34D1A5, #1FB98E);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 42rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  box-shadow: 0 10rpx 26rpx rgba(31,185,142,0.32);
+  animation: coupon-breathe 2s ease-in-out infinite;
+}
+
+@keyframes coupon-breathe {
+  0%, 100% { transform: scale(1); box-shadow: 0 10rpx 26rpx rgba(31,185,142,0.32); }
+  50% { transform: scale(1.04); box-shadow: 0 14rpx 32rpx rgba(31,185,142,0.45); }
+}
+
+.coupon-entry-btn::after {
+  border: none;
+}
+
+.coupon-below {
+  margin-top: 30rpx;
+}

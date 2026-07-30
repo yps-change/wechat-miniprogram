@@ -128,6 +128,10 @@ Page({
     wx.switchTab({ url: '/pages/index/index' });
   },
 
+  goToCoupons: function() {
+    wx.navigateTo({ url: '/pages/coupons/coupons' });
+  },
+
   // 分享：出结果后把双方的菜+分数一起回传（mode=result），对方打开直接看到结果
   onShareAppMessage: function() {
     var d = this.data;
