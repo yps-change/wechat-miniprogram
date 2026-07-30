@@ -8,7 +8,7 @@ from PIL import Image, ImageDraw, ImageFont
 import os
 
 BASE = os.path.dirname(os.path.abspath(__file__))
-OUT = os.path.join(BASE, 'xhs_promo')
+OUT = os.path.join(BASE, 'assets_backstage', 'xhs_promo')
 os.makedirs(OUT, exist_ok=True)
 
 CJK = '/usr/share/fonts/opentype/noto/NotoSansCJK-Black.ttc'

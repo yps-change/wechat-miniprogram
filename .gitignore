@@ -1,6 +1,7 @@
 # 依赖与构建
 node_modules/
 miniprogram_npm/
+__pycache__/
 
 # 编辑器临时文件
 *.swp

@@ -4,7 +4,7 @@
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 import os
 
-OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'xhs')
+OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets_backstage', 'xhs')
 os.makedirs(OUT, exist_ok=True)
 
 CJK = '/usr/share/fonts/opentype/noto/NotoSansCJK-Black.ttc'   # 简体粗黑
