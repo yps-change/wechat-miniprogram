@@ -125,7 +125,7 @@ Page({
     if (!keyword) return;
     this.setData({ nearbyLoading: !cacheOnly, nearbyList: [], markers: [], nearbyNote: '' });
 
-    // 智能降级搜索：原菜名→品类词→美食，结果缓存 12 小时
+    // 智能降级搜索：原菜名→品类词→美食，结果缓存 24 小时
     nearbyUtil.searchNearbySmart(keyword, loc.latitude, loc.longitude, function(list, usedKeyword, errMsg) {
       if (list.length === 0) {
         that.setData({ nearbyLoading: false });
