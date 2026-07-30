@@ -180,3 +180,18 @@
   font-size: 28rpx;
   color: #4A7BF7;
 }
+
+/* 分享按钮伪装成文字链接 */
+.share-link {
+  margin: 0;
+  padding: 0;
+  height: auto;
+  line-height: inherit;
+  background: none;
+  border: none;
+  font-weight: 400;
+}
+
+.share-link::after {
+  border: none;
+}

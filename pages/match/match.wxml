@@ -23,9 +23,10 @@
       <button class="btn-primary {{shaking ? 'shaking' : ''}}" bindtap="onSpin">🎲 我也转一个</button>
     </block>
 
-    <!-- 已出结果：双卡片 + 默契度 -->
+    <!-- 已出结果：双卡片 + 默契度（resultView=对方回传的结果，视角对调） -->
     <block wx:else>
       <view class="header">
+        <text class="from-text" wx:if="{{resultView}}">TA 测完啦，结果回传给你</text>
         <text class="title">你们的饭缘默契值</text>
       </view>
       <view class="score-wrap">
@@ -36,18 +37,20 @@
         <view class="vs-card">
           <text class="vs-emoji">{{inviterFood.emoji}}</text>
           <text class="vs-name">{{inviterFood.name}}</text>
-          <text class="vs-owner">TA 转到的</text>
+          <text class="vs-owner">{{resultView ? '你转到的' : 'TA 转到的'}}</text>
         </view>
         <text class="vs-mark">VS</text>
         <view class="vs-card">
           <text class="vs-emoji">{{myFood.emoji}}</text>
           <text class="vs-name">{{myFood.name}}</text>
-          <text class="vs-owner">你转到的</text>
+          <text class="vs-owner">{{resultView ? 'TA 转到的' : '你转到的'}}</text>
         </view>
       </view>
-      <button class="btn-primary" open-type="share">📤 把默契值发给TA</button>
+      <button class="btn-primary" wx:if="{{resultView}}" bindtap="onRematch">🎲 再来一回合，接着比！</button>
+      <button class="btn-primary" wx:else open-type="share">📤 把默契值发回给TA</button>
       <view class="sub-actions">
-        <text class="link" bindtap="onRetry">再测一次</text>
+        <button class="link share-link" wx:if="{{resultView}}" open-type="share">晒给别人看</button>
+        <text class="link" wx:else bindtap="onRetry">再测一次</text>
         <text class="link" bindtap="goToIndex">我也去转转盘</text>
       </view>
     </block>
