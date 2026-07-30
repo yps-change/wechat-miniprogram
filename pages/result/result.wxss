@@ -378,10 +378,14 @@
 
 .again-btn::after { border: none; }
 
-/* 测默契入口：轻量文字按钮，不抢主操作 */
-.match-btn {
-  width: 100%;
+/* 分享区：晒结果 / 测默契两个轻量文字按钮并排，不抢主操作的风头 */
+.share-actions {
+  display: flex;
   margin-top: 20rpx;
+}
+
+.match-btn {
+  flex: 1;
   padding: 20rpx 0;
   background: transparent;
   color: #8A94A6;

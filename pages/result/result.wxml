@@ -82,9 +82,14 @@
         <text>← 回去转转盘</text>
       </button>
     </view>
-    <!-- 发起双人默契测试：分享后好友也转一个，比默契度 -->
-    <button class="match-btn" open-type="share" data-type="match">
-      <text>🤝 测测你俩吃饭的默契</text>
-    </button>
+    <!-- 分享区：晒结果（炫耀式标题）/ 发起双人默契测试 -->
+    <view class="share-actions">
+      <button class="match-btn" open-type="share">
+        <text>😋 晒一晒今天吃啥</text>
+      </button>
+      <button class="match-btn" open-type="share" data-type="match">
+        <text>🤝 测测你俩的默契</text>
+      </button>
+    </view>
   </view>
 </view>
