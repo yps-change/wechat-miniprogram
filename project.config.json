@@ -6,6 +6,8 @@
       { "type": "folder", "value": "images/xhs_promo" },
       { "type": "folder", "value": "docs" },
       { "type": "glob", "value": "images/*.py" },
+      { "type": "glob", "value": "images/头像*.png" },
+      { "type": "glob", "value": "images/截图*.png" },
       { "type": "glob", "value": "**/*.md" }
     ],
     "include": []
