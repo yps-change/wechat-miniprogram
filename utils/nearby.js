@@ -150,11 +150,11 @@ function buildKeywordChain(name) {
 }
 
 // 智能搜索：沿关键词链逐级降级，保证尽量有结果
-// 个人 Key 地点搜索仅 200 次/日，结果按「菜名+位置网格」缓存 24 小时省配额
+// 个人 Key 地点搜索仅 200 次/日，结果按「菜名+位置网格」缓存 12 小时省配额
 // callback(list, usedKeyword, errMsg)：接口级报错立即中止降级并回传 errMsg
 // cacheOnly=true 时只查缓存，未命中直接返回空（用于进页自动搜索，不烧配额）
 var SEARCH_CACHE_KEY = 'nearby_search_cache';
-var SEARCH_CACHE_TTL = 24 * 60 * 60 * 1000; // 附近餐馆一天内基本不变，24 小时省配额
+var SEARCH_CACHE_TTL = 12 * 60 * 60 * 1000;
 var SEARCH_CACHE_MAX = 30;
 
 // 位置取小数点后 2 位（约 1km 网格），同一片区域共享缓存
