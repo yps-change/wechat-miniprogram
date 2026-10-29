@@ -1,31 +1,5 @@
-<view class="coupon-page">
-  <view class="coupon-header">
-    <text class="header-emoji">🎟️</text>
-    <text class="title">外卖券</text>
-    <text class="subtitle">先领券，再点喜欢的美食，更省一点</text>
-  </view>
-
-  <view class="notice-card">
-    <text class="notice-icon">💡</text>
-    <text class="notice-text">同一平台建议按顺序领取。点击“查看领券”进入领券页，复制口令或链接后打开对应 App 自动识别。</text>
-  </view>
-
-  <view class="platform-list">
-    <view class="platform-card" wx:for="{{platforms}}" wx:for-item="platform" wx:for-index="platformIndex" wx:key="id">
-      <view class="platform-heading">
-        <view class="platform-logo" style="background-color: {{platform.accentColor}};">{{platform.emoji}}</view>
-        <text class="platform-name">{{platform.name}}</text>
-      </view>
-
-      <view class="coupon-list">
-        <view class="coupon-row" wx:for="{{platform.coupons}}" wx:for-item="coupon" wx:key="url">
-          <view class="coupon-info">
-            <text class="coupon-title">{{coupon.title}}</text>
-          </view>
-          <button class="coupon-button" style="color: {{platform.accentColor}};" bindtap="openCouponDetail" data-platform-index="{{platformIndex}}" data-coupon-index="{{index}}">查看领券</button>
-        </view>
-      </view>
-    </view>
-  </view>
-
+<view class="page-shell coupon-page">
+  <view class="page-heading coupon-heading"><view><text class="page-eyebrow">A LITTLE TREAT</text><text class="page-title">吃顿好的，<text class="page-title-accent">也省一点。</text></text><text class="page-description">先领券，再点喜欢的美食。</text></view><image class="heading-ticket" src="/images/theme/ticket.png" mode="aspectFit" /></view>
+  <view class="notice-card"><text class="notice-label">领券小贴士</text><text class="notice-text">同一平台建议按顺序领取。查看领券后，复制口令或链接，再打开对应App自动识别。</text></view>
+  <view class="platform-list"><view class="platform-card" wx:for="{{platforms}}" wx:for-item="platform" wx:for-index="platformIndex" wx:key="id"><view class="platform-heading"><view class="platform-logo" style="background-color: {{platform.accentColor}};">{{platform.emoji}}</view><text class="platform-name">{{platform.name}}</text><text class="platform-count">{{platform.coupons.length}} 张好券</text></view><view class="coupon-list"><view class="coupon-row" wx:for="{{platform.coupons}}" wx:for-item="coupon" wx:key="url"><view class="coupon-info"><text class="coupon-title">{{coupon.title}}</text><text class="coupon-subtitle">领券后再下单</text></view><button class="coupon-button" bindtap="openCouponDetail" data-platform-index="{{platformIndex}}" data-coupon-index="{{index}}">查看领券 ›</button></view></view></view></view>
 </view>

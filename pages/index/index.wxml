@@ -1,55 +1,27 @@
-<view class="page-bg">
-  <!-- 粒子画布覆盖层 -->
-  <canvas type="2d" id="particleCanvas" class="particle-canvas" bindtouchstart="onPageTouch"></canvas>
-
-  <view class="container">
-    <!-- 顶部标题区 -->
-    <view class="header">
-      <view class="title-row">
-        <text class="title-emoji">🍽️</text>
-        <text class="title">今天吃什么？</text>
-      </view>
-      <text class="subtitle">转一转，命运帮你选</text>
-      <view class="pool-badge" bindtap="goToMenu">
-        <text class="pool-badge-icon">{{useCustomMenu ? '📋' : '🎲'}}</text>
-        <text class="pool-badge-text">{{poolLabel}}</text>
-      </view>
-    </view>
-
-    <!-- 转盘区域 -->
+<view class="home-page tab-page">
+  <view class="header">
+    <text class="home-eyebrow">GOOD FOOD, GOOD MOOD</text>
+    <text class="title">今天，也要<text class="title-accent">好好吃饭。</text></text>
+    <text class="subtitle">不纠结，把这一餐交给一点小运气。</text>
+    <image class="header-spark" src="/images/theme/spark.png" mode="aspectFit" />
+  </view>
+  <view class="section-head">
+    <text class="section-label">今日美食灵感</text>
+    <button class="pool-badge" size="mini" bindtap="goToMenu" disabled="{{spinning}}"><text>{{poolLabel}}</text><text class="pool-arrow">›</text></button>
+  </view>
+  <view class="wheel-stage">
     <view class="wheel-area">
-      <!-- 指针 -->
-      <view class="pointer">
-        <view class="pointer-arrow"></view>
-        <view class="pointer-dot"></view>
+      <view class="wheel-leaf"></view>
+      <view class="wheel-dot"></view>
+      <view class="plate-rim">
+        <canvas type="2d" id="wheelCanvas" class="wheel-canvas" bindtap="onSpin" aria-role="button" aria-label="开饭，点击转盘开始选择"></canvas>
       </view>
-      <!-- 转盘Canvas -->
-      <canvas type="2d" id="wheelCanvas" class="wheel-canvas"></canvas>
-      <!-- 外圈装饰灯 -->
-      <view class="wheel-lights">
-        <view class="light-dot {{lightOn ? 'on' : 'off'}}" wx:for="{{12}}" wx:key="*this"
-          style="transform: rotate({{index * 30}}deg) translateY(-296rpx);">
-        </view>
-      </view>
+      <view class="plate-note"><image src="/images/theme/spark.png" mode="aspectFit" /><text>下一口，有惊喜</text></view>
     </view>
-
-    <!-- 操作按钮区（首页常态按钮） -->
-    <view class="action-area">
-      <view class="dual-btns">
-        <button class="quick-btn" bindtap="onQuickPick" disabled="{{spinning}}">
-          <text class="quick-btn-icon">⚡</text>
-          <text class="quick-btn-text">一键出结果</text>
-        </button>
-        <button class="spin-btn {{spinning ? 'spinning' : ''}}" bindtap="onSpin" disabled="{{spinning}}">
-          <text class="spin-btn-text">{{spinning ? '转动中...' : '开始转盘'}}</text>
-        </button>
-      </view>
-      <button class="coupon-entry-btn" bindtap="goToCoupons">🎟️ 领外卖券</button>
-    </view>
-
-    <!-- 连击提示 -->
-    <view class="combo-hint" wx:if="{{comboCount > 1}}">
-      <text class="combo-text">🔥 连转 {{comboCount}} 次！</text>
-    </view>
+  </view>
+  <view class="action-area">
+    <button class="btn-primary spin-btn" bindtap="onSpin" disabled="{{spinning}}"><image class="inline-icon" src="/images/theme/spin.png" mode="aspectFit" /><text>{{spinning ? '美味正在转过来…' : '转一转，决定这一餐'}}</text><image class="inline-icon" src="/images/theme/arrow-light.png" mode="aspectFit" /></button>
+    <button class="quick-btn" bindtap="onQuickPick" disabled="{{spinning}}"><text>已经饿了？</text><text class="quick-highlight">一键出结果 →</text></button>
+    <button class="coupon-entry-btn home-coupon" bindtap="goToCoupons"><image class="coupon-entry-icon" src="/images/theme/ticket.png" mode="aspectFit" /><view class="coupon-entry-copy"><text class="coupon-entry-title">外卖红包，先领再点</text><text class="coupon-entry-hint">吃顿好的，也省一点</text></view><text class="coupon-entry-more">领券 ›</text></button>
   </view>
 </view>

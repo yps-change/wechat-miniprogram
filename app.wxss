@@ -1,67 +1,98 @@
-/* 全局样式 */
 page {
-  --primary-color: #4A7BF7;
-  --primary-light: #EBF0FF;
-  --primary-gradient: linear-gradient(135deg, #4A7BF7, #6C9BFF);
-  --bg-color: #F0F5FF;
-  --text-color: #333333;
-  --text-secondary: #666666;
-  --text-hint: #999999;
-  --border-color: #EEEEEE;
-  --card-bg: #FFFFFF;
-  --success-color: #52C41A;
-  --warning-color: #FAAD14;
-  --pink-color: #FF1493;
-  --purple-color: #7B68EE;
-
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --primary-color: #BD4828;
+  --primary-light: #F8E6D7;
+  --bg-color: #FAF7EF;
+  --text-color: #302F26;
+  --text-secondary: #6F6B5F;
+  --text-hint: #817B6E;
+  --border-color: #E8E2D5;
+  --card-bg: #FFFDF7;
+  --sage-color: #53694D;
+  --sage-light: #ECF0E3;
+  --success-color: #53694D;
+  --warning-color: #A87530;
+  --card-radius: 28rpx;
+  --tab-height: 116rpx;
+  font-family: 'PingFang SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif;
   font-size: 28rpx;
+  line-height: 1.6;
   color: var(--text-color);
-  background-color: var(--bg-color);
-  box-sizing: border-box;
+  background: var(--bg-color);
 }
 
-/* 通用工具类 */
-.flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.flex-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
+view, button, input, textarea { box-sizing: border-box; }
+button { margin: 0; font-size: 28rpx; }
+button::after { border: none; }
+button[disabled] { opacity: .55; }
+input { color: var(--text-color); }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-column { display: flex; flex-direction: column; align-items: center; }
 .text-primary { color: var(--primary-color); }
 .text-secondary { color: var(--text-secondary); }
 .text-hint { color: var(--text-hint); }
 
-/* 通用按钮样式 */
-.btn-primary {
-  background: var(--primary-gradient);
-  color: #ffffff;
-  border: none;
-  border-radius: 50rpx;
-  padding: 24rpx 60rpx;
-  font-size: 32rpx;
-  font-weight: 600;
-  line-height: 1;
-  box-shadow: 0 6rpx 20rpx rgba(74,123,247,0.3);
+.page-shell {
+  min-height: 100vh;
+  padding: 36rpx 36rpx calc(48rpx + env(safe-area-inset-bottom));
+  background: var(--bg-color);
 }
+.tab-page { padding-bottom: calc(var(--tab-height) + 32rpx + env(safe-area-inset-bottom)); }
+.page-heading { margin-bottom: 36rpx; }
+.page-eyebrow { display: block; color: var(--sage-color); font-size: 20rpx; letter-spacing: 3rpx; }
+.page-title { display: block; margin-top: 12rpx; font-size: 48rpx; line-height: 1.4; font-weight: 800; letter-spacing: -1rpx; word-break: break-all; }
+.page-description { display: block; margin-top: 14rpx; color: var(--text-secondary); font-size: 25rpx; line-height: 1.8; }
+.page-title-accent { color: var(--primary-color); }
+.section-title { font-size: 29rpx; font-weight: 650; }
+.section-caption { font-size: 23rpx; color: var(--text-hint); }
+.surface { background: var(--card-bg); border: 1rpx solid var(--border-color); border-radius: var(--card-radius); padding: 30rpx; }
 
-.btn-primary::after { border: none; }
-
-.btn-secondary {
-  background-color: var(--primary-light);
-  color: var(--primary-color);
-  border: none;
-  border-radius: 50rpx;
-  padding: 24rpx 60rpx;
-  font-size: 32rpx;
-  font-weight: 500;
-  line-height: 1;
+/* 双类选择器覆盖微信 v2 普通按钮的固定宽度与默认内边距。 */
+.btn-primary.btn-primary, .btn-secondary.btn-secondary {
+  width: 100%;
+  min-height: 92rpx;
+  padding: 22rpx 28rpx;
+  border-radius: 24rpx;
+  border: 1rpx solid transparent;
+  font-size: 29rpx;
+  font-weight: 650;
+  line-height: 1.6;
+  text-align: center;
 }
+.btn-primary { background: var(--primary-color); color: #FFF9EE; box-shadow: 0 5rpx 0 #A63E22, 0 10rpx 20rpx rgba(123, 67, 36, .08); }
+.btn-secondary.btn-secondary { background: var(--card-bg); color: var(--primary-color); border-color: #DBC9B7; }
+.btn-primary.button-hover { transform: translateY(3rpx); box-shadow: 0 2rpx 0 #A63E22; }
+.btn-secondary.button-hover { background: var(--primary-light); }
+.text-button.text-button { width: auto; background: transparent; color: var(--text-secondary); padding: 18rpx 12rpx; font-size: 25rpx; line-height: 1.6; }
+.field-label { display: block; margin: 22rpx 0 12rpx; font-size: 24rpx; color: var(--text-secondary); }
+.field-input { width: 100%; min-height: 88rpx; padding: 0 24rpx; background: #F5F1E7; border: 1rpx solid var(--border-color); border-radius: 18rpx; font-size: 27rpx; }
+.field-placeholder { color: #928A7B; }
 
-.btn-secondary::after { border: none; }
+.coupon-entry-btn.coupon-entry-btn {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+  width: 100%;
+  min-height: 120rpx;
+  padding: 22rpx 24rpx;
+  border: 1rpx solid #DDE3D1;
+  border-radius: 26rpx;
+  background: var(--sage-light);
+  text-align: left;
+  line-height: 1.5;
+}
+.coupon-entry-icon { width: 70rpx; height: 70rpx; flex-shrink: 0; transform: rotate(-7deg); }
+.coupon-entry-copy { flex: 1; min-width: 0; }
+.coupon-entry-title { display: block; font-size: 27rpx; font-weight: 650; color: var(--text-color); }
+.coupon-entry-hint { display: block; margin-top: 6rpx; font-size: 21rpx; color: var(--sage-color); }
+.coupon-entry-more { flex-shrink: 0; color: var(--sage-color); font-size: 21rpx; padding: 7rpx 13rpx; border: 1rpx solid #C9D2BA; border-radius: 30rpx; }
+.coupon-below { margin-top: 28rpx; }
+
+.empty-state { padding: 64rpx 28rpx; text-align: center; display: flex; flex-direction: column; align-items: center; }
+.empty-illustration { display: block; width: 136rpx; height: 136rpx; margin-bottom: 26rpx; opacity: .8; }
+.empty-title { font-size: 30rpx; font-weight: 650; }
+.empty-description { margin-top: 14rpx; font-size: 24rpx; line-height: 1.8; color: var(--text-hint); }
+.inline-icon { width: 32rpx; height: 32rpx; flex-shrink: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  view, button, text, image { animation: none !important; transition: none !important; }
+}

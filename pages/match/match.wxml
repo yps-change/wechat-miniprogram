@@ -1,60 +1,20 @@
-<view class="container">
-  <!-- 无邀请参数（朋友圈单页等入口）：引导回首页 -->
-  <block wx:if="{{invalid}}">
-    <view class="header">
-      <text class="title">🤝 饭缘默契测试</text>
-      <text class="sub-title">找个饭友，测测你俩今天吃饭有多默契</text>
-    </view>
-    <button class="btn-primary" bindtap="goToIndex">先去转个转盘</button>
-  </block>
-
+<view class="page-shell match-page">
+  <block wx:if="{{invalid}}"><view class="page-heading"><text class="page-eyebrow">BETTER TOGETHER</text><text class="page-title">找个饭友，<text class="page-title-accent">测测默契。</text></text><text class="page-description">从一顿饭开始，看看你们有多合拍。</text></view><view class="surface empty-state"><image class="empty-illustration" src="/images/theme/food-default.png" mode="aspectFit" /><text class="empty-title">先为自己选一道菜</text><text class="empty-description">从结果页邀请饭友，就能发起默契测试。</text></view><button class="btn-primary invalid-action" bindtap="goToIndex">先去转个转盘 →</button></block>
   <block wx:else>
-    <!-- 未出结果：TA 的菜 + 我来转 -->
     <block wx:if="{{!tested}}">
-      <view class="header">
-        <text class="from-text">{{fromName}} 发起了饭缘默契测试</text>
-        <text class="title">TA 转到了这道菜</text>
-      </view>
-      <view class="inviter-card">
-        <text class="card-emoji">{{inviterFood.emoji}}</text>
-        <text class="card-name">{{inviterFood.name}}</text>
-      </view>
-      <text class="spin-hint">你也转一个，看看你俩今天吃饭的默契值 👇</text>
-      <button class="btn-primary {{shaking ? 'shaking' : ''}}" bindtap="onSpin">🎲 我也转一个</button>
-      <button class="coupon-entry-btn coupon-below" bindtap="goToCoupons">🎟️ 领外卖券</button>
+      <view class="page-heading"><text class="page-eyebrow">{{fromName}} 发起了饭缘默契测试</text><text class="page-title">吃饭这件事，<text class="page-title-accent">我们合拍吗？</text></text><text class="page-description">TA已经选好了，就等你的那一道。</text></view>
+      <view class="inviter-card"><text class="card-kicker">TA 转到了</text><view class="inviter-plate"><food-illustration food="{{inviterFood}}" size="190" /></view><text class="card-name">{{inviterFood.name}}</text></view>
+      <text class="spin-hint">你也转一个，看看今天的饭缘默契值。</text>
+      <button class="btn-primary {{shaking ? 'shaking' : ''}}" bindtap="onSpin" disabled="{{shaking}}">{{shaking ? '正在寻找这份默契…' : '我也转一个'}}</button>
+      <button class="coupon-entry-btn coupon-below" bindtap="goToCoupons"><image class="coupon-entry-icon" src="/images/theme/ticket.png" mode="aspectFit" /><view class="coupon-entry-copy"><text class="coupon-entry-title">吃顿好的，也省一点</text><text class="coupon-entry-hint">先领一张外卖券</text></view><text class="coupon-entry-more">去领券 ›</text></button>
     </block>
-
-    <!-- 已出结果：双卡片 + 默契度（resultView=对方回传的结果，视角对调） -->
     <block wx:else>
-      <view class="header">
-        <text class="from-text" wx:if="{{resultView}}">TA 测完啦，结果回传给你</text>
-        <text class="title">你们的饭缘默契值</text>
-      </view>
-      <view class="score-wrap">
-        <text class="score-num">{{score}}<text class="score-unit">%</text></text>
-        <text class="score-level">{{level}}</text>
-      </view>
-      <view class="vs-row">
-        <view class="vs-card">
-          <text class="vs-emoji">{{inviterFood.emoji}}</text>
-          <text class="vs-name">{{inviterFood.name}}</text>
-          <text class="vs-owner">{{resultView ? '你转到的' : 'TA 转到的'}}</text>
-        </view>
-        <text class="vs-mark">VS</text>
-        <view class="vs-card">
-          <text class="vs-emoji">{{myFood.emoji}}</text>
-          <text class="vs-name">{{myFood.name}}</text>
-          <text class="vs-owner">{{resultView ? 'TA 转到的' : '你转到的'}}</text>
-        </view>
-      </view>
-      <button class="btn-primary" wx:if="{{resultView}}" bindtap="onRematch">🎲 再来一回合，接着比！</button>
-      <button class="btn-primary" wx:else open-type="share">📤 把默契值发回给TA</button>
-      <view class="sub-actions">
-        <button class="link share-link" wx:if="{{resultView}}" open-type="share">晒给别人看</button>
-        <text class="link" wx:else bindtap="onRetry">再测一次</text>
-        <text class="link" bindtap="goToIndex">我也去转转盘</text>
-      </view>
-      <button class="coupon-entry-btn coupon-below" bindtap="goToCoupons">🎟️ 领外卖券，吃饭更香</button>
+      <view class="page-heading"><text class="page-eyebrow">{{resultView ? 'TA测完啦，结果回传给你' : 'A LITTLE FOOD CHEMISTRY'}}</text><text class="page-title">你们的<text class="page-title-accent">饭缘默契值。</text></text></view>
+      <view class="score-wrap"><text class="score-caption">TODAY’S MATCH</text><text class="score-num">{{score}}<text class="score-unit">%</text></text><text class="score-level">{{level}}</text></view>
+      <view class="vs-row"><view class="vs-card"><food-illustration food="{{inviterFood}}" size="136" /><text class="vs-name">{{inviterFood.name}}</text><text class="vs-owner">{{resultView ? '你转到的' : 'TA转到的'}}</text></view><text class="vs-mark">×</text><view class="vs-card"><food-illustration food="{{myFood}}" size="136" /><text class="vs-name">{{myFood.name}}</text><text class="vs-owner">{{resultView ? 'TA转到的' : '你转到的'}}</text></view></view>
+      <button class="btn-primary" wx:if="{{resultView}}" bindtap="onRematch">再来一回合，接着比！</button><button class="btn-primary" wx:else open-type="share">把默契值发回给TA →</button>
+      <view class="sub-actions"><button class="text-button" wx:if="{{resultView}}" open-type="share">晒给别人看</button><button class="text-button" wx:else bindtap="onRetry">再测一次</button><button class="text-button" bindtap="goToIndex">我也去转转盘</button></view>
+      <button class="coupon-entry-btn coupon-below" bindtap="goToCoupons"><image class="coupon-entry-icon" src="/images/theme/ticket.png" mode="aspectFit" /><view class="coupon-entry-copy"><text class="coupon-entry-title">饭缘合拍，吃饭更香</text><text class="coupon-entry-hint">下单前先领一张外卖券</text></view><text class="coupon-entry-more">去领券 ›</text></button>
     </block>
   </block>
 </view>

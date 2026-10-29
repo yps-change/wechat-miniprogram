@@ -1,24 +1,6 @@
-<view class="detail-page">
-  <view class="hero hero-poster {{platform.id}}" wx:if="{{coupon.image}}">
-    <image class="hero-image" src="{{coupon.image}}" mode="widthFix" />
-  </view>
-  <view class="hero" wx:else style="background: linear-gradient(135deg, {{platform.accentColor}}, #FFB347);">
-    <text class="hero-emoji">{{platform.emoji}}</text>
-    <text class="hero-title">{{coupon.title}}</text>
-    <text class="hero-subtitle">打开 {{coupon.appName || platform.name}}，粘贴口令即可领取</text>
-  </view>
-
-  <view class="coupon-ticket {{platform.id}}">
-    <view class="ticket-tag">限时红包</view>
-    <text class="ticket-title">{{coupon.title}}</text>
-    <text class="ticket-description">{{coupon.description}}</text>
-    <view class="ticket-divider"></view>
-    <text class="ticket-hint">点击下方按钮复制口令，再打开{{coupon.appName || platform.name}}自动识别</text>
-    <view class="copy-preview" wx:if="{{linkLoading}}">正在获取最新推广链接…</view>
-    <view class="copy-preview" wx:else>{{copyText}}</view>
-    <button class="copy-button" style="background: {{platform.accentColor}};" bindtap="copyCode" loading="{{linkLoading}}" disabled="{{linkLoading}}">
-      📋 {{linkLoading ? '获取最新链接' : (coupon.actionLabel || '复制口令')}}
-    </button>
-  </view>
-
+<view class="page-shell detail-page">
+  <view class="detail-heading"><text class="page-eyebrow">A LITTLE TREAT</text><text class="detail-platform">{{platform.name}} · 领券详情</text></view>
+  <view class="hero hero-poster {{platform.id}}" wx:if="{{coupon.image}}"><image class="hero-image" src="{{coupon.image}}" mode="widthFix" /></view>
+  <view class="hero hero-text" wx:else><image class="hero-ticket" src="/images/theme/ticket.png" mode="aspectFit" /><text class="hero-title">{{coupon.title}}</text><text class="hero-subtitle">打开{{coupon.appName || platform.name}}，粘贴口令即可领取</text></view>
+  <view class="coupon-ticket {{platform.id}}"><view class="ticket-tag">下单前，先领券</view><text class="ticket-title">{{coupon.title}}</text><text class="ticket-description">{{coupon.description}}</text><view class="ticket-divider"></view><text class="ticket-hint">点击下方按钮复制口令，再打开{{coupon.appName || platform.name}}自动识别</text><view class="copy-preview" wx:if="{{linkLoading}}">正在获取最新推广链接…</view><view class="copy-preview" wx:else>{{copyText}}</view><button class="btn-primary copy-button" bindtap="copyCode" loading="{{linkLoading}}" disabled="{{linkLoading}}">{{linkLoading ? '获取最新链接' : (coupon.actionLabel || '复制口令')}}</button></view>
 </view>

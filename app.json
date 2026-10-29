@@ -12,13 +12,16 @@
     "pages/history/history"
   ],
   "window": {
-    "navigationBarBackgroundColor": "#4A7BF7",
+    "navigationBarBackgroundColor": "#FAF7EF",
     "navigationBarTitleText": "今天吃什么",
-    "navigationBarTextStyle": "white",
-    "backgroundColor": "#F0F5FF",
-    "backgroundTextStyle": "light"
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#FAF7EF",
+    "backgroundTextStyle": "dark"
   },
   "lazyCodeLoading":"requiredComponents",
+  "usingComponents": {
+    "food-illustration": "/components/food-illustration/food-illustration"
+  },
   "requiredPrivateInfos": ["chooseLocation"],
   "permission": {
     "scope.userLocation": {
@@ -27,28 +30,28 @@
   },
   "tabBar": {
     "custom": true,
-    "color": "#999999",
-    "selectedColor": "#4A7BF7",
-    "backgroundColor": "#ffffff",
+    "color": "#817D70",
+    "selectedColor": "#BD4828",
+    "backgroundColor": "#FFFDF7",
     "borderStyle": "black",
     "list": [
       {
         "pagePath": "pages/index/index",
         "text": "吃什么",
-        "iconPath": "images/icon_1_wheel.png",
-        "selectedIconPath": "images/icon_1_wheel.png"
+        "iconPath": "images/theme/wheel-muted.png",
+        "selectedIconPath": "images/theme/wheel-active.png"
       },
       {
         "pagePath": "pages/menu/menu",
         "text": "专属菜单",
-        "iconPath": "images/icon_2_dice.png",
-        "selectedIconPath": "images/icon_2_dice.png"
+        "iconPath": "images/theme/menu-muted.png",
+        "selectedIconPath": "images/theme/menu-active.png"
       },
       {
         "pagePath": "pages/history/history",
         "text": "历史",
-        "iconPath": "images/icon_3_plate.png",
-        "selectedIconPath": "images/icon_3_plate.png"
+        "iconPath": "images/theme/history-muted.png",
+        "selectedIconPath": "images/theme/history-active.png"
       }
     ]
   },

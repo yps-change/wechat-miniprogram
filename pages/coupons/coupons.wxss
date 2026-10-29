@@ -1,136 +1,17 @@
-.coupon-page {
-  min-height: 100vh;
-  padding: 28rpx 24rpx 40rpx;
-  box-sizing: border-box;
-  background: linear-gradient(180deg, #FFF9F2 0%, #FFF4E8 48%, #F0F5FF 100%);
-}
-
-.coupon-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 18rpx;
-}
-
-.header-emoji {
-  font-size: 48rpx;
-  margin-bottom: 4rpx;
-}
-
-.title {
-  font-size: 40rpx;
-  font-weight: 800;
-  color: #E67E22;
-}
-
-.subtitle {
-  margin-top: 4rpx;
-  font-size: 23rpx;
-  color: #876F5D;
-}
-
-.notice-card {
-  display: flex;
-  align-items: flex-start;
-  gap: 14rpx;
-  padding: 14rpx 18rpx;
-  margin-bottom: 16rpx;
-  background: rgba(255,255,255,0.86);
-  border: 2rpx solid rgba(230,126,34,0.16);
-  border-radius: 22rpx;
-}
-
-.notice-icon {
-  font-size: 27rpx;
-  line-height: 1.4;
-}
-
-.notice-text {
-  flex: 1;
-  font-size: 22rpx;
-  line-height: 1.4;
-  color: #806F62;
-}
-
-.platform-card {
-  padding: 18rpx 18rpx 8rpx;
-  margin-bottom: 14rpx;
-  background: rgba(255,255,255,0.96);
-  border-radius: 28rpx;
-  box-shadow: 0 8rpx 26rpx rgba(184,125,68,0.12);
-}
-
-.platform-heading {
-  display: flex;
-  align-items: center;
-  padding-bottom: 14rpx;
-  border-bottom: 2rpx solid #F4EDE6;
-}
-
-.platform-logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 58rpx;
-  height: 58rpx;
-  margin-right: 14rpx;
-  border-radius: 16rpx;
-  font-size: 30rpx;
-}
-
-.platform-name {
-  font-size: 30rpx;
-  font-weight: 700;
-  color: #333;
-}
-
-.coupon-row {
-  display: flex;
-  align-items: center;
-  gap: 14rpx;
-  padding: 14rpx 0;
-  border-bottom: 2rpx dashed #F2E7DE;
-}
-
-.coupon-row:last-child {
-  border-bottom: none;
-}
-
-.coupon-info {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-width: 0;
-}
-
-.coupon-title {
-  font-size: 26rpx;
-  font-weight: 700;
-  color: #444;
-}
-
-.coupon-button {
-  flex-shrink: 0;
-  width: 140rpx;
-  height: 54rpx;
-  line-height: 54rpx;
-  padding: 0;
-  background: #FFF4E8;
-  border-radius: 27rpx;
-  font-size: 23rpx;
-  font-weight: 700;
-}
-
-.coupon-button::after {
-  border: none;
-}
-
-.config-tip {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 24rpx;
-  gap: 8rpx;
-  font-size: 23rpx;
-  color: #AA9C91;
-}
+.coupon-heading { position: relative; padding-right: 8rpx; }
+.coupon-heading .page-title { position: relative; z-index: 1; }
+.heading-ticket { position: absolute; width: 94rpx; height: 94rpx; right: 2rpx; top: -8rpx; transform: rotate(12deg); opacity: .55; }
+.notice-card { display: flex; flex-direction: column; gap: 10rpx; padding: 24rpx 26rpx; margin-bottom: 28rpx; background: var(--sage-light); border: 1rpx solid #DCE2D0; border-radius: 24rpx; }
+.notice-label { font-size: 24rpx; font-weight: 650; color: var(--sage-color); }
+.notice-text { font-size: 22rpx; line-height: 1.8; color: #657258; }
+.platform-card { padding: 26rpx; margin-bottom: 26rpx; border: 1rpx solid var(--border-color); border-radius: 28rpx; background: var(--card-bg); }
+.platform-heading { display: flex; align-items: center; gap: 16rpx; padding-bottom: 24rpx; border-bottom: 1rpx solid var(--border-color); }
+.platform-logo { display: flex; align-items: center; justify-content: center; width: 58rpx; height: 58rpx; border-radius: 16rpx; font-size: 29rpx; flex-shrink: 0; }
+.platform-name { font-size: 30rpx; font-weight: 700; flex: 1; min-width: 0; }
+.platform-count { font-size: 21rpx; color: var(--text-hint); flex-shrink: 0; }
+.coupon-row { position: relative; display: flex; align-items: center; gap: 16rpx; padding: 28rpx 0; border-bottom: 1rpx dashed #DED4C0; }
+.coupon-row:last-child { border: 0; padding-bottom: 8rpx; }
+.coupon-info { flex: 1; min-width: 0; }
+.coupon-title { display: block; font-size: 27rpx; font-weight: 600; word-break: break-all; }
+.coupon-subtitle { display: block; margin-top: 8rpx; color: var(--text-hint); font-size: 21rpx; }
+.coupon-button.coupon-button { width: auto; margin: 0; min-height: 68rpx; line-height: 1.5; padding: 17rpx 20rpx; border-radius: 17rpx; background: var(--primary-light); color: var(--primary-color); font-size: 23rpx; font-weight: 600; flex-shrink: 0; }

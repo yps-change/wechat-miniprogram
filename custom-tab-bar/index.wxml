@@ -1,13 +1,6 @@
 <view class="tab-bar">
-  <view
-    wx:for="{{list}}"
-    wx:key="pagePath"
-    class="tab-bar-item {{selected === index ? 'active' : ''}}"
-    data-index="{{index}}"
-    data-path="{{item.pagePath}}"
-    bindtap="onTabTap"
-  >
-    <image class="tab-bar-icon" src="{{item.iconPath}}" mode="aspectFit" />
+  <view wx:for="{{list}}" wx:key="pagePath" class="tab-bar-item {{selected === index ? 'active' : ''}}" data-index="{{index}}" data-path="{{item.pagePath}}" bindtap="onTabTap" role="button" aria-label="{{item.text}}">
+    <view class="tab-icon-wrap"><image class="tab-bar-icon" src="{{selected === index ? item.selectedIconPath : item.iconPath}}" mode="aspectFit" /></view>
     <view class="tab-bar-text" style="color: {{selected === index ? selectedColor : color}}">{{item.text}}</view>
   </view>
 </view>

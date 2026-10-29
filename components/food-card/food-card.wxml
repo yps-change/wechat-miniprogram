@@ -1,22 +1,4 @@
-<view class="card-container">
-  <view class="card-inner {{flipped ? 'flipped' : ''}}">
-    <!-- 正面：问号面 -->
-    <view class="card-face card-front">
-      <text class="front-emoji">🤔</text>
-      <text class="front-text">今天吃什么？</text>
-      <text class="front-hint">点击下方按钮揭晓</text>
-    </view>
-    <!-- 背面：结果面 -->
-    <view class="card-face card-back">
-      <text class="back-emoji">{{food.emoji || '🍽️'}}</text>
-      <text class="back-name">{{food.name || ''}}</text>
-      <view class="back-info">
-        <text class="back-category">{{food.categoryName || ''}}</text>
-        <text class="back-price">￥{{food.priceRange || ''}}</text>
-      </view>
-      <view class="back-tags" wx:if="{{food.tags && food.tags.length > 0}}">
-        <text class="tag" wx:for="{{food.tags}}" wx:key="*this">{{tagNames[item] || item}}</text>
-      </view>
-    </view>
-  </view>
-</view>
+<view class="card-container"><view class="card-inner {{flipped ? 'flipped' : ''}}">
+  <view class="card-face card-front"><text class="front-kicker">A LITTLE SURPRISE</text><view class="front-plate"><image class="front-icon" src="/images/theme/bowl.png" mode="aspectFit" /><text class="front-question">?</text></view><text class="front-text">下一餐，会是什么？</text><text class="front-hint">点一下，让美味翻个面。</text></view>
+  <view class="card-face card-back"><text class="front-kicker">PICKED WITH A LITTLE LUCK</text><view class="back-plate"><food-illustration food="{{food}}" size="190" /></view><text class="back-name">{{food.name || ''}}</text><view class="back-info"><text class="back-category">{{food.categoryName || ''}}</text><text class="back-price">￥{{food.priceRange || ''}}</text></view><view class="back-tags" wx:if="{{food.tags && food.tags.length > 0}}"><text class="tag" wx:for="{{food.tags}}" wx:key="*this">{{tagNames[item] || item}}</text></view></view>
+</view></view>

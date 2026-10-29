@@ -1,48 +1,18 @@
-<view class="menu-page">
-  <view class="header">
-    <text class="header-emoji">🍱</text>
-    <text class="title">我的专属菜单</text>
-    <text class="subtitle">设置后，转盘会优先从这里抽取</text>
-  </view>
-
-  <view class="menu-card">
-    <view class="menu-title-row">
-      <view class="menu-title-left">
-        <text class="menu-icon">🎯</text>
-        <text class="menu-title">启用专属菜单</text>
-      </view>
-      <switch class="menu-switch" checked="{{useCustomMenu}}" color="#4A7BF7" bindchange="toggleCustomMenu" />
-    </view>
+<view class="page-shell tab-page menu-page">
+  <view class="page-heading"><text class="page-eyebrow">YOUR OWN MENU</text><text class="page-title">喜欢的，<text class="page-title-accent">都放这里。</text></text><text class="page-description">把常吃的收进菜单，让每次选择更合心意。</text></view>
+  <view class="surface menu-card switch-card">
+    <view class="menu-title-row"><view class="menu-title-left"><image class="inline-icon" src="/images/theme/menu-active.png" mode="aspectFit" /><text class="section-title">启用专属菜单</text></view><switch class="menu-switch" checked="{{useCustomMenu}}" color="#BD4828" bindchange="toggleCustomMenu" /></view>
     <text class="menu-current">当前使用：{{currentMenuLabel}}</text>
   </view>
-
-  <view class="menu-card">
-    <text class="section-title">添加想吃的</text>
-    <view class="menu-input-row">
-      <input class="menu-input" value="{{menuInput}}" placeholder="输入想吃的，比如牛肉粉" bindinput="onMenuInput" confirm-type="done" bindconfirm="addMenuItem" />
-      <button class="menu-add-btn" bindtap="addMenuItem">添加</button>
-    </view>
-    <button class="history-btn" bindtap="generateMenuFromHistory">从历史生成专属菜单</button>
-    <button class="share-btn" open-type="share">📣 让好友帮我推荐</button>
+  <view class="surface menu-card">
+    <text class="section-title">添一道想吃的</text>
+    <view class="menu-input-row"><input class="field-input menu-input" value="{{menuInput}}" placeholder="例如：牛肉粉、番茄炒蛋" placeholder-class="field-placeholder" bindinput="onMenuInput" confirm-type="done" bindconfirm="addMenuItem" /><button class="menu-add-btn" bindtap="addMenuItem">添加</button></view>
+    <button class="history-btn" bindtap="generateMenuFromHistory"><image class="inline-icon" src="/images/theme/history-muted.png" mode="aspectFit" /><text>从历史生成专属菜单</text><text class="row-arrow">›</text></button>
+    <button class="share-btn" open-type="share">让好友帮我推荐一道 →</button>
   </view>
-
-  <view class="menu-card list-card">
-    <view class="list-title-row">
-      <text class="section-title">菜单内容</text>
-      <text class="count-text">{{customMenu.length}} 道</text>
-    </view>
-
-    <view class="menu-tags" wx:if="{{customMenu.length > 0}}">
-      <view class="menu-tag" wx:for="{{customMenu}}" wx:key="*this">
-        <text>{{item}}</text>
-        <text class="menu-tag-close" bindtap="removeMenuItem" data-index="{{index}}">×</text>
-      </view>
-    </view>
-
-    <view class="empty" wx:else>
-      <text class="empty-emoji">🍽️</text>
-      <text class="empty-text">还没有专属菜品</text>
-      <text class="empty-hint">添加几个常吃的，转盘就会从这里选</text>
-    </view>
+  <view class="surface menu-card list-card">
+    <view class="list-title-row"><text class="section-title">我的菜单</text><text class="count-text">{{customMenu.length}} 道美味</text></view>
+    <view class="menu-tags" wx:if="{{customMenu.length > 0}}"><view class="menu-tag" wx:for="{{customMenu}}" wx:key="*this"><text class="menu-tag-name">{{item}}</text><button class="menu-tag-close" bindtap="removeMenuItem" data-index="{{index}}" aria-label="移除{{item}}">×</button></view></view>
+    <view class="empty-state" wx:else><image class="empty-illustration" src="/images/theme/food-default.png" mode="aspectFit" /><text class="empty-title">好菜单，从第一道开始</text><text class="empty-description">添加几道喜欢的，下一餐就从这里选。</text></view>
   </view>
 </view>

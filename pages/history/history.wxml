@@ -1,30 +1,9 @@
-<view class="container">
-  <view class="history-receiver {{receiving ? 'receiving' : ''}}" wx:if="{{receivedNotice}}">
-    <text class="receiver-icon">🗂️</text>
-    <text class="receiver-text">收到{{receivedNotice.fromName || '好友'}}推荐：{{receivedNotice.foodName}}</text>
-  </view>
-
-  <view class="header" wx:if="{{historyList.length > 0}}">
-    <text class="title">最近吃了什么</text>
-    <text class="clear-btn" bindtap="onClear">清空</text>
-  </view>
-
-  <!-- 历史列表 -->
+<view class="page-shell tab-page">
+  <view class="page-heading"><text class="page-eyebrow">LITTLE FOOD MEMORIES</text><text class="page-title">每一餐，<text class="page-title-accent">都有迹可循。</text></text><text class="page-description">吃过的美味，都是生活的小小记录。</text></view>
+  <view class="history-receiver {{receiving ? 'receiving' : ''}}" wx:if="{{receivedNotice}}"><image class="inline-icon" src="/images/theme/spark.png" mode="aspectFit" /><text class="receiver-text">收到{{receivedNotice.fromName || '好友'}}推荐：{{receivedNotice.foodName}}</text></view>
+  <view class="list-heading" wx:if="{{historyList.length > 0}}"><text class="section-title">最近吃了什么</text><button class="clear-btn" bindtap="onClear">清空记录</button></view>
   <view class="history-list" wx:if="{{historyList.length > 0}}">
-    <view class="history-group" wx:for="{{groupedHistory}}" wx:key="date">
-      <text class="group-date">{{item.date}}</text>
-      <view class="history-item" wx:for="{{item.records}}" wx:for-item="record" wx:key="timestamp">
-        <text class="item-emoji">{{record.emoji}}</text>
-        <text class="item-name">{{record.foodName}}</text>
-        <text class="item-source">{{sourceNames[record.source]}}</text>
-      </view>
-    </view>
+    <view class="history-group" wx:for="{{groupedHistory}}" wx:key="date"><text class="group-date">{{item.date}}</text><view class="group-card"><view class="history-item" wx:for="{{item.records}}" wx:for-item="record" wx:key="timestamp"><view class="history-art"><food-illustration food="{{record}}" size="80" /></view><text class="item-name">{{record.foodName}}</text><text class="item-source">{{sourceNames[record.source]}}</text></view></view></view>
   </view>
-
-  <!-- 空状态 -->
-  <view class="empty" wx:if="{{historyList.length === 0}}">
-    <text class="empty-emoji">📝</text>
-    <text class="empty-text">还没有记录</text>
-    <text class="empty-hint">去首页随机选一个吧</text>
-  </view>
+  <view class="surface empty-state" wx:if="{{historyList.length === 0}}"><image class="empty-illustration" src="/images/theme/food-default.png" mode="aspectFit" /><text class="empty-title">第一顿美味，还在路上</text><text class="empty-description">去首页转一转，选好后点「就它了」，就会留下你的第一条记录。</text></view>
 </view>

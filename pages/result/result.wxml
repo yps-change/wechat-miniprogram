@@ -1,95 +1,23 @@
-<view class="page">
-  <!-- 顶部装饰 -->
-  <view class="top-decor">
-    <view class="circle c1"></view>
-    <view class="circle c2"></view>
-    <view class="circle c3"></view>
-  </view>
-
-  <!-- 食物展示卡片 -->
-  <view class="food-photo-card">
-    <view class="photo-bg">
-      <view class="photo-glow"></view>
-      <text class="food-emoji">{{food.emoji || '🍽️'}}</text>
-    </view>
-    <view class="photo-label">
-      <text class="label-text">✨ 今日推荐</text>
-    </view>
-  </view>
-
-  <!-- 食物信息 -->
-  <view class="food-info">
+<view class="page-shell result-page">
+  <view class="page-heading"><text class="page-eyebrow">THE DAILY PICK</text><text class="page-title">这一餐，<text class="page-title-accent">就吃它。</text></text><text class="page-description">替你做个决定，把好心情留给吃饭。</text></view>
+  <view class="surface result-card">
+    <view class="result-label"><image src="/images/theme/spark.png" mode="aspectFit" /><text>今日推荐</text></view>
+    <view class="food-plate"><food-illustration food="{{food}}" size="230" /></view>
     <text class="food-name">{{food.name || '加载中...'}}</text>
-    <view class="info-row">
-      <text class="food-category">{{food.categoryName || ''}}</text>
-      <text class="food-price">￥{{food.priceRange || ''}}</text>
-    </view>
-    <view class="food-tags" wx:if="{{food.tags && food.tags.length > 0}}">
-      <text class="tag" wx:for="{{food.tags}}" wx:key="*this">{{tagNames[item] || item}}</text>
-    </view>
-    <!-- 今日签文：随机一句趣味文案，让晒结果更有梗 -->
+    <view class="info-row"><text class="food-category">{{food.categoryName || ''}}</text><text class="food-price">￥{{food.priceRange || ''}}</text></view>
+    <view class="food-tags" wx:if="{{food.tags && food.tags.length > 0}}"><text class="tag" wx:for="{{food.tags}}" wx:key="*this">{{tagNames[item] || item}}</text></view>
     <text class="food-quip" wx:if="{{quip}}">「{{quip}}」</text>
   </view>
-
-  <!-- 附近餐馆（配置腾讯位置服务 Key 后显示） -->
+  <view class="actions"><button class="btn-primary" bindtap="onConfirm">就它了，好好吃一顿</button><view class="sub-actions"><button class="text-button" bindtap="onAgain">换一道试试</button><text class="action-divider">·</text><button class="text-button" bindtap="goBack">回去转转盘</button></view></view>
   <view class="nearby-section" wx:if="{{nearbyEnabled}}">
+    <view class="nearby-heading"><text class="section-title">把美味，找近一点</text><text class="section-caption">附近餐馆</text></view>
     <block wx:if="{{nearbyList.length > 0}}">
-      <map class="nearby-map"
-           latitude="{{mapLatitude}}"
-           longitude="{{mapLongitude}}"
-           scale="14"
-           markers="{{markers}}"
-           include-points="{{includePoints}}"
-           show-location="{{true}}"
-           enable-zoom="{{true}}"
-           enable-scroll="{{true}}"></map>
-      <!-- 降级搜索提示 -->
+      <map class="nearby-map" latitude="{{mapLatitude}}" longitude="{{mapLongitude}}" scale="14" markers="{{markers}}" include-points="{{includePoints}}" show-location="{{true}}" enable-zoom="{{true}}" enable-scroll="{{true}}"></map>
       <view class="nearby-note" wx:if="{{nearbyNote}}">{{nearbyNote}}</view>
-      <!-- 由近及远列表，点任意一家打开导航 -->
-      <view class="nearby-list">
-        <view class="nearby-item" wx:for="{{nearbyList}}" wx:key="rank"
-              data-index="{{index}}" bindtap="onShopTap">
-          <view class="nearby-rank {{index === 0 ? 'rank-first' : ''}}">{{item.rank}}</view>
-          <view class="nearby-info">
-            <text class="nearby-title">{{item.title}}</text>
-            <text class="nearby-address">{{item.address}}</text>
-          </view>
-          <view class="nearby-right">
-            <text class="nearby-distance">{{item.distanceText}}</text>
-            <text class="nearby-nav">导航 ›</text>
-          </view>
-        </view>
-      </view>
+      <view class="nearby-list"><view class="nearby-item" wx:for="{{nearbyList}}" wx:key="rank" data-index="{{index}}" bindtap="onShopTap"><view class="nearby-rank {{index === 0 ? 'rank-first' : ''}}">{{item.rank}}</view><view class="nearby-info"><text class="nearby-title">{{item.title}}</text><text class="nearby-address">{{item.address}}</text></view><view class="nearby-right"><text class="nearby-distance">{{item.distanceText}}</text><text class="nearby-nav">导航 ›</text></view></view></view>
     </block>
-    <view class="nearby-loading" wx:elif="{{nearbyLoading}}">
-      <text>🔍 正在找附近的「{{food.name}}」…</text>
-    </view>
-    <button class="nearby-btn" wx:else bindtap="findNearby">
-      <text>📍 看看附近哪家店有「{{food.name}}」</text>
-    </button>
+    <view class="nearby-loading" wx:elif="{{nearbyLoading}}"><text>正在找附近的「{{food.name}}」…</text></view>
+    <button class="nearby-btn" wx:else bindtap="findNearby"><text>看看附近哪家店有「{{food.name}}」</text><text class="nearby-arrow">↗</text></button>
   </view>
-
-  <!-- 操作按钮 -->
-  <view class="actions">
-    <button class="confirm-btn" bindtap="onConfirm">
-      <text>🔥 就它了！</text>
-    </button>
-    <view class="sub-actions">
-      <button class="again-btn" bindtap="onAgain">
-        <text>🎲 换一个</text>
-      </button>
-      <button class="back-btn" bindtap="goBack">
-        <text>← 回去转转盘</text>
-      </button>
-    </view>
-    <!-- 分享区：晒结果（炫耀式标题）/ 发起双人默契测试 -->
-    <view class="share-actions">
-      <button class="match-btn" open-type="share">
-        <text>😋 晒一晒今天吃啥</text>
-      </button>
-      <button class="match-btn" open-type="share" data-type="match">
-        <text>🤝 测测你俩的默契</text>
-      </button>
-    </view>
-  </view>
+  <view class="share-actions"><button class="share-option" open-type="share"><text class="share-title">晒晒这一餐</text><text class="share-hint">把美味分享给朋友 ↗</text></button><button class="share-option" open-type="share" data-type="match"><text class="share-title">测测饭缘默契</text><text class="share-hint">和饭友来一场巧合 ↗</text></button></view>
 </view>

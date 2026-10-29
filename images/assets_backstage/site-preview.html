@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>今天吃什么 · 全站实际页面预览</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#eae5da;color:#302f26;font-family:'Noto Sans CJK SC',sans-serif}main{display:flex;gap:48px;justify-content:center;align-items:flex-start;padding:36px 24px}aside{width:290px;position:sticky;top:36px}h1{font-size:28px;line-height:1.5;margin:8px 0 20px}p{font-size:13px;line-height:1.9;color:#706b5e}small{letter-spacing:2px;color:#53694d}label{display:block;font-size:13px;margin:22px 0 8px}select,button{width:100%;padding:12px;border:1px solid #d9d0bf;border-radius:10px;background:#fffdf7;color:#302f26;font:inherit;font-size:13px;cursor:pointer}button{margin-top:10px}.frame{width:390px;max-width:100%;background:#faf7ef;box-shadow:0 16px 60px #55492f24;border:1px solid #d9d0bf;overflow:hidden;border-radius:20px}.caption{padding:10px 14px;font-size:11px;border-bottom:1px solid #e8e2d5;color:#817b6e;display:flex;justify-content:space-between}.caption button{width:auto;margin:0;padding:0;border:0;background:none;font-size:11px}iframe{display:block;border:0;width:100%;height:844px}#activity{font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere;background:#f6f2e9;padding:12px;border-radius:10px;max-height:190px;overflow:auto}.widths{display:flex;gap:8px}.widths button{flex:1}.limitation{border-left:2px solid #bd4828;padding-left:12px}@media(max-width:760px){main{padding:18px 12px;display:block}aside{width:100%;position:static;margin-bottom:20px}h1{font-size:21px;margin:8px 0}aside p:not(.limitation),#activity{display:none}.frame{margin:auto}iframe{height:780px}.controls{display:flex;gap:12px}.controls>div{flex:1}label{margin-top:12px}}
+</style>
+</head>
+<body><main><aside><small>GOOD FOOD, GOOD MOOD</small><h1>每一页，<br>都好好吃饭。</h1><p>由当前仓库的真实 WXML、WXSS 和 Page 方法生成。修改源文件后刷新即可看到变化；预览数据与微信本地数据完全隔离。</p><div class="controls"><div><label for="page">页面 / 状态</label><select id="page"></select></div><div><label>屏幕宽度</label><div class="widths"><button data-width="320">320</button><button data-width="375">375</button><button data-width="390">390</button></div></div></div><button id="reset">重置预览数据</button><p class="limitation">浏览器辅助验证，不是微信运行环境。地图、定位、分享、订阅和剪贴板均为模拟，不向外部接口发送请求。</p><pre id="activity">准备加载实际页面…</pre></aside><section class="frame"><div class="caption"><button id="back">‹ 预览返回</button><span id="route">实际页面</span><span>API 模拟</span></div><iframe id="phone" title="小程序实际页面预览"></iframe></section></main>
+<script>
+const scenarios = [
+ ['index','首页'],['menu','专属菜单'],['menu-long','菜单 · 长菜名'],['history','历史 · 空态'],['history-filled','历史 · 多条记录'],
+ ['result','抽取结果'],['result-nearby','结果 · 附近店铺'],['result-loading','结果 · 搜索中'],['candidates','四选一'],['help-random','好友帮抽'],
+ ['help-choose','好友帮选'],['help-menu','好友专属菜单'],['recommend','填写推荐'],['received','收到推荐'],['author','推荐人视角'],
+ ['match','默契 · 未测'],['match-result','默契 · 回传结果'],['match-invalid','默契 · 无邀请'],['coupons','优惠券'],['coupon-detail','券详情'],['coupon-noimage','券详情 · 无图'],['coupon-loading','券详情 · 加载中']
+];
+const select=document.querySelector('#page'),frame=document.querySelector('#phone');
+for(const [id,label] of scenarios){const option=new Option(label,id);select.add(option)}
+function openScenario(){frame.src='mini-runtime.html?scenario='+encodeURIComponent(select.value)}
+select.onchange=openScenario;
+document.querySelectorAll('[data-width]').forEach(button=>button.onclick=()=>document.querySelector('.frame').style.width=button.dataset.width+'px');
+document.querySelector('#back').onclick=()=>frame.contentWindow.preview.back();
+document.querySelector('#reset').onclick=()=>{Object.keys(localStorage).filter(k=>k.startsWith('food-preview:')).forEach(k=>localStorage.removeItem(k));openScenario()};
+window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==frame.contentWindow)return;const data=event.data;if(data.route)document.querySelector('#route').textContent=data.route;if(data.activity)document.querySelector('#activity').textContent=data.activity});
+openScenario();
+</script></body></html>

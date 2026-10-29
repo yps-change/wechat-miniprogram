@@ -4,63 +4,26 @@ var shareUtil = require('../../utils/share.js');
 var sceneUtil = require('../../utils/scene.js');
 var logger = require('../../utils/logger.js');
 var foodPool = require('../../utils/food-pool.js');
+var foodArt = require('../../utils/food-art.js');
 
-// 转盘扇区颜色（高对比度、明亮清晰）
-var WHEEL_COLORS = [
-  '#FF6B6B', '#4ECDC4', '#FFD93D', '#6C5CE7',
-  '#FF8A5C', '#A8E6CF', '#F38181', '#45B7D1'
-];
-
-// 扇区文字颜色（与背景形成高对比）
-var WHEEL_TEXT_COLORS = [
-  '#FFFFFF', '#2D3436', '#2D3436', '#FFFFFF',
-  '#FFFFFF', '#2D3436', '#FFFFFF', '#FFFFFF'
-];
-
-// 粒子爆炸颜色（蓝色系+彩色）
-var PARTICLE_COLORS = [
-  '#4A7BF7', '#6C9BFF', '#A8C4FF',
-  '#FFD700', '#FFA500', '#FF6B6B',
-  '#00CED1', '#20B2AA', '#48D1CC',
-  '#FF69B4', '#FF1493', '#C71585',
-  '#7B68EE', '#9370DB', '#BA55D3',
-  '#00FA9A', '#3CB371', '#2E8B57'
-];
-
-// 转盘上展示的菜品数
+var WHEEL_COLORS = ['#F2DFC7', '#E5E9D6', '#F6E8D7', '#ECEBDC', '#F1D8BD', '#E4E7D2', '#F8ECDA', '#EAE4D1'];
 var WHEEL_SLOTS = 8;
 
 Page({
   data: {
     spinning: false,
-    lightOn: true,
     comboCount: 0,
     customMenu: [],
     useCustomMenu: false,
     poolLabel: '默认美食库'
   },
-
-  // 转盘状态
   wheelCanvas: null,
   wheelCtx: null,
   wheelWidth: 0,
   wheelHeight: 0,
   wheelFoods: [],
   currentAngle: 0,
-  targetAngle: 0,
-  spinSpeed: 0,
   spinAnimId: null,
-
-  // 粒子状态
-  particles: [],
-  particleCanvas: null,
-  particleCtx: null,
-  particleAnimating: false,
-  particleWidth: 0,
-  particleHeight: 0,
-
-  // 灯光定时器
-  lightTimer: null,
 
   onLoad: function() {
     logger.info('index', 'onLoad');
@@ -68,38 +31,41 @@ Page({
   },
 
   onShow: function() {
-    logger.info('index', 'onShow');
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 0 });
     }
     this.loadCustomMenu();
-    // 从后台/其他页返回时恢复闪灯（首次启动由 onReady 负责）
-    if (this._inited) this.startLightBlink();
   },
 
   onReady: function() {
-    logger.info('index', 'onReady 初始化转盘/粒子/灯光');
-    this.initWheelCanvas();
-    this.initParticleCanvas();
     this.pickWheelFoods();
-    this.startLightBlink();
-    this._inited = true;
+    this.initWheelCanvas();
+  },
+
+  onResize: function() {
+    this.stopSpin();
+    this.initWheelCanvas();
   },
 
   onHide: function() {
-    // 页面不可见时停掉定时器，避免无谓的 setData
-    this.stopLightBlink();
+    this.stopSpin();
   },
 
   onUnload: function() {
-    this.stopLightBlink();
+    this.stopSpin();
+  },
+
+  stopSpin: function() {
+    if (this.spinAnimId !== null && this.wheelCanvas) {
+      this.wheelCanvas.cancelAnimationFrame(this.spinAnimId);
+      this.spinAnimId = null;
+    }
+    clearTimeout(this.resultTimer);
+    if (this.data.spinning) this.setData({ spinning: false });
   },
 
   getFoodPool: function() {
-    if (this.data.useCustomMenu && this.data.customMenu.length > 0) {
-      return this.data.customMenu;
-    }
-    return foodsData.foods;
+    return this.data.useCustomMenu && this.data.customMenu.length > 0 ? this.data.customMenu : foodsData.foods;
   },
 
   loadCustomMenu: function() {
@@ -110,156 +76,138 @@ Page({
     var useCustomMenu = wx.getStorageSync('use_custom_food_menu');
     useCustomMenu = useCustomMenu === '' ? customMenu.length > 0 : !!useCustomMenu;
     var useCustom = useCustomMenu && customMenu.length > 0;
-    logger.debug('index', 'loadCustomMenu 菜池=' + (useCustom ? '专属菜单' : '默认库') + ' 专属数量=' + customMenu.length);
     this.setData({
       customMenu: customMenu,
       useCustomMenu: useCustom,
       poolLabel: useCustom ? ('专属菜单 · ' + customMenu.length + ' 道') : '默认美食库'
     });
-    if (this.wheelCtx) {
-      this.pickWheelFoods();
-    }
+    if (this.wheelCtx) this.pickWheelFoods();
   },
 
-  // ========== 转盘初始化 ==========
   initWheelCanvas: function() {
     var that = this;
-    var query = wx.createSelectorQuery();
-    query.select('#wheelCanvas')
-      .fields({ node: true, size: true })
-      .exec(function(res) {
-        if (!res || !res[0] || !res[0].node) return;
-        var canvas = res[0].node;
-        var ctx = canvas.getContext('2d');
-        var sysInfo = wx.getSystemInfoSync();
-        var dpr = sysInfo.pixelRatio || 2;
-        // 使用 2x DPR 确保高清渲染
-        var scale = Math.max(dpr, 2) * 1.5;
-        var w = res[0].width;
-        var h = res[0].height;
-        canvas.width = w * scale;
-        canvas.height = h * scale;
-        ctx.scale(scale, scale);
-        that.wheelCanvas = canvas;
-        that.wheelCtx = ctx;
-        that.wheelWidth = w;
-        that.wheelHeight = h;
-        that.drawWheel(0);
-      });
+    wx.createSelectorQuery().select('#wheelCanvas').fields({ node: true, size: true }).exec(function(res) {
+      if (!res || !res[0] || !res[0].node) return;
+      var canvas = res[0].node;
+      var ctx = canvas.getContext('2d');
+      var scale = Math.max(wx.getSystemInfoSync().pixelRatio || 2, 2);
+      var width = res[0].width;
+      var height = res[0].height;
+      canvas.width = width * scale;
+      canvas.height = height * scale;
+      ctx.scale(scale, scale);
+      that.wheelCanvas = canvas;
+      that.wheelCtx = ctx;
+      that.wheelWidth = width;
+      that.wheelHeight = height;
+      that.drawWheel(that.currentAngle);
+    });
   },
 
-  // 选取转盘上的菜品
   pickWheelFoods: function() {
     var pool = this.getFoodPool();
     this.wheelFoods = randomUtil.getRandomMultiple(pool, Math.min(WHEEL_SLOTS, pool.length));
-    logger.debug('index', 'pickWheelFoods 抽中 ' + this.wheelFoods.length + ' 道（池共 ' + pool.length + ' 道）');
     if (this.wheelCtx) this.drawWheel(this.currentAngle);
   },
 
-  // 获取 emoji 对应的预渲染 PNG（Canvas 2D 不支持彩色 emoji 字体，用图片替代）
-  getEmojiImage: function(emoji) {
+  getFoodImage: function(food) {
     if (!this.wheelCanvas) return null;
-    var key = (emoji || '🍽️').codePointAt(0).toString(16);
-    var cache = this.emojiImages || (this.emojiImages = {});
-    var entry = cache[key];
+    var path = foodArt.getFoodArt(food);
+    var cache = this.foodImages || (this.foodImages = {});
+    var entry = cache[path];
     if (entry) return entry.loaded ? entry.img : null;
-
     var img = this.wheelCanvas.createImage();
     entry = { img: img, loaded: false };
-    cache[key] = entry;
+    cache[path] = entry;
     var that = this;
     img.onload = function() {
       entry.loaded = true;
       that.drawWheel(that.currentAngle);
     };
-    img.src = '/images/emoji/' + key + '.png';
+    img.src = path;
     return null;
   },
 
-  // 绘制转盘
   drawWheel: function(angle) {
     var ctx = this.wheelCtx;
     if (!ctx) return;
-    var w = this.wheelWidth;
-    var h = this.wheelHeight;
-    var cx = w / 2;
-    var cy = h / 2;
-    var radius = Math.min(cx, cy) - 4;
+    var cx = this.wheelWidth / 2;
+    var cy = this.wheelHeight / 2;
+    var radius = Math.min(cx, cy) - 2;
     var slots = this.wheelFoods.length;
-    if (slots === 0) return;
-    var arc = (Math.PI * 2) / slots;
-
-    ctx.clearRect(0, 0, w, h);
+    if (!slots) return;
+    var arc = Math.PI * 2 / slots;
+    ctx.clearRect(0, 0, this.wheelWidth, this.wheelHeight);
     ctx.save();
     ctx.translate(cx, cy);
     ctx.rotate(angle);
-
     for (var i = 0; i < slots; i++) {
-      var startAngle = arc * i - Math.PI / 2;
-      var endAngle = startAngle + arc;
-      var color = WHEEL_COLORS[i % WHEEL_COLORS.length];
-      var textColor = WHEEL_TEXT_COLORS[i % WHEEL_TEXT_COLORS.length];
-
-      // 扇区
+      var start = arc * i - Math.PI / 2 - arc / 2;
       ctx.beginPath();
       ctx.moveTo(0, 0);
-      ctx.arc(0, 0, radius, startAngle, endAngle);
+      ctx.arc(0, 0, radius, start, start + arc);
       ctx.closePath();
-      ctx.fillStyle = color;
+      ctx.fillStyle = WHEEL_COLORS[i % WHEEL_COLORS.length];
       ctx.fill();
-
-      // 扇区白色边线
-      ctx.strokeStyle = '#FFFFFF';
-      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = '#FAF7EF';
+      ctx.lineWidth = 1.5;
       ctx.stroke();
-
-      // 文字和emoji
+    }
+    for (var j = 0; j < slots; j++) {
+      var textAngle = arc * j - Math.PI / 2;
+      var iconSize = radius * 0.31;
       ctx.save();
-      var textAngle = startAngle + arc / 2;
       ctx.rotate(textAngle);
-
-      // 菜名（靠近内侧，清晰可读）
-      ctx.font = 'bold 15px "PingFang SC", "Microsoft YaHei", sans-serif';
-      ctx.fillStyle = textColor;
+      ctx.translate(radius * 0.68, 0);
+      ctx.rotate(-textAngle - angle);
+      var image = this.getFoodImage(this.wheelFoods[j]);
+      if (image) ctx.drawImage(image, -iconSize / 2, -iconSize * 0.64, iconSize, iconSize);
+      ctx.font = '500 ' + Math.max(10, Math.round(radius * 0.087)) + 'px "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillStyle = '#474439';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      var name = this.wheelFoods[i].name;
-      if (name.length > 4) name = name.substring(0, 4) + '..';
-      ctx.fillText(name, radius * 0.45, -6);
-
-      // 食物 emoji（外侧）：用预渲染 PNG 绘制，Canvas 不支持彩色 emoji 字体
-      var iconX = radius * 0.72;
-      var iconY = 2;
-      var emojiImg = this.getEmojiImage(this.wheelFoods[i].emoji);
-      if (emojiImg) {
-        var s = 34;
-        ctx.drawImage(emojiImg, iconX - s / 2, iconY - s / 2, s, s);
+      var letters = Array.from(this.wheelFoods[j].name);
+      var name = letters.join('');
+      var width = radius * 0.62;
+      while (letters.length > 1 && ctx.measureText(name).width > width) {
+        letters.pop();
+        name = letters.join('') + '…';
       }
-
+      ctx.fillText(name, 0, iconSize * 0.65);
       ctx.restore();
     }
-
-    // 中心装饰圆：实心白底（遮住底下转盘）+ 深色描边
-    var centerRadius = radius * 0.12;
-    ctx.beginPath();
-    ctx.arc(0, 0, centerRadius, 0, Math.PI * 2);
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fill();
-    ctx.strokeStyle = '#2B4F9E';
-    ctx.lineWidth = 4;
-    ctx.stroke();
-
     ctx.restore();
-
-    // 外圈装饰
+    // 中心与指针同画布绘制，避免原生 Canvas 遮挡浮层。
+    ctx.save();
     ctx.beginPath();
-    ctx.arc(cx, cy, radius + 2, 0, Math.PI * 2);
-    ctx.strokeStyle = '#4A7BF7';
-    ctx.lineWidth = 4;
+    ctx.arc(cx, cy, radius * 0.22, 0, Math.PI * 2);
+    ctx.fillStyle = '#FFFDF7';
+    ctx.fill();
+    ctx.strokeStyle = '#D9CBB9';
+    ctx.lineWidth = 1;
     ctx.stroke();
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#474439';
+    ctx.font = '500 ' + Math.max(12, Math.round(radius * 0.12)) + 'px "Songti SC", serif';
+    ctx.fillText('开饭', cx, cy - radius * 0.025);
+    ctx.fillStyle = '#BD4828';
+    ctx.font = Math.max(5, Math.round(radius * 0.044)) + 'px Georgia, serif';
+    ctx.fillText('LET’S EAT', cx, cy + radius * 0.09);
+    ctx.beginPath();
+    ctx.moveTo(cx - radius * 0.065, 2);
+    ctx.lineTo(cx + radius * 0.065, 2);
+    ctx.lineTo(cx, radius * 0.12);
+    ctx.closePath();
+    ctx.fillStyle = '#BD4828';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(cx, radius * 0.045, radius * 0.015, 0, Math.PI * 2);
+    ctx.fillStyle = '#FAF7EF';
+    ctx.fill();
+    ctx.restore();
   },
 
-  // ========== 一键出结果 ==========
   onQuickPick: function() {
     if (this.data.spinning) return;
     var food = randomUtil.getRandomOne(this.getFoodPool());
@@ -267,268 +215,70 @@ Page({
       wx.showToast({ title: '先添加专属菜单或切回默认库', icon: 'none' });
       return;
     }
-    var combo = this.data.comboCount + 1;
+    this.setData({ comboCount: this.data.comboCount + 1 });
     logger.info('index', '一键出结果=' + food.name);
-    this.setData({ comboCount: combo });
     wx.vibrateShort({ type: 'light' });
     this.goToResult(food);
   },
 
-  // 跳转到结果页（自定义菜品用 name 传参，默认菜品用 id）
   goToResult: function(food) {
-    var url = food.isCustom
-      ? '/pages/result/result?name=' + encodeURIComponent(food.name)
-      : '/pages/result/result?id=' + food.id;
+    var url = food.isCustom ? '/pages/result/result?name=' + encodeURIComponent(food.name) : '/pages/result/result?id=' + food.id;
     wx.navigateTo({ url: url });
   },
 
-  // ========== 转盘旋转 ==========
   onSpin: function() {
-    if (this.data.spinning) return;
-
-    var that = this;
-    if (this.getFoodPool().length === 0) {
+    if (this.data.spinning || !this.wheelCtx) return;
+    if (!this.getFoodPool().length) {
       wx.showToast({ title: '先添加专属菜单或切回默认库', icon: 'none' });
       return;
     }
-    logger.info('index', '点击开始转盘');
-
-    // 连击计数
-    var combo = this.data.comboCount + 1;
-    this.setData({ comboCount: combo, spinning: true });
-
-    // 重新选菜品
+    var that = this;
+    this.setData({ comboCount: this.data.comboCount + 1, spinning: true });
     this.pickWheelFoods();
-
-    // 随机目标菜品索引
     var slots = this.wheelFoods.length;
     var targetIndex = Math.floor(Math.random() * slots);
-
-    // 计算目标角度：至少转5圈 + 停在目标扇区中间
-    var arc = (Math.PI * 2) / slots;
-    var targetSectorAngle = arc * targetIndex + arc / 2;
-    // 指针在顶部(12点钟方向 = -π/2), 转盘逆时针旋转
-    var minSpins = 5 + Math.floor(Math.random() * 3); // 5-7圈
-    var totalRotation = minSpins * Math.PI * 2 + (Math.PI * 2 - targetSectorAngle);
-
+    var arc = Math.PI * 2 / slots;
+    var minSpins = 5 + Math.floor(Math.random() * 3);
+    var totalRotation = minSpins * Math.PI * 2 + (Math.PI * 2 - arc * targetIndex);
     this.currentAngle = 0;
-    this.targetAngle = totalRotation;
-    this.spinSpeed = 0;
-
     var startTime = Date.now();
-    var duration = 3500 + Math.random() * 1500; // 3.5-5秒
-
-    var doSpin = function() {
-      var elapsed = Date.now() - startTime;
-      var progress = Math.min(elapsed / duration, 1);
-
-      // easeOutQuint 减速曲线
-      var eased = 1 - Math.pow(1 - progress, 5);
-      that.currentAngle = totalRotation * eased;
-
+    var duration = 3500 + Math.random() * 1500;
+    function doSpin() {
+      var progress = Math.min((Date.now() - startTime) / duration, 1);
+      that.currentAngle = totalRotation * (1 - Math.pow(1 - progress, 5));
       that.drawWheel(that.currentAngle);
-
       if (progress < 1) {
         that.spinAnimId = that.wheelCanvas.requestAnimationFrame(doSpin);
       } else {
-        // 旋转结束
-        that.setData({ spinning: false });
+        that.spinAnimId = null;
         var selectedFood = that.wheelFoods[targetIndex];
         logger.info('index', '转盘停止，结果=' + selectedFood.name);
         wx.vibrateShort({ type: 'light' });
-        // 爆炸特效稍作停留后跳转结果页
-        that.triggerResultExplosion();
-        setTimeout(function() {
+        that.resultTimer = setTimeout(function() {
+          that.setData({ spinning: false });
           that.goToResult(selectedFood);
-        }, 500);
+        }, 200);
       }
-    };
-
-    this.wheelCanvas.requestAnimationFrame(doSpin);
-  },
-
-  // 结果出现时的爆炸特效
-  triggerResultExplosion: function() {
-    var cx = this.particleWidth / 2;
-    var cy = this.particleHeight / 2;
-    this.createExplosion(cx, cy, 72);
-    // 四周再来几组
-    for (var i = 0; i < 4; i++) {
-      var x = Math.random() * this.particleWidth;
-      var y = Math.random() * this.particleHeight * 0.6 + this.particleHeight * 0.2;
-      this.createExplosion(x, y, 20);
     }
-  },
-
-  // ========== 灯光闪烁 ==========
-  startLightBlink: function() {
-    if (this.lightTimer) return; // 防重复启动
-    var that = this;
-    this.lightTimer = setInterval(function() {
-      that.setData({ lightOn: !that.data.lightOn });
-    }, 500);
-  },
-
-  stopLightBlink: function() {
-    if (this.lightTimer) {
-      clearInterval(this.lightTimer);
-      this.lightTimer = null;
-    }
-  },
-
-  // ========== 粒子系统 ==========
-  initParticleCanvas: function() {
-    var that = this;
-    var query = wx.createSelectorQuery();
-    query.select('#particleCanvas')
-      .fields({ node: true, size: true })
-      .exec(function(res) {
-        if (!res || !res[0] || !res[0].node) return;
-        var canvas = res[0].node;
-        var ctx = canvas.getContext('2d');
-        var dpr = wx.getSystemInfoSync().pixelRatio;
-        canvas.width = res[0].width * dpr;
-        canvas.height = res[0].height * dpr;
-        ctx.scale(dpr, dpr);
-        that.particleCanvas = canvas;
-        that.particleCtx = ctx;
-        that.particleWidth = res[0].width;
-        that.particleHeight = res[0].height;
-      });
-  },
-
-  onPageTouch: function(e) {
-    var touch = e.touches[0];
-    if (!touch || !this.particleCtx) return;
-    this.createExplosion(touch.clientX, touch.clientY, 25);
-  },
-
-  createExplosion: function(x, y, count) {
-    for (var i = 0; i < count; i++) {
-      var angle = (Math.PI * 2 / count) * i + Math.random() * 0.5;
-      var speed = 2 + Math.random() * 6;
-      var size = 2 + Math.random() * 8;
-      var color = PARTICLE_COLORS[Math.floor(Math.random() * PARTICLE_COLORS.length)];
-      var type = Math.random() > 0.5 ? 'circle' : 'ring';
-
-      this.particles.push({
-        x: x, y: y,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed,
-        size: size, color: color,
-        alpha: 1,
-        decay: 0.015 + Math.random() * 0.02,
-        gravity: 0.1 + Math.random() * 0.1,
-        friction: 0.96 + Math.random() * 0.03,
-        type: type,
-        rotation: Math.random() * Math.PI * 2,
-        rotationSpeed: (Math.random() - 0.5) * 0.2
-      });
-    }
-
-    // 中心光晕
-    for (var j = 0; j < 3; j++) {
-      this.particles.push({
-        x: x + (Math.random() - 0.5) * 10,
-        y: y + (Math.random() - 0.5) * 10,
-        vx: (Math.random() - 0.5) * 2,
-        vy: (Math.random() - 0.5) * 2,
-        size: 15 + Math.random() * 15,
-        color: '#FFFFFF', alpha: 0.8,
-        decay: 0.04, gravity: 0, friction: 0.98,
-        type: 'glow', rotation: 0, rotationSpeed: 0
-      });
-    }
-
-    if (!this.particleAnimating) {
-      this.particleAnimating = true;
-      this.animateParticles();
-    }
-  },
-
-  animateParticles: function() {
-    var that = this;
-    if (!this.particleCtx || this.particles.length === 0) {
-      this.particleAnimating = false;
-      if (this.particleCtx) {
-        this.particleCtx.clearRect(0, 0, this.particleWidth, this.particleHeight);
-      }
-      return;
-    }
-
-    this.particleCtx.clearRect(0, 0, this.particleWidth, this.particleHeight);
-    var alive = [];
-
-    for (var i = 0; i < this.particles.length; i++) {
-      var p = this.particles[i];
-      p.vx *= p.friction;
-      p.vy *= p.friction;
-      p.vy += p.gravity;
-      p.x += p.vx;
-      p.y += p.vy;
-      p.alpha -= p.decay;
-      p.rotation += p.rotationSpeed;
-      if (p.alpha <= 0) continue;
-      alive.push(p);
-
-      this.particleCtx.save();
-      this.particleCtx.globalAlpha = p.alpha;
-      this.particleCtx.translate(p.x, p.y);
-      this.particleCtx.rotate(p.rotation);
-
-      if (p.type === 'circle') {
-        this.particleCtx.beginPath();
-        this.particleCtx.arc(0, 0, p.size, 0, Math.PI * 2);
-        this.particleCtx.fillStyle = p.color;
-        this.particleCtx.fill();
-      } else if (p.type === 'ring') {
-        this.particleCtx.beginPath();
-        this.particleCtx.arc(0, 0, p.size, 0, Math.PI * 2);
-        this.particleCtx.strokeStyle = p.color;
-        this.particleCtx.lineWidth = 1.5;
-        this.particleCtx.stroke();
-      } else if (p.type === 'glow') {
-        var gradient = this.particleCtx.createRadialGradient(0, 0, 0, 0, 0, p.size);
-        gradient.addColorStop(0, p.color);
-        gradient.addColorStop(1, 'rgba(255,255,255,0)');
-        this.particleCtx.beginPath();
-        this.particleCtx.arc(0, 0, p.size, 0, Math.PI * 2);
-        this.particleCtx.fillStyle = gradient;
-        this.particleCtx.fill();
-      }
-      this.particleCtx.restore();
-    }
-
-    this.particles = alive;
-    this.particleCanvas.requestAnimationFrame(function() {
-      that.animateParticles();
-    });
+    this.spinAnimId = this.wheelCanvas.requestAnimationFrame(doSpin);
   },
 
   goToCandidates: function() {
     wx.navigateTo({ url: '/pages/candidates/candidates' });
   },
 
-  onShareAppMessage: function(res) {
-    return {
-      // 时段场景化标题：夜宵/周五等（见 utils/scene.js）
-      title: sceneUtil.getRandomShareTitle(),
-      path: shareUtil.buildRandomSharePath('好友')
-    };
+  onShareAppMessage: function() {
+    return { title: sceneUtil.getRandomShareTitle(), path: shareUtil.buildRandomSharePath('好友') };
   },
 
-  // 朋友圈分享：单页模式打开首页转盘
   onShareTimeline: function() {
-    return {
-      title: '🎯 今天吃什么？让转盘帮你决定！'
-    };
+    return { title: '\uD83C\uDFAF 今天吃什么？让转盘帮你决定！' };
   },
 
   goToCoupons: function() {
     wx.navigateTo({ url: '/pages/coupons/coupons' });
   },
 
-  // 点击转盘上方的菜单来源徽章，跳到“专属菜单”tab
   goToMenu: function() {
     wx.switchTab({ url: '/pages/menu/menu' });
   }

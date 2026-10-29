@@ -1,0 +1,2 @@
+:host { display: inline-block; flex-shrink: 0; line-height: 0; }
+.food-art { display: block; }
