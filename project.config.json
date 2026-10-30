@@ -2,10 +2,22 @@
   "description": "今天吃什么 - 上班族外卖决策助手",
   "packOptions": {
     "ignore": [
-      { "type": "folder", "value": "images/assets_backstage" },
-      { "type": "folder", "value": "docs" },
-      { "type": "glob", "value": "images/*.py" },
-      { "type": "glob", "value": "**/*.md" }
+      {
+        "value": "images/assets_backstage",
+        "type": "folder"
+      },
+      {
+        "value": "docs",
+        "type": "folder"
+      },
+      {
+        "value": "images/*.py",
+        "type": "glob"
+      },
+      {
+        "value": "**/*.md",
+        "type": "glob"
+      }
     ],
     "include": []
   },
@@ -52,7 +64,7 @@
     "disableSWC": true
   },
   "compileType": "miniprogram",
-  "libVersion": "3.7.5",
+  "libVersion": "3.17.0",
   "appid": "wxfce42ddd79172eb6",
   "projectname": "today-eat-what",
   "condition": {},
