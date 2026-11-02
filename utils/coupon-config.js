@@ -26,7 +26,7 @@ module.exports = {
           actionLabel: '复制淘口令',
           appName: '淘宝 App',
           url: '',
-          copyText: '￥1yBjT8wap4O￥/ HU7405',
+          copyText: '￥rDYg6ZS7q7S￥/ HU7405, ZS7',
           copySuccessMessage: '淘口令已复制！请打开淘宝 App，粘贴到搜索框识别红包。',
           image: '/images/淘宝_超值红包组合.jpg'
         },
@@ -36,7 +36,7 @@ module.exports = {
           actionLabel: '复制淘口令',
           appName: '淘宝 App',
           url: '',
-          copyText: '￥doipT8EC7rc￥/ HU7405',
+          copyText: '￥Xzpp6ZSRYsj￥/ HU7405',
           copySuccessMessage: '淘口令已复制！请打开淘宝 App，粘贴到搜索框识别红包。',
           image: '/images/淘宝_闪购品牌日.jpg'
         },
@@ -46,7 +46,7 @@ module.exports = {
           actionLabel: '复制淘口令',
           appName: '淘宝 App',
           url: '',
-          copyText: '￥y5WrT8wg8Df￥/ HU7405',
+          copyText: '￥NFdS6ZSRwGX￥/ HU7405',
           copySuccessMessage: '淘口令已复制！请打开淘宝 App，粘贴到搜索框识别红包。',
           image: '/images/淘宝_通用消费.jpg'
         },
@@ -56,7 +56,7 @@ module.exports = {
           actionLabel: '复制淘口令',
           appName: '淘宝 App',
           url: '',
-          copyText: '￥dUAHT8wQQmc￥/ HU7405, HT8',
+          copyText: '￥vrHg6ZSjDF6￥/ HU7405',
           copySuccessMessage: '淘口令已复制！请打开淘宝 App，粘贴到搜索框识别红包。',
           image: '/images/淘宝_免单.jpg'
         }
@@ -75,7 +75,7 @@ module.exports = {
           actionLabel: '复制口令领红包',
           appName: '美团 App',
           url: 'http://dpurl.cn/7fAACdmz',
-          copyText: '美团外卖节\n点我领取大额红包\n【下单链接】http://dpurl.cn/NmanNEjz\n【团口令】1来美团，吃得更好，生活更好❤️复制整条信息，打开👉美团👈 http:/💰pnNDVhODM3Yjg💰',
+          copyText: '美团外卖节\n点我领取大额红包\n【下单链接】http://dpurl.cn/k4X37Mtz\n 【团口令】1来美团，吃得更好，生活更好❤️复制整条信息，打开👉美团👈 http:/💰hwNGNjYTJkODI💰 ',
           copySuccessMessage: '复制成功！请打开【美团App】，系统将自动识别并弹出活动页面。',
           image: '/images/外卖节.jpg'
         },
@@ -86,7 +86,7 @@ module.exports = {
           actionLabel: '复制口令领红包',
           appName: '美团 App',
           url: 'http://dpurl.cn/XVTPeKwz',
-          copyText: '吃喝玩乐 每日福利\n内部优惠3折起 每周五还可抢大额神券\n【下单链接】http://dpurl.cn/dPT4BrVz\n【团口令】1来美团，吃得更好，生活更好❤️复制整条信息，打开👉美团👈 http:/💰wcYzIyNjU5ZDI💰',
+          copyText: '吃喝玩乐 每日福利\n内部优惠3折起 每周五还可抢大额神券\n【下单链接】http://dpurl.cn/pnIQ2hDz\n【团口令】1来美团，吃得更好，生活更好❤️复制整条信息，打开👉美团👈 http:/💰j4OTkzMDdkZDE💰',
           copySuccessMessage: '复制成功！请打开【美团App】，系统将自动识别并弹出活动页面。',
           image: '/images/吃喝玩乐.jpg'
         },
@@ -97,7 +97,7 @@ module.exports = {
           actionLabel: '复制口令领红包',
           appName: '美团 App',
           url: 'http://dpurl.cn/QsFpJt3z',
-          copyText: '甄选好店 优惠专享\n专享甄选好店大额红包\n【下单链接】http://dpurl.cn/icjVStUz\n【团口令】1来美团，吃得更好，生活更好❤️复制整条信息，打开👉美团👈 http:/💰0lZmE2M2RhMDQ💰',
+          copyText: '甄选好店 优惠专享\n专享甄选好店大额红包\n【下单链接】http://dpurl.cn/05mzhcPz\n【团口令】1来美团，吃得更好，生活更好❤️复制整条信息，打开👉美团👈 http:/💰jiMTJmMWVhN2M💰',
           copySuccessMessage: '复制成功！请打开【美团App】，系统将自动识别并弹出活动页面。',
           image: '/images/甄选好店.jpg'
         },
@@ -108,7 +108,7 @@ module.exports = {
           actionLabel: '复制口令领红包',
           appName: '美团 App',
           url: 'http://dpurl.cn/ix1k4Gjz',
-          copyText: '大牌饮品商品券会场\n天天好品味蕾不重样\n\n大牌外卖省到爆！\n【下单链接】http://dpurl.cn/maOasorz\n【团口令】1来美团，吃得更好，生活更好❤️复制整条信息，打开👉美团👈 http:/💰y1NzVkZGY4YmI💰',
+          copyText: '大牌饮品商品券会场\n天天好品味蕾不重样\n\n大牌外卖省到爆！\n【下单链接】http://dpurl.cn/P6nujMyz\n【团口令】1来美团，吃得更好，生活更好❤️复制整条信息，打开👉美团👈 http:/💰juOTQzZGQ5NGM💰',
           copySuccessMessage: '复制成功！请打开【美团App】，系统将自动识别并弹出活动页面。',
           image: '/images/饮品.jpg'
         }
